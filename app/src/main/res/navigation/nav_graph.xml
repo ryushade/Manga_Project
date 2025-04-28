@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/homeFragment">
+
+    <!-- Home Fragment -->
+    <fragment
+        android:id="@+id/homeFragment"
+        android:name="com.example.ebook_proyect.fragments.HomeFragment"
+        tools:layout="@layout/fragment_home" />
+
+    <!-- Search Fragment -->
+    <fragment
+        android:id="@+id/searchFragment"
+        android:name="com.example.ebook_proyect.fragments.SearchFragment"
+        tools:layout="@layout/fragment_search" />
+
+    <!-- Library Fragment -->
+    <fragment
+        android:id="@+id/libraryFragment"
+        android:name="com.example.ebook_proyect.fragments.LibraryFragment"
+        tools:layout="@layout/fragment_library" >
+
+        <!-- Acción para navegar a PreviewFragment -->
+        <action
+            android:id="@+id/action_libraryFragment_to_previewFragment"
+            app:destination="@id/previewFragment" />
+    </fragment>
+
+    <!-- Preview Fragment -->
+    <fragment
+        android:id="@+id/previewFragment"
+        android:name="com.example.ebook_proyect.fragments.PreviewFragment"
+        tools:layout="@layout/fragment_preview" />
+
+    <!-- Description Book Fragment -->
+    <fragment
+        android:id="@+id/descriptionBookActivity"
+        android:name="com.example.ebook_proyect.activities.DescriptionBookActivity"
+        android:label="activity_description_book">
+        <action
+            android:id="@+id/action_descriptionBookActivity_to_previewFragment"
+            app:destination="@id/previewFragment" />
+    </fragment>
+
+</navigation>

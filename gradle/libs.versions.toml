@@ -1,0 +1,73 @@
+[versions]
+agp = "8.5.1"
+compiler = "4.12.0"
+compilerVersion = "4.13.0"
+composeWalletButton = "0.1.0-beta01"
+constraintlayoutVersion = "2.2.0"
+firebaseAuth = "23.1.0"
+firebaseBom = "33.5.1"
+folioreader = "0.5.4"
+fuel = "2.3.1"
+githubGlide = "4.13.0"
+glide = "4.12.0"
+glideVersion = "4.15.1"
+junit = "4.13.2"
+junitVersion = "1.2.1"
+espressoCore = "3.6.1"
+appcompat = "1.7.0"
+material = "1.12.0"
+activity = "1.9.2"
+constraintlayout = "2.1.4"
+navigationFragment = "2.8.1"
+navigationUi = "2.8.1"
+okhttp = "4.10.0"
+playServicesAuth = "21.2.0"
+playServicesPay = "16.5.0"
+playServicesWallet = "19.4.0"
+retrofit = "2.9.0"
+annotation = "1.9.0"
+lifecycleLivedataKtx = "2.8.6"
+lifecycleViewmodelKtx = "2.8.6"
+stripeAndroid = "21.0.0"
+googleGmsGoogleServices = "4.4.2"
+webviewex = "1.0.2"
+
+[libraries]
+compiler = { module = "com.github.bumptech.glide:compiler", version.ref = "compiler" }
+compiler-v4130 = { module = "com.github.bumptech.glide:compiler", version.ref = "compilerVersion" }
+compose-wallet-button = { module = "com.google.wallet.button:compose-wallet-button", version.ref = "composeWalletButton" }
+constraintlayout-v220 = { module = "androidx.constraintlayout:constraintlayout", version.ref = "constraintlayoutVersion" }
+converter-gson = { module = "com.squareup.retrofit2:converter-gson", version.ref = "retrofit" }
+firebase-analytics = { module = "com.google.firebase:firebase-analytics" }
+firebase-auth = { module = "com.google.firebase:firebase-auth", version.ref = "firebaseAuth" }
+firebase-bom = { module = "com.google.firebase:firebase-bom", version.ref = "firebaseBom" }
+folioreader = { module = "com.folioreader:folioreader", version.ref = "folioreader" }
+fuel = { module = "com.github.kittinunf.fuel:fuel", version.ref = "fuel" }
+glide = { module = "com.github.bumptech.glide:glide", version.ref = "glide" }
+glide-v4130 = { module = "com.github.bumptech.glide:glide", version.ref = "githubGlide" }
+glide-v4151 = { module = "com.github.bumptech.glide:glide", version.ref = "glideVersion" }
+junit = { group = "junit", name = "junit", version.ref = "junit" }
+ext-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }
+espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espressoCore" }
+appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
+material = { group = "com.google.android.material", name = "material", version.ref = "material" }
+activity = { group = "androidx.activity", name = "activity", version.ref = "activity" }
+constraintlayout = { group = "androidx.constraintlayout", name = "constraintlayout", version.ref = "constraintlayout" }
+navigation-fragment = { group = "androidx.navigation", name = "navigation-fragment", version.ref = "navigationFragment" }
+navigation-ui = { group = "androidx.navigation", name = "navigation-ui", version.ref = "navigationUi" }
+okhttp = { module = "com.squareup.okhttp3:okhttp", version.ref = "okhttp" }
+play-services-auth = { module = "com.google.android.gms:play-services-auth", version.ref = "playServicesAuth" }
+play-services-pay = { module = "com.google.android.gms:play-services-pay", version.ref = "playServicesPay" }
+play-services-wallet = { module = "com.google.android.gms:play-services-wallet", version.ref = "playServicesWallet" }
+retrofit = { module = "com.squareup.retrofit2:retrofit", version.ref = "retrofit" }
+annotation = { group = "androidx.annotation", name = "annotation", version.ref = "annotation" }
+lifecycle-livedata-ktx = { group = "androidx.lifecycle", name = "lifecycle-livedata-ktx", version.ref = "lifecycleLivedataKtx" }
+lifecycle-viewmodel-ktx = { group = "androidx.lifecycle", name = "lifecycle-viewmodel-ktx", version.ref = "lifecycleViewmodelKtx" }
+stripe-android = { module = "com.stripe:stripe-android", version.ref = "stripeAndroid" }
+webviewex = { module = "com.github.ToxicBakery.webviewex:webviewex", version.ref = "webviewex" }
+
+
+[plugins]
+android-application = { id = "com.android.application", version.ref = "agp" }
+google-gms-google-services = { id = "com.google.gms.google-services", version.ref = "googleGmsGoogleServices" }
+

@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="Theme.Ebook_Proyect" parent="Theme.MaterialComponents.Light.NoActionBar">
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="android:statusBarColor">@color/colorPrimary</item>
+    </style>
+
+    <style name="Widget.Ebook_Proyect.Toolbar" parent="Widget.AppCompat.Toolbar">
+        <item name="android:background">@color/backgroundGeneral</item>
+        <item name="android:theme">@style/ThemeOverlay.AppCompat.Dark.ActionBar</item>
+        <item name="popupTheme">@style/ThemeOverlay.AppCompat.Light</item>
+    </style>
+
+    <style name="Widget.Ebook_Proyect.CoordinatorLayout" parent="android:Widget">
+        <item name="android:background">@color/backgroundGeneral</item>
+        <item name="android:theme">@style/ThemeOverlay.AppCompat.Dark.ActionBar</item>
+        <item name="popupTheme">@style/ThemeOverlay.AppCompat.Light</item>
+    </style>
+
+    <style name="Widget.Ebook_Proyect.TextInputLayout" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+        <item name="hintTextAppearance">@style/TextAppearance.Ebook_Proyect.TextInputLayout.HintText</item>
+        <item name="android:layout_marginStart">20dp</item>
+        <item name="android:layout_marginEnd">20dp</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="hintTextColor">@color/colorPrimary</item>
+        <item name="android:paddingBottom">8dp</item>
+        <item name="boxStrokeColor">@color/textInputOutlineColor</item>
+    </style>
+
+    <style name="TextAppearance.Ebook_Proyect.TextInputLayout.HintText" parent="TextAppearance.MaterialComponents.Subtitle2">
+        <item name="android:textColor">?android:attr/textColorPrimary</item>
+    </style>
+
+    <style name="nameBook">
+        <item name="android:textSize">16sp</item>
+        <item name="android:layout_marginTop">8dp</item>
+        <item name="android:textColor" >@color/colorText</item>
+        <!--<item name="android:fontFamily" >@font/sourcesans3_medium</item>-->
+    </style>
+
+    <style name="nameBookDescription" parent="TextAppearance.MaterialComponents.Body1">
+        <item name="android:textSize">24sp</item>
+        <item name="android:layout_marginStart">15dp</item>
+        <item name="android:layout_marginTop">20dp</item>
+        <item name="android:textColor">@color/colorText</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:fontFamily">@font/sourcesans3_medium</item> <!-- Opcional -->
+    </style>
+
+    <style name="authorBookDescription">
+        <item name="android:textSize">16sp</item>
+        <item name="android:layout_marginStart">15dp</item>
+        <item name="android:layout_marginTop">5dp</item>
+        <item name="android:textColor" >@color/colorText</item>
+    </style>
+
+    <style name="descriptionBook">
+        <item name="android:textSize">16sp</item>
+        <item name="android:layout_marginStart">15dp</item>
+        <item name="android:layout_marginTop">5dp</item>
+    </style>
+
+
+</resources>

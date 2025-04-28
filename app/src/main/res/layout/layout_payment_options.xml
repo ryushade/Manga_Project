@@ -1,0 +1,25 @@
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:wallet="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="16dp">
+
+    <!-- Botón de Google Pay -->
+    <Button
+        android:id="@+id/google_pay_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Pagar con Google Pay"
+        android:layout_marginTop="16dp" />
+
+
+    <!-- Otro método de pago (botón de ejemplo) -->
+    <Button
+        android:id="@+id/other_payment_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Otro método de pago"
+        android:layout_marginTop="16dp" />
+</LinearLayout>

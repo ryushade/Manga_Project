@@ -1,0 +1,37 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <!-- FrameLayout para permitir colocar la capa encima del WebView -->
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <!-- WebView para mostrar el libro -->
+        <WebView
+            android:id="@+id/webView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+        <!-- Capa superpuesta que cubre el WebView, con un mensaje -->
+        <LinearLayout
+            android:id="@+id/overlayLayer"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:gravity="center"
+            android:background="#AA000000"
+            android:visibility="gone">
+
+            <TextView
+                android:id="@+id/messageText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Para seguir leyendo, compra el libro"
+                android:textSize="18sp"
+                android:textColor="#FFFFFF"
+                android:padding="20dp" />
+        </LinearLayout>
+    </FrameLayout>
+</LinearLayout>
