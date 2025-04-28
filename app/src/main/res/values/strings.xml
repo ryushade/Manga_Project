@@ -1,8 +1,8 @@
 <resources>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="app_name">Readily</string>
-    <string name="slogan">¡Consigue tus libros con facilidad!</string>
+    <string name="app_name">Komi</string>
+    <string name="slogan">¡Explora historias a tu manera!</string>
     <string name="text_start">Empezar</string>
     <string name="google">Google</string>
     <string name="textContrasena">Contraseña</string>

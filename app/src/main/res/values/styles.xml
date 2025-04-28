@@ -2,7 +2,7 @@
 <resources>
     <style name="Theme.Ebook_Proyect" parent="Theme.MaterialComponents.Light.NoActionBar">
         <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="android:statusBarColor">@color/colorPrimary</item>
+        <item name="android:statusBarColor">@color/colorDefault</item>
     </style>
 
     <style name="Widget.Ebook_Proyect.Toolbar" parent="Widget.AppCompat.Toolbar">

@@ -18,6 +18,7 @@
             android:layout_marginStart="10dp"
             android:layout_marginTop="10dp"
             android:textColor="@color/colorText"
+            android:fontFamily="@font/sourcesans3_black"
             android:textSize="38dp"
             android:text="Explora tu nueva aventura"
             app:layout_constraintStart_toStartOf="parent"

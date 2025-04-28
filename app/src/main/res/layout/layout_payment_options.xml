@@ -12,6 +12,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Pagar con Google Pay"
+        android:backgroundTint="#fb4f1f"
         android:layout_marginTop="16dp" />
 
 
@@ -21,5 +22,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Otro método de pago"
+        android:backgroundTint="#2196F3"
         android:layout_marginTop="16dp" />
 </LinearLayout>

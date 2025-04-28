@@ -103,6 +103,17 @@
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginBottom="50dp" />
 
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/lblCuenta"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="¿Ya tienes una cuenta?"
+        android:textColor="#cfd1d3"
+        app:layout_constraintBottom_toTopOf="@id/btnCorreo"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/btnLogin" />
+
     <com.google.android.material.button.MaterialButton
         android:id="@+id/btnLogin"
         android:layout_width="0dp"
@@ -110,17 +121,15 @@
         android:layout_marginStart="20dp"
         android:layout_marginEnd="20dp"
         android:layout_marginBottom="15dp"
+        android:backgroundTint="#FF3D00"
         android:fontFamily="@font/sourcesans3_extrabold"
         android:text="@string/textButtonLogin"
         android:textSize="18sp"
-        android:backgroundTint="#FF3D00"
-        app:layout_constraintBottom_toTopOf="@+id/btnCorreo"
+        app:cornerRadius="10dp"
+        app:layout_constraintBottom_toTopOf="@id/btnCorreo"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/lblRedLogin"
-        app:cornerRadius="10dp"
-        tools:ignore="NotSibling" />
-
-
-
+        app:layout_constraintVertical_bias="0.306" />
 </androidx.constraintlayout.widget.ConstraintLayout>
