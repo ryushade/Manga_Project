@@ -1,9 +1,9 @@
-<?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#090909"
     tools:context=".activities.SelectRegisterActivity">
 
     <com.google.android.material.textview.MaterialTextView
@@ -12,7 +12,9 @@
         android:layout_height="wrap_content"
         android:fontFamily="@font/sourcesans3_black"
         android:text="@string/textRegister"
-        android:textSize="50sp"
+        android:textAlignment="center"
+        android:textSize="36sp"
+        android:textColor="@android:color/white"
         app:layout_constraintBottom_toTopOf="@id/lblText"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -25,31 +27,42 @@
         android:layout_height="wrap_content"
         android:fontFamily="@font/sourcesans3_regular"
         android:text="@string/textSloganRegister"
+        android:textColor="#cfd1d3"
         android:textSize="20sp"
-        app:layout_constraintBottom_toTopOf="@id/btnGoogle"
+        app:layout_constraintBottom_toTopOf="@id/mangaImage"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/lblBienvenido" />
 
+    <ImageView
+        android:id="@+id/mangaImage"
+        android:layout_width="200dp"
+        android:layout_height="150dp"
+        android:layout_marginTop="16dp"
+        android:src="@drawable/mangaverso"
+        app:layout_constraintTop_toBottomOf="@id/lblText"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/btnGoogle" />
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/btnGoogle"
         android:layout_width="0dp"
         android:layout_height="60dp"
         android:layout_marginStart="20dp"
-        android:layout_marginTop="30dp"
+        android:layout_marginTop="16dp"
         android:layout_marginEnd="20dp"
+        android:backgroundTint="#141414"
         android:fontFamily="@font/sourcesans3_extrabold"
         app:icon="@drawable/ico_google"
         app:iconSize="20dp"
-        app:iconGravity= "textStart"
+        app:iconGravity="textStart"
         android:text="@string/textRegisterGoogle"
         android:textSize="18sp"
         app:layout_constraintBottom_toTopOf="@id/textView7"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/lblText" />
+        app:layout_constraintTop_toBottomOf="@id/mangaImage" />
 
     <com.google.android.material.textview.MaterialTextView
         android:id="@+id/textView7"
@@ -70,7 +83,8 @@
         android:fontFamily="@font/sourcesans3_extrabold"
         app:icon="@drawable/ico_email"
         app:iconSize="20dp"
-        app:iconGravity= "textStart"
+        android:backgroundTint="#141414"
+        app:iconGravity="textStart"
         android:textSize="18sp"
         android:text="@string/textEmail"
         app:layout_constraintBottom_toTopOf="@id/lblRedLogin"
@@ -82,10 +96,31 @@
         android:id="@+id/lblRedLogin"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text=""
+        android:text="Al registrarte, aceptas los Terminos y condiciones"
+        android:textColor="#cfd1d3"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginBottom="50dp" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btnLogin"
+        android:layout_width="0dp"
+        android:layout_height="60dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginBottom="15dp"
+        android:fontFamily="@font/sourcesans3_extrabold"
+        android:text="@string/textButtonLogin"
+        android:textSize="18sp"
+        android:backgroundTint="#FF3D00"
+        app:layout_constraintBottom_toTopOf="@+id/btnCorreo"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/lblRedLogin"
+        app:cornerRadius="10dp"
+        tools:ignore="NotSibling" />
+
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

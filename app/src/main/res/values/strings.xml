@@ -10,13 +10,13 @@
     <string name="textEmail">Correo electrónico</string>
     <string name="textContinueGoogle">Continuar con Google</string>
     <string name="textSloganLogin">Inicia sesión y deja que los libros te lleven más allá.</string>
-    <string name="textWelcome">¡Bienvenido!</string>
-    <string name="textSloganRegister">Abre las puertas a mundos infinitos.</string>
+    <string name="textWelcome">¡Surgemete en la zona de lectura! 📖🚀 </string>
+    <string name="textSloganRegister">Una experiencia personalizada</string>
     <string name="textButtonLogin">Iniciar sesión</string>
     <string name="textForgotPassword">¿Olvidaste tu contraseña?</string>
-    <string name="textRegisterGoogle">Google</string>
+    <string name="textRegisterGoogle">Registrate con Google</string>
     <string name="textO">o</string>
-    <string name="textRegister">Registrate</string>
+    <string name="textRegister">Registrate y comienza a leer</string>
     <string name="textDni">DNI</string>
     <string name="txtApellidos">Apellidos</string>
     <string name="txtNombres">Nombres</string>

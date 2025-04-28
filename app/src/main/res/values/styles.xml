@@ -61,5 +61,11 @@
         <item name="android:layout_marginTop">5dp</item>
     </style>
 
+    <style name="CustomTextInputLayout" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+        <item name="boxStrokeColor">#FFFFFF</item>
+        <item name="boxStrokeWidth">2dp</item>
+        <item name="boxBackgroundMode">outline</item>
+    </style>
+
 
 </resources>
