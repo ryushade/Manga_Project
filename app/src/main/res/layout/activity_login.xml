@@ -87,6 +87,8 @@
             android:layout_height="wrap_content"
             android:hint="@string/textEmail"
             android:background="#2A2A2A"
+            android:textColor="#FFFFFF"
+            android:textColorHint="#FFFFFF"
             android:inputType="textEmailAddress"
             app:cornerRadius="10dp"/>
 
@@ -105,6 +107,8 @@
             android:layout_height="wrap_content"
             android:hint="@string/textContrasena"
             android:background="#2A2A2A"
+            android:textColorHint="#FFFFFF"
+            android:textColor="#FFFFFF"
             android:inputType="textPassword"
             app:cornerRadius="10dp"/>
     </com.google.android.material.textfield.TextInputLayout>

@@ -320,7 +320,7 @@ public class CartActivity extends AppCompatActivity {
 
             RequestBody body = RequestBody.create(jsonBody.toString(), MediaType.get("application/json; charset=utf-8"));
             Request request = new Request.Builder()
-                    .url("https://grupomobiles01.pythonanywhere.com/api_obtener_dni_lec")
+                    .url("http://10.0.2.2:5000/api_obtener_dni_lec")
                     .addHeader("Authorization", "Bearer " + token)  // Agregar el token JWT en el encabezado
                     .post(body)
                     .build();

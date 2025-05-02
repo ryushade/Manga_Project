@@ -1,41 +1,41 @@
 {
   "project_info": {
-    "project_number": "739178391572",
-    "project_id": "sesion-41ffe",
-    "storage_bucket": "sesion-41ffe.appspot.com"
+    "project_number": "70952523564",
+    "project_id": "mangaka-ea79f",
+    "storage_bucket": "mangaka-ea79f.firebasestorage.app"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:739178391572:android:32565976cb81a40d899f01",
+        "mobilesdk_app_id": "1:70952523564:android:d818dea47089f9f9c3fe89",
         "android_client_info": {
           "package_name": "com.example.ebook_proyect"
         }
       },
       "oauth_client": [
         {
-          "client_id": "739178391572-8ogcbo4afa553plrsvvfcsb2s4v5qqc0.apps.googleusercontent.com",
+          "client_id": "70952523564-i6t6ags096inccua13idhkp91f90mo00.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.example.ebook_proyect",
-            "certificate_hash": "61e4a573aa22b150c53d50a55519acfbf81f1ed4"
+            "certificate_hash": "9c86e7942f03d86916dd007a0bbcfd6e5145bfdf"
           }
         },
         {
-          "client_id": "739178391572-mp0vo9m6cml5dminmisv10lfqsmu321a.apps.googleusercontent.com",
+          "client_id": "70952523564-0ko3bkb9c3r0tmeocnks68h666ac0s4d.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyAo1j-5SceeGtvHWIga2MNwRNJ4gmDSHSg"
+          "current_key": "AIzaSyABX9DixAxXJ5juqNih_dI_zfj0NSXnPio"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "739178391572-mp0vo9m6cml5dminmisv10lfqsmu321a.apps.googleusercontent.com",
+              "client_id": "70952523564-0ko3bkb9c3r0tmeocnks68h666ac0s4d.apps.googleusercontent.com",
               "client_type": 3
             }
           ]

@@ -51,14 +51,14 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        // Configura el botón de perfil en la AppBar para mostrar un PopupMenu
-        ImageButton profileButton = findViewById(R.id.profile_button);
-        profileButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                showPopupMenu(view);
-            }
-        });
+//        // Configura el botón de perfil en la AppBar para mostrar un PopupMenu
+//        ImageButton profileButton = findViewById(R.id.profile_button);
+//        profileButton.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                showPopupMenu(view);
+//            }
+//        });
 
 
     }

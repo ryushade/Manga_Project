@@ -20,7 +20,7 @@
             android:textColor="@color/colorText"
             android:fontFamily="@font/sourcesans3_black"
             android:textSize="38dp"
-            android:text="Explora tu nueva aventura"
+            android:text="Empieza tu aventura"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 

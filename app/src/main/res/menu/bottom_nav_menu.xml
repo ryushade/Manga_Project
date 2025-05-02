@@ -3,6 +3,7 @@
     <item
         android:id="@+id/homeFragment"
         android:icon="@drawable/ico_home"
+        
         android:title="Para ti" />
     <item
         android:id="@+id/searchFragment"

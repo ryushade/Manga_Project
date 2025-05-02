@@ -12,7 +12,7 @@ import java.io.IOException;
 
 public class ApiClient {
 
-    private static final String BASE_URL = "https://grupomobiles01.pythonanywhere.com/";  // URL base de la API
+    private static final String BASE_URL = "http://10.0.2.2:5000/";  // IP local de la máquina con Flask
 
     private static Retrofit retrofitSinToken = null;
     private static Retrofit retrofitConToken = null;
