@@ -5,6 +5,8 @@
     <color name="color3">#cdc2a5</color>
     <color name="color4">#e1d7c6</color>
     <color name="color5">#FAF6F1</color>
+    <color name="white">#FFFFFF</color>
+    <color name="colorPrincipal">#FE4B23</color>
     <color name="color6">#F6F5F2</color>
     <color name="color_launcher_background">#FB4F1F</color>
     <color name="book_handle">#5E222222</color>

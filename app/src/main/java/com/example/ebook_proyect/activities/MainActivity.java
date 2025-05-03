@@ -36,7 +36,7 @@ public class MainActivity extends AppCompatActivity {
         // Configura el NavController
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_main);
         AppBarConfiguration appBarConfiguration = new AppBarConfiguration.Builder(
-                R.id.homeFragment, R.id.searchFragment, R.id.libraryFragment)
+                R.id.homeFragment, R.id.searchFragment, R.id.libraryFragment, R.id.userFragment)
                 .build();
         NavigationUI.setupWithNavController(navView, navController);
         NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
@@ -50,6 +50,7 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
 
 //        // Configura el botón de perfil en la AppBar para mostrar un PopupMenu
 //        ImageButton profileButton = findViewById(R.id.profile_button);

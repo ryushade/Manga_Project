@@ -11,6 +11,12 @@
         android:name="com.example.ebook_proyect.fragments.HomeFragment"
         tools:layout="@layout/fragment_home" />
 
+    <fragment
+        android:id="@+id/userFragment"
+        android:name="com.example.ebook_proyect.fragments.PerfilFragment"
+        tools:layout="@layout/fragment_perfil" />
+
+
     <!-- Search Fragment -->
     <fragment
         android:id="@+id/searchFragment"

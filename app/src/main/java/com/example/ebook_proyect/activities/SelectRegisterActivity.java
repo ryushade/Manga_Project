@@ -43,29 +43,7 @@ public class SelectRegisterActivity extends AppCompatActivity {
         binding = ActivitySelectRegisterBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        // Configuración del texto con enlace a "Iniciar sesión"
-        String text = "Ya tengo una cuenta. Iniciar sesión";
-        int colorPrimary = ContextCompat.getColor(this, R.color.colorPrimary);
 
-        SpannableString spannableString = new SpannableString(text);
-        ClickableSpan clickableSpan = new ClickableSpan() {
-            @Override
-            public void onClick(@NonNull View widget) {
-                startActivity(new Intent(SelectRegisterActivity.this, LoginActivity.class));
-            }
-
-            @Override
-            public void updateDrawState(@NonNull TextPaint ds) {
-                super.updateDrawState(ds);
-                ds.setUnderlineText(false);
-                ds.setTypeface(Typeface.create(Typeface.DEFAULT, Typeface.BOLD));
-                ds.setColor(colorPrimary);
-            }
-        };
-        spannableString.setSpan(clickableSpan, text.indexOf("Iniciar sesión"), text.length(), SpannableString.SPAN_EXCLUSIVE_EXCLUSIVE);
-
-        binding.lblRedLogin.setText(spannableString);
-        binding.lblRedLogin.setMovementMethod(LinkMovementMethod.getInstance());
 
         // Navegación a la pantalla de registro al hacer clic en el botón de "Correo"
         binding.btnCorreo.setOnClickListener(v -> startActivity(new Intent(SelectRegisterActivity.this, RegisterDataActivity.class)));
@@ -81,6 +59,9 @@ public class SelectRegisterActivity extends AppCompatActivity {
 
         // Acción para el botón de "Google"
         binding.btnGoogle.setOnClickListener(view -> signInWithGoogle());
+
+        binding.btnLogin.setOnClickListener(v -> startActivity(new Intent(SelectRegisterActivity.this, LoginActivity.class)));
+
     }
 
     private void signInWithGoogle() {

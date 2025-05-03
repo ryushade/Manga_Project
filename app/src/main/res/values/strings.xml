@@ -12,6 +12,7 @@
     <string name="textSloganLogin">Inicia sesión y deja que los libros te lleven más allá.</string>
     <string name="textWelcome">¡Surgemete en la zona de lectura! 📖🚀 </string>
     <string name="textSloganRegister">Una experiencia personalizada</string>
+    <string name="textProfile">Configuración</string>
     <string name="textButtonLogin">Iniciar sesión</string>
     <string name="textForgotPassword">¿Olvidaste tu contraseña?</string>
     <string name="textRegisterGoogle">Registrate con Google</string>
