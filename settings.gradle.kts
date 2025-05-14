@@ -19,5 +19,5 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "Ebook_Proyect"
+rootProject.name = "Manga_Project"
 include(":app")

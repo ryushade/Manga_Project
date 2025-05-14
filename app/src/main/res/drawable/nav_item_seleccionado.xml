@@ -1,0 +1,22 @@
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Fondo transparente -->
+    <item>
+        <shape android:shape="rectangle">
+            <solid android:color="@android:color/transparent"/>
+        </shape>
+    </item>
+    <!-- Línea izquierda -->
+    <item android:left="0dp" android:top="0dp" android:bottom="0dp">
+        <shape android:shape="rectangle">
+            <size android:width="3dp" android:height="100dp"/> <!-- Usa un valor fijo de altura -->
+            <solid android:color="@color/colorPrincipal"/>
+        </shape>
+    </item>
+    <!-- Línea derecha -->
+    <item android:right="0dp" android:top="0dp" android:bottom="0dp">
+        <shape android:shape="rectangle">
+            <size android:width="3dp" android:height="100dp"/> <!-- Usa un valor fijo de altura -->
+            <solid android:color="@color/colorPrincipal"/>
+        </shape>
+    </item>
+</layer-list>

@@ -6,27 +6,31 @@
     android:background="#090909"
     tools:context=".activities.SelectRegisterActivity">
 
+    <!-- Título principal "Regístrate y comienza a leer" -->
     <com.google.android.material.textview.MaterialTextView
         android:id="@+id/lblBienvenido"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:fontFamily="@font/sourcesans3_black"
-        android:text="@string/textRegister"
+        android:text="Regístrate y comienza a leer"
         android:textAlignment="center"
-        android:textSize="36sp"
         android:textColor="@android:color/white"
+        android:textSize="36sp"
         app:layout_constraintBottom_toTopOf="@id/lblText"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_chainStyle="packed" />
+        app:layout_constraintVertical_chainStyle="packed"
 
+        />
+
+    <!-- Slogan "Una experiencia personalizada" -->
     <com.google.android.material.textview.MaterialTextView
         android:id="@+id/lblText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:fontFamily="@font/sourcesans3_regular"
-        android:text="@string/textSloganRegister"
+        android:text="Una experiencia personalizada"
         android:textColor="#cfd1d3"
         android:textSize="20sp"
         app:layout_constraintBottom_toTopOf="@id/mangaImage"
@@ -34,17 +38,19 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/lblBienvenido" />
 
+    <!-- Imagen (manga) -->
     <ImageView
         android:id="@+id/mangaImage"
         android:layout_width="200dp"
         android:layout_height="150dp"
         android:layout_marginTop="16dp"
         android:src="@drawable/mangaverso"
-        app:layout_constraintTop_toBottomOf="@id/lblText"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/btnGoogle"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toTopOf="@id/btnGoogle" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/lblText" />
 
+    <!-- Botón Google -->
     <com.google.android.material.button.MaterialButton
         android:id="@+id/btnGoogle"
         android:layout_width="0dp"
@@ -54,55 +60,72 @@
         android:layout_marginEnd="20dp"
         android:backgroundTint="#141414"
         android:fontFamily="@font/sourcesans3_extrabold"
-        app:icon="@drawable/ico_google"
-        app:iconSize="20dp"
-        app:iconGravity="textStart"
-        android:text="@string/textRegisterGoogle"
+        android:text="Regístrate con Google"
         android:textSize="18sp"
+        app:icon="@drawable/ico_google"
+        app:iconGravity="textStart"
+        app:iconSize="20dp"
         app:layout_constraintBottom_toTopOf="@id/textView7"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/mangaImage" />
 
+    <!-- Texto "O" -->
     <com.google.android.material.textview.MaterialTextView
         android:id="@+id/textView7"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/textO"
+        android:text="O"
+        android:textColor="#cfd1d3"
+        app:layout_constraintBottom_toTopOf="@id/btnCorreo"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/btnGoogle"
-        app:layout_constraintBottom_toTopOf="@id/btnCorreo" />
+        app:layout_constraintTop_toBottomOf="@id/btnGoogle" />
 
+    <!-- Botón Correo -->
     <com.google.android.material.button.MaterialButton
         android:id="@+id/btnCorreo"
         android:layout_width="0dp"
         android:layout_height="60dp"
         android:layout_marginStart="20dp"
         android:layout_marginEnd="20dp"
-        android:fontFamily="@font/sourcesans3_extrabold"
-        app:icon="@drawable/ico_email"
-        app:iconSize="20dp"
         android:backgroundTint="#141414"
-        app:iconGravity="textStart"
+        android:fontFamily="@font/sourcesans3_extrabold"
+        android:text="Correo Electrónico"
         android:textSize="18sp"
-        android:text="@string/textEmail"
+        app:icon="@drawable/ico_email"
+        app:iconGravity="textStart"
+        app:iconSize="20dp"
         app:layout_constraintBottom_toTopOf="@id/lblRedLogin"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/textView7" />
 
+    <!-- Texto de términos y condiciones -->
     <com.google.android.material.textview.MaterialTextView
         android:id="@+id/lblRedLogin"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="50dp"
         android:text="Al registrarte, aceptas los Terminos y condiciones"
         android:textColor="#cfd1d3"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginBottom="50dp" />
+        app:layout_constraintStart_toStartOf="parent" />
 
+    <!-- Línea entre texto -->
+    <View
+        android:id="@+id/view2"
+        android:layout_width="0dp"
+        android:layout_height="1dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:background="@android:color/darker_gray"
+        app:layout_constraintEnd_toStartOf="@id/lblCuenta"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@id/lblCuenta" />
+
+    <!-- Texto de cuenta -->
     <com.google.android.material.textview.MaterialTextView
         android:id="@+id/lblCuenta"
         android:layout_width="wrap_content"
@@ -114,6 +137,19 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/btnLogin" />
 
+    <!-- Línea derecha -->
+    <View
+        android:id="@+id/view3"
+        android:layout_width="0dp"
+        android:layout_height="1dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:background="@android:color/darker_gray"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/lblCuenta"
+        app:layout_constraintTop_toTopOf="@id/lblCuenta" />
+
+    <!-- Botón Login -->
     <com.google.android.material.button.MaterialButton
         android:id="@+id/btnLogin"
         android:layout_width="0dp"
@@ -123,7 +159,7 @@
         android:layout_marginBottom="15dp"
         android:backgroundTint="#FF3D00"
         android:fontFamily="@font/sourcesans3_extrabold"
-        android:text="@string/textButtonLogin"
+        android:text="Iniciar sesión"
         android:textSize="18sp"
         app:cornerRadius="10dp"
         app:layout_constraintBottom_toTopOf="@id/btnCorreo"
@@ -132,4 +168,5 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/lblRedLogin"
         app:layout_constraintVertical_bias="0.306" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

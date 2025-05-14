@@ -41,6 +41,43 @@
           ]
         }
       }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:70952523564:android:48404d7d9a25dc54c3fe89",
+        "android_client_info": {
+          "package_name": "com.example.manga_project"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "70952523564-l2lja0lprn4it1rc7cde1um13i31m587.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.manga_project",
+            "certificate_hash": "9c86e7942f03d86916dd007a0bbcfd6e5145bfdf"
+          }
+        },
+        {
+          "client_id": "70952523564-0ko3bkb9c3r0tmeocnks68h666ac0s4d.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyABX9DixAxXJ5juqNih_dI_zfj0NSXnPio"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "70952523564-0ko3bkb9c3r0tmeocnks68h666ac0s4d.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
     }
   ],
   "configuration_version": "1"

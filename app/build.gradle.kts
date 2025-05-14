@@ -4,11 +4,11 @@ plugins {
 }
 
 android {
-    namespace = "com.example.ebook_proyect"
+    namespace = "com.example.manga_project"
     compileSdk = 34
 
     defaultConfig {
-        applicationId = "com.example.ebook_proyect"
+        applicationId = "com.example.manga_project"
         minSdk = 24
         targetSdk = 34
         versionCode = 1

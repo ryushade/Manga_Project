@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools">
+    xmlns:tools="http://schemas.android.com/tools"
+    package="com.example.manga_project">
+
 
     <uses-permission android:name="android.permission.INTERNET" />
 
@@ -20,7 +22,7 @@
         tools:targetApi="31">
         <!-- Actividades de registro -->
         <activity
-            android:name=".activities.LaunchActivity"
+            android:name="com.example.manga_project.activities.LaunchActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -29,32 +31,32 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".activities.LoginActivity"
+            android:name="com.example.manga_project.activities.LoginActivity"
             android:exported="false" />
         <activity
-            android:name=".activities.SelectRegisterActivity"
+            android:name="com.example.manga_project.activities.SelectRegisterActivity"
             android:exported="false"
             android:label="@string/title_activity_select_register" />
         <activity
-            android:name=".activities.RegisterDataActivity"
+            android:name="com.example.manga_project.activities.RegisterDataActivity"
             android:exported="false" />
         <!-- Actividades principales -->
         <activity
-            android:name=".activities.MainActivity"
+            android:name="com.example.manga_project.activities.MainActivity"
             android:exported="true"
             android:windowSoftInputMode="adjustPan" />
         <activity
-            android:name=".activities.DescriptionBookActivity"
+            android:name="com.example.manga_project.activities.DescriptionBookActivity"
             android:exported="false" />
         <activity
-            android:name=".activities.CartActivity"
+            android:name="com.example.manga_project.activities.CartActivity"
             android:exported="false" />
         <activity
-            android:name=".activities.GroupActivity"
+            android:name="com.example.manga_project.activities.GroupActivity"
             android:exported="false" />
         <!-- Declarar la actividad PreviewActivity -->
         <activity
-            android:name=".activities.PreviewActivity"
+            android:name="com.example.manga_project.activities.PreviewActivity"
             android:exported="false" />
         <meta-data
             android:name="com.google.android.gms.auth.api.signin.default_web_client_id"
