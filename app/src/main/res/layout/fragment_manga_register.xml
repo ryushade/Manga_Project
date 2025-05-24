@@ -1,0 +1,265 @@
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="16dp"
+    android:background="#FAFAFA">
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal">
+
+        <!-- TÍTULO PRINCIPAL -->
+        <TextView
+            android:id="@+id/tvTituloPublicar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="PUBLICAR MANGA"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            android:gravity="center"
+            android:textColor="#5545E0"
+            android:layout_marginBottom="24dp"
+            android:layout_marginTop="8dp"/>
+
+        <!-- Imagen del Manga -->
+        <FrameLayout
+            android:layout_width="180dp"
+            android:layout_height="180dp"
+            android:layout_marginBottom="16dp"
+            android:background="@drawable/bg_upload"
+            android:foreground="?android:attr/selectableItemBackground">
+
+            <ImageView
+                android:id="@+id/imgMangaCover"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scaleType="centerCrop"
+                android:src="@drawable/ic_image_placeholder"/>
+
+            <Button
+                android:id="@+id/btnChooseImage"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Elegir imagen"
+                android:layout_gravity="center"
+                android:backgroundTint="#E3E7FF"
+                android:textColor="#5545E0"/>
+        </FrameLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:layout_marginBottom="16dp">
+
+            <Button
+                android:id="@+id/btnUploadPdf"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Subir PDF"
+                android:backgroundTint="#F6E05E"
+                android:textColor="#5545E0"
+                android:drawableStart="@drawable/ic_upload"
+                android:paddingStart="16dp"
+                android:paddingEnd="16dp"/>
+
+            <TextView
+                android:id="@+id/tvPdfFileName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Ningún archivo seleccionado"
+                android:textColor="#757575"
+                android:textSize="14sp"
+                android:layout_marginStart="12dp"/>
+        </LinearLayout>
+
+        <!-- Título -->
+        <EditText
+            android:id="@+id/etTitle"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:hint="Título del manga *"
+            android:background="@drawable/bg_field"
+            android:padding="12dp"
+            android:textSize="16sp"
+            android:layout_marginBottom="10dp"/>
+
+        <!-- Autor(es) -->
+        <EditText
+            android:id="@+id/etAuthors"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:hint="Autor(es) *"
+            android:background="@drawable/bg_field"
+            android:padding="12dp"
+            android:textSize="16sp"
+            android:layout_marginBottom="6dp"/>
+        <TextView
+            android:id="@+id/tvAddMoreAuthor"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="+ agregar más"
+            android:textColor="#5545E0"
+            android:textStyle="bold"
+            android:paddingBottom="10dp"
+            android:textSize="14sp"
+            android:layout_gravity="end"
+            android:clickable="true"
+            android:focusable="true"/>
+
+        <!-- Año publicación y capítulos -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginBottom="10dp">
+
+            <EditText
+                android:id="@+id/etYear"
+                android:layout_width="0dp"
+                android:layout_height="50dp"
+                android:layout_weight="1"
+                android:hint="Año publicación"
+                android:inputType="number"
+                android:background="@drawable/bg_field"
+                android:padding="12dp"
+                android:textSize="16sp"/>
+
+            <Space
+                android:layout_width="10dp"
+                android:layout_height="match_parent" />
+
+            <EditText
+                android:id="@+id/etChapters"
+                android:layout_width="0dp"
+                android:layout_height="50dp"
+                android:layout_weight="1"
+                android:hint="Capítulos"
+                android:inputType="number"
+                android:background="@drawable/bg_field"
+                android:padding="12dp"
+                android:textSize="16sp"/>
+        </LinearLayout>
+
+        <!-- Precio y ISBN -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginBottom="10dp">
+
+            <EditText
+                android:id="@+id/etPrecio"
+                android:layout_width="0dp"
+                android:layout_height="50dp"
+                android:layout_weight="1"
+                android:hint="Precio S/."
+                android:inputType="numberDecimal"
+                android:background="@drawable/bg_field"
+                android:padding="12dp"
+                android:textSize="16sp"/>
+
+            <Space
+                android:layout_width="10dp"
+                android:layout_height="match_parent" />
+
+            <EditText
+                android:id="@+id/etISBN"
+                android:layout_width="0dp"
+                android:layout_height="50dp"
+                android:layout_weight="1"
+                android:hint="ISBN"
+                android:background="@drawable/bg_field"
+                android:padding="12dp"
+                android:textSize="16sp"/>
+        </LinearLayout>
+
+        <!-- Restricción de edad y Editorial -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginBottom="10dp">
+
+            <EditText
+                android:id="@+id/etEdad"
+                android:layout_width="0dp"
+                android:layout_height="50dp"
+                android:layout_weight="1"
+                android:hint="Restricción edad"
+                android:background="@drawable/bg_field"
+                android:padding="12dp"
+                android:textSize="16sp"/>
+
+            <Space
+                android:layout_width="10dp"
+                android:layout_height="match_parent" />
+
+            <EditText
+                android:id="@+id/etEditorial"
+                android:layout_width="0dp"
+                android:layout_height="50dp"
+                android:layout_weight="1"
+                android:hint="Editorial"
+                android:background="@drawable/bg_field"
+                android:padding="12dp"
+                android:textSize="16sp"/>
+        </LinearLayout>
+
+        <!-- Género/Categoría -->
+        <TextView
+            android:id="@+id/tvChooseCategory"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:text="Elige género"
+            android:background="@drawable/bg_field"
+            android:padding="12dp"
+            android:textSize="16sp"
+            android:drawableEnd="@drawable/ic_arrow_right"
+            android:gravity="center_vertical"
+            android:layout_marginBottom="10dp"
+            android:textColor="#757575"/>
+
+        <!-- Descripción -->
+        <EditText
+            android:id="@+id/etDetails"
+            android:layout_width="match_parent"
+            android:layout_height="90dp"
+            android:hint="Descripción sobre el manga *"
+            android:background="@drawable/bg_field"
+            android:padding="12dp"
+            android:gravity="top"
+            android:textSize="15sp"
+            android:layout_marginBottom="20dp"/>
+
+        <!-- Botones -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="bottom|center_horizontal">
+
+            <Button
+                android:id="@+id/btnSaveDefault"
+                android:layout_width="0dp"
+                android:layout_height="48dp"
+                android:layout_marginEnd="8dp"
+                android:layout_weight="1"
+                android:backgroundTint="#F5F5F5"
+                android:text="Cancelar"
+                android:textColor="#5545E0" />
+
+            <Button
+                android:id="@+id/btnPublish"
+                android:layout_width="0dp"
+                android:layout_height="48dp"
+                android:layout_weight="1"
+                android:text="guardar"
+                android:backgroundTint="#5545E0"
+                android:textColor="#FFFFFF"/>
+        </LinearLayout>
+    </LinearLayout>
+</ScrollView>

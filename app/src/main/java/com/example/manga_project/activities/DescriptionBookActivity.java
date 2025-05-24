@@ -251,7 +251,7 @@ public class DescriptionBookActivity extends AppCompatActivity {
                         Log.e("DescriptionBookActivity", "El objeto 'Libro' en data es null");
                     }
                 } else {
-                    Log.e("API_ERROR", "Error al obtener el libro: " + response.message());
+                    Log.e("API_ERROR", "Error al obtener manga o comic: " + response.message());
                 }
             }
 
@@ -311,7 +311,7 @@ public class DescriptionBookActivity extends AppCompatActivity {
 
                         actualizarEstadoBotones(isPurchased);
                     } else {
-                        Log.e("API_ERROR", "Error al obtener libros comprados: " + response.message());
+                        Log.e("API_ERROR", "Error al obtener manga/comics comprados: " + response.message());
                         actualizarEstadoBotones(false);
                     }
 
@@ -320,7 +320,7 @@ public class DescriptionBookActivity extends AppCompatActivity {
 
                 @Override
                 public void onFailure(Call<ApiResponse> call, Throwable t) {
-                    Log.e("API_ERROR", "Fallo en la llamada a la API de libros comprados: ", t);
+                    Log.e("API_ERROR", "Fallo en la llamada a la API de mangas/comics comprados: ", t);
                     actualizarEstadoBotones(false);
                     progressBar.setVisibility(View.GONE);
                 }

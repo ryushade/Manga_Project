@@ -1,0 +1,21 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/dashboardFragment"
+        android:icon="@drawable/ico_home"
+        android:title="Dashboard" />
+
+    <item
+        android:id="@+id/solicitudesFragment"
+        android:icon="@drawable/ico_upload"
+        android:title="Publicar" />
+
+    <item
+        android:id="@+id/pedidosFragment"
+        android:icon="@drawable/ico_pedidos"
+        android:title="Productos" />
+
+    <item
+        android:id="@+id/configuracionFragment"
+        android:icon="@drawable/ico_configuracion"
+        android:title="Configuración" />
+</menu>

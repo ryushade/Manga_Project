@@ -75,6 +75,10 @@ public class RegisterDataActivity extends AppCompatActivity {
     }
 
     private void registerUser() {
+        boolean proveedorSolicitud = binding.providerSwitch.isChecked();
+        int rolDefecto = proveedorSolicitud ? 2 : 1;
+
+
         // Verificar que el usuario acepte los términos y condiciones
         if (!binding.termsCheckbox.isChecked()) {
             Toast.makeText(this, "Debes aceptar los términos y condiciones", Toast.LENGTH_SHORT).show();
@@ -103,7 +107,9 @@ public class RegisterDataActivity extends AppCompatActivity {
                 binding.txtDni.getText().toString(),
                 binding.txtNames.getText().toString(),
                 binding.txtLastNames.getText().toString(),
-                fechaFormateada
+                fechaFormateada,
+                proveedorSolicitud,
+                rolDefecto
         );
 
         // Enviar la solicitud de registro

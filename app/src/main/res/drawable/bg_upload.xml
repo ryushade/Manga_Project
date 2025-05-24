@@ -1,0 +1,9 @@
+<!-- res/drawable/bg_upload.xml -->
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="rectangle">
+    <solid android:color="#F5F6FA"/>
+    <stroke
+        android:width="2dp"
+        android:color="#D1D5DB" />
+    <corners android:radius="16dp" />
+</shape>

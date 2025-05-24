@@ -25,16 +25,10 @@
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
-        <!--
-            <com.google.android.material.textfield.TextInputLayout
-                >
-                <com.google.android.material.textfield.TextInputEditText
-                    />
-            </com.google.android.material.textfield.TextInputLayout>
-        -->
+
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/txtEmailLayout"
-            style="@style/Widget.Ebook_Proyect.TextInputLayout"
+            style="@style/Widget.Manga_Project.TextInputLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
@@ -48,8 +42,7 @@
                 android:layout_height="wrap_content"
                 android:layout_width="match_parent"
                 android:hint="@string/textEmail"
-                android:inputType="textEmailAddress"
-                />
+                android:inputType="textEmailAddress"/>
         </com.google.android.material.textfield.TextInputLayout>
 
         <LinearLayout
@@ -64,7 +57,7 @@
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/txtDniLayout"
-                style="@style/Widget.Ebook_Proyect.TextInputLayout"
+                style="@style/Widget.Manga_Project.TextInputLayout"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="15dp"
                 android:layout_weight="1">
@@ -82,15 +75,15 @@
                 android:layout_width="50dp"
                 android:layout_height="63dp"
                 app:icon="@drawable/ico_search"
-                app:iconSize="20dp" />
+                app:iconSize="20dp"
+                android:backgroundTint="@color/colorPrincipal"
+                />
 
         </LinearLayout>
 
-
-
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/txtNamesLayout"
-            style="@style/Widget.Ebook_Proyect.TextInputLayout"
+            style="@style/Widget.Manga_Project.TextInputLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="20dp"
@@ -108,7 +101,7 @@
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/txtLastNamesLayout"
-            style="@style/Widget.Ebook_Proyect.TextInputLayout"
+            style="@style/Widget.Manga_Project.TextInputLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="20dp"
@@ -126,7 +119,7 @@
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/txtDateLayout"
-            style="@style/Widget.Ebook_Proyect.TextInputLayout"
+            style="@style/Widget.Manga_Project.TextInputLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="20dp"
@@ -144,7 +137,7 @@
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/txtPasswordLayout"
-            style="@style/Widget.Ebook_Proyect.TextInputLayout"
+            style="@style/Widget.Manga_Project.TextInputLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="20dp"
@@ -160,10 +153,9 @@
                 android:inputType="textPassword"/>
         </com.google.android.material.textfield.TextInputLayout>
 
-
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/txtConfirmPasswordLayout"
-            style="@style/Widget.Ebook_Proyect.TextInputLayout"
+            style="@style/Widget.Manga_Project.TextInputLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="20dp"
@@ -178,6 +170,20 @@
                 android:hint="@string/textConfirmPassword"
                 android:inputType="textPassword"/>
         </com.google.android.material.textfield.TextInputLayout>
+
+        <!-- Switch para escoger si será proveedor -->
+        <com.google.android.material.switchmaterial.SwitchMaterial
+            android:id="@+id/provider_switch"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginEnd="20dp"
+            android:text="@string/textSwitch"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/txtConfirmPasswordLayout" />
+
         <com.google.android.material.checkbox.MaterialCheckBox
             android:id="@+id/terms_checkbox"
             android:layout_width="0dp"
@@ -188,7 +194,7 @@
             android:text="@string/textTYC"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/txtConfirmPasswordLayout" />
+            app:layout_constraintTop_toBottomOf="@+id/provider_switch" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/register_button"
@@ -202,5 +208,6 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/terms_checkbox" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.core.widget.NestedScrollView>

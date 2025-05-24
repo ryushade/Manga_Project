@@ -85,7 +85,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     // Método para cerrar sesión
-    private void logout() {
+    public void logout() {
         // Eliminar el token de SharedPreferences
         SharedPreferences prefs = getSharedPreferences("myPrefs", Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = prefs.edit();
@@ -97,4 +97,6 @@ public class MainActivity extends AppCompatActivity {
         startActivity(intent);
         finish(); // Cierra la actividad actual
     }
+
+
 }

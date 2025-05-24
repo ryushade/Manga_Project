@@ -9,8 +9,9 @@
     <string name="textConfirmPassword">Confirmar contraseña</string>
     <string name="textEmail">Correo electrónico</string>
     <string name="textContinueGoogle">Continuar con Google</string>
-    <string name="textSloganLogin">Inicia sesión y deja que los libros te lleven más allá.</string>
-    <string name="textWelcome">¡Surgemete en la zona de lectura! 📖🚀 </string>
+    <string name="textSloganLogin">Inicia sesión y deja que las historietas te lleven más allá.</string>
+    <string name="textWelcome">¡Sumergete en la zona de lectura! 📖🚀 </string>
+    <string name="textSwitch">¿Quieres ser proveedor y subir mangas/cómics? (Pendiente de aprobación)</string>
     <string name="textSloganRegister">Una experiencia personalizada</string>
     <string name="textProfile">Configuración</string>
     <string name="textButtonLogin">Iniciar sesión</string>
@@ -21,7 +22,7 @@
     <string name="textDni">DNI</string>
     <string name="txtApellidos">Apellidos</string>
     <string name="txtNombres">Nombres</string>
-    <string name="textSloganRegister2">Cuéntanos acerca de ti</string>
+    <string name="textSloganRegister2">Únete a la zona geek</string>
     <string name="textFechaNacimiento">Fecha de nacimiento</string>
     <string name="server_client_id">tu_client_id_google</string>
     <string name="textTYC">Sí, he leído y acepto los términos de servicio y política de privacidad.</string>

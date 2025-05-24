@@ -76,7 +76,7 @@
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/txtEmailLayout"
-        style="@style/Widget.Ebook_Proyect.TextInputLayout"
+        style="@style/Widget.Manga_Project.TextInputLayout"
         app:layout_constraintBottom_toTopOf="@+id/txtPasswordLayout"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -96,7 +96,7 @@
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/txtPasswordLayout"
-        style="@style/Widget.Ebook_Proyect.TextInputLayout"
+        style="@style/Widget.Manga_Project.TextInputLayout"
         app:layout_constraintBottom_toTopOf="@+id/btnCorreo"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
