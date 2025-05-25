@@ -4,6 +4,7 @@ import com.example.manga_project.Modelos.LoginRequest;
 import com.example.manga_project.Modelos.LoginResponse;
 import com.example.manga_project.Modelos.RegisterRequest;
 import com.example.manga_project.Modelos.RegisterResponse;
+import com.example.manga_project.Modelos.PerfilResponse;
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
@@ -17,6 +18,9 @@ public interface AuthService {
 
     @POST("/api_registrarusuario")
     Call<RegisterResponse> register(@Body RegisterRequest registerRequest);
+
+    @GET("/api_obtener_usuario_data")
+    Call<PerfilResponse> getPerfil();
 
     @GET("/api_libro")
     Call<ApiResponse> obtenerLibros();

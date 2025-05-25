@@ -162,9 +162,14 @@ public class LoginActivity extends AppCompatActivity {
                     saveToken(response.body().getToken());
                     saveUserEmail(email);
 
+
                     // Elimina la marca de usuario de Google
                     SharedPreferences prefs = getSharedPreferences("myPrefs", Context.MODE_PRIVATE);
-                    prefs.edit().putBoolean("is_google_user", false).apply();
+                    prefs.edit()
+                            .putBoolean("is_google_user", false)
+                            .putInt("id_rol", response.body().getIdRol())
+                            .apply();
+
 
                     navigateToMainScreen();
                     //Toast.makeText(LoginActivity.this, "Login normal", Toast.LENGTH_SHORT).show();
@@ -241,8 +246,26 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void navigateToMainScreen() {
-        Intent intent = new Intent(this, MainActivity.class);
+        SharedPreferences prefs = getSharedPreferences("myPrefs", Context.MODE_PRIVATE);
+        int idRol = prefs.getInt("id_rol", -1);
+
+        Intent intent;
+
+        switch (idRol) {
+            case 3:
+                intent = new Intent(this, MainAdminActivity.class);
+                break;
+            case 2:
+                intent = new Intent(this, MainProveedorActivity.class);
+                break;
+            case 1:
+            default:
+                intent = new Intent(this, MainActivity.class);
+                break;
+        }
+
         startActivity(intent);
         finish();
     }
+
 }

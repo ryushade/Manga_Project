@@ -63,7 +63,7 @@
                 android:text="Subir PDF"
                 android:backgroundTint="#F6E05E"
                 android:textColor="#5545E0"
-                android:drawableStart="@drawable/ic_upload"
+                android:drawableStart="@drawable/ico_upload"
                 android:paddingStart="16dp"
                 android:paddingEnd="16dp"/>
 

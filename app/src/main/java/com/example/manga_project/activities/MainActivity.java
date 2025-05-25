@@ -64,25 +64,6 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    // Método para mostrar el PopupMenu
-    private void showPopupMenu(View view) {
-        PopupMenu popupMenu = new PopupMenu(this, view);
-        popupMenu.getMenuInflater().inflate(R.menu.app_bar_menu, popupMenu.getMenu());
-
-        // Manejar los clics en las opciones del menú
-        popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
-            @Override
-            public boolean onMenuItemClick(MenuItem item) {
-                if (item.getItemId() == R.id.action_logout) {
-                    logout();
-                    return true;
-                }
-                return false;
-            }
-        });
-
-        popupMenu.show();
-    }
 
     // Método para cerrar sesión
     public void logout() {

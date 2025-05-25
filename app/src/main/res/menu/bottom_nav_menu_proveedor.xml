@@ -1,21 +1,21 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
-        android:id="@+id/dashboardFragment"
+        android:id="@+id/inicioFragment"
         android:icon="@drawable/ico_home"
         android:title="Dashboard" />
 
     <item
-        android:id="@+id/solicitudesFragment"
+        android:id="@+id/publicarFragment"
         android:icon="@drawable/ico_upload"
         android:title="Publicar" />
 
     <item
-        android:id="@+id/pedidosFragment"
+        android:id="@+id/prodFragment"
         android:icon="@drawable/ico_pedidos"
         android:title="Productos" />
 
     <item
-        android:id="@+id/configuracionFragment"
+        android:id="@+id/configFragment"
         android:icon="@drawable/ico_configuracion"
         android:title="Configuración" />
 </menu>
