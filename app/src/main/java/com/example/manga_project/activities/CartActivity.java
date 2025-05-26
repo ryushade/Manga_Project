@@ -156,7 +156,7 @@ public class CartActivity extends AppCompatActivity {
         int totalEnCentimos = (int) (total * 100);  // Convierte a céntimos
 
         // Construye la URL con el total en céntimos
-        String url = "https://grupomobiles01.pythonanywhere.com/payment-sheet/" + totalEnCentimos;
+        String url = "https://grupo1damb.pythonanywhere.com/payment-sheet/" + totalEnCentimos;
 
         // Obtén el token desde SharedPreferences
         SharedPreferences prefs = getSharedPreferences("myPrefs", Context.MODE_PRIVATE);
@@ -356,7 +356,7 @@ public class CartActivity extends AppCompatActivity {
                             // Crear y ejecutar la solicitud para guardar la venta
                             RequestBody ventaBody = RequestBody.create(ventaJsonBody.toString(), MediaType.get("application/json; charset=utf-8"));
                             Request ventaRequest = new Request.Builder()
-                                    .url("https://grupomobiles01.pythonanywhere.com/api_guardar_venta")
+                                    .url("https://grupo1damb.pythonanywhere.com/api_guardar_venta")
                                     .addHeader("Authorization", "Bearer " + token)
                                     .post(ventaBody)
                                     .build();
@@ -418,7 +418,7 @@ public class CartActivity extends AppCompatActivity {
 
         RequestBody body = RequestBody.create(jsonBody.toString(), MediaType.get("application/json; charset=utf-8"));
         Request request = new Request.Builder()
-                .url("https://grupomobiles01.pythonanywhere.com/complete_purchase")
+                .url("https://grupo1damb.pythonanywhere.com/complete_purchase")
                 .addHeader("Authorization", "Bearer " + token)
                 .post(body)
                 .build();

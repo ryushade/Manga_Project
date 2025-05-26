@@ -21,7 +21,7 @@ public class MainProveedorActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_proveedor);
 
-        BottomNavigationView navView = findViewById(R.id.nav_view);
+        BottomNavigationView navView = findViewById(R.id.nav_view_proveedor);
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_main_proveedor);
 
         AppBarConfiguration appBarConfiguration = new AppBarConfiguration.Builder(
