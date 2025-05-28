@@ -41,6 +41,7 @@ public class MainActivity extends AppCompatActivity {
         NavigationUI.setupWithNavController(navView, navController);
         NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
 
+
         // Configura el botón de la tienda para abrir CartActivity
         ImageButton shopButton = findViewById(R.id.shop_button);
         shopButton.setOnClickListener(new View.OnClickListener() {
@@ -48,8 +49,22 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
                 Intent intent = new Intent(MainActivity.this, CartActivity.class);
                 startActivity(intent);
+                // que no se vea en userFragment
+
             }
         });
+
+        navController.addOnDestinationChangedListener((controller, destination, arguments) -> {
+            // Oculta el BottomNavigationView en UserFragment
+            if (destination.getId() == R.id.userFragment) {
+                shopButton.setVisibility(View.GONE);
+                toolbar.setVisibility(View.GONE);
+            } else {
+                shopButton.setVisibility(View.VISIBLE);
+                toolbar.setVisibility(View.VISIBLE);
+            }
+        });
+
 
 
 //        // Configura el botón de perfil en la AppBar para mostrar un PopupMenu

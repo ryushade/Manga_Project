@@ -59,7 +59,7 @@
                 android:id="@+id/btnUploadPdf"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Subir PDF"
+                android:text="Subir ZIP"
                 android:backgroundTint="#F6E05E"
                 android:textColor="#5545E0"
                 android:drawableStart="@drawable/ico_upload"

@@ -2,6 +2,7 @@ package com.example.manga_project.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -123,11 +124,12 @@ public class RegisterDataActivity extends AppCompatActivity {
                     Toast.makeText(RegisterDataActivity.this, "Error en el registro", Toast.LENGTH_SHORT).show();
                 }
             }
-
             @Override
             public void onFailure(@NonNull Call<RegisterResponse> call, @NonNull Throwable t) {
-                Toast.makeText(RegisterDataActivity.this, "Error de conexión", Toast.LENGTH_SHORT).show();
+                Log.e("API_REGISTRO", "Error real: ", t);
+                Toast.makeText(RegisterDataActivity.this, "Error: " + t.getMessage(), Toast.LENGTH_LONG).show();
             }
+
         });
     }
 
