@@ -25,11 +25,10 @@ public class MainAdminActivity extends AppCompatActivity {
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_main_admin);
 
         AppBarConfiguration appBarConfiguration = new AppBarConfiguration.Builder(
-                R.id.dashboardFragment, R.id.solicitudesFragment, R.id.pedidosFragment, R.id.productosFragment, R.id.configuracionFragment
+                R.id.dashboardFragment, R.id.solicitudesProveedorFragment, R.id.pedidosFragment, R.id.productosFragment, R.id.configuracionFragment
         ).build();
 
         NavigationUI.setupWithNavController(navView, navController);
-        // Línea eliminada: NavigationUI.setupActionBarWithNavController(...)
     }
 
     public void logout() {

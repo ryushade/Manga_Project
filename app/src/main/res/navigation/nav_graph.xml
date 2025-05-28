@@ -16,6 +16,12 @@
         android:name="com.example.manga_project.fragments.PerfilFragment"
         tools:layout="@layout/fragment_perfil" />
 
+    <fragment
+        android:id="@+id/solicitudesProveedorFragment"
+        android:name="com.example.manga_project.fragments.SolicitudesProveedorFragment"
+        android:label="Solicitudes"
+        tools:layout="@layout/fragment_solicitudes_proveedor" />
+
 
     <!-- Search Fragment -->
     <fragment

@@ -5,7 +5,7 @@
         android:title="Dashboard" />
 
     <item
-        android:id="@+id/solicitudesFragment"
+        android:id="@+id/solicitudesProveedorFragment"
         android:icon="@drawable/ico_solicitudes"
         android:title="Solicitudes" />
 

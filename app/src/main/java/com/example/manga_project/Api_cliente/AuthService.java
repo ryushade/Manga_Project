@@ -1,10 +1,16 @@
 package com.example.manga_project.Api_cliente;
 
+import com.example.manga_project.Modelos.AprobarProveedorRequest;
 import com.example.manga_project.Modelos.LoginRequest;
 import com.example.manga_project.Modelos.LoginResponse;
 import com.example.manga_project.Modelos.RegisterRequest;
 import com.example.manga_project.Modelos.RegisterResponse;
 import com.example.manga_project.Modelos.PerfilResponse;
+import com.example.manga_project.Modelos.SolicitudResponse;
+import com.example.manga_project.Modelos.SolicitudesProveedorRequest;
+
+import java.util.List;
+
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
@@ -21,6 +27,16 @@ public interface AuthService {
 
     @GET("/api_obtener_usuario_data")
     Call<PerfilResponse> getPerfil();
+
+    @GET("/api_obtener_proveedor")
+    Call<List<SolicitudesProveedorRequest>> obtenerSolicitudesProveedor();
+
+
+    @POST("/api_aprobar_proveedor")
+    Call<SolicitudResponse> aprobarProveedor(@Body AprobarProveedorRequest request);
+
+
+
 
     @GET("/api_libro")
     Call<ApiResponse> obtenerLibros();

@@ -77,7 +77,7 @@ public class RegisterDataActivity extends AppCompatActivity {
 
     private void registerUser() {
         boolean proveedorSolicitud = binding.providerSwitch.isChecked();
-        int rolDefecto = proveedorSolicitud ? 2 : 1;
+        int rolDefecto = 1;
 
 
         // Verificar que el usuario acepte los términos y condiciones
