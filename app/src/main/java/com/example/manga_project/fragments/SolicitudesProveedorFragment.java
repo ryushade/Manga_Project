@@ -17,6 +17,7 @@ import com.example.manga_project.Api_cliente.AuthService;
 import com.example.manga_project.Modelos.AprobarProveedorRequest;
 import com.example.manga_project.Modelos.SolicitudResponse;
 import com.example.manga_project.Modelos.SolicitudesProveedorRequest;
+import com.example.manga_project.Modelos.SolicitudesProveedorResponse;
 import com.example.manga_project.R;
 import com.example.manga_project.adapters.SolicitudesProveedorAdapter;
 
@@ -54,29 +55,35 @@ public class SolicitudesProveedorFragment extends Fragment {
     }
 
     private void cargarSolicitudes() {
-        Call<List<SolicitudesProveedorRequest>> call = authService.obtenerSolicitudesProveedor();
+        Call<SolicitudesProveedorResponse> call = authService.obtenerSolicitudesProveedor();
 
-        call.enqueue(new Callback<List<SolicitudesProveedorRequest>>() {
+        call.enqueue(new Callback<SolicitudesProveedorResponse>() {
             @Override
-            public void onResponse(Call<List<SolicitudesProveedorRequest>> call, Response<List<SolicitudesProveedorRequest>> response) {
-                if (response.isSuccessful() && response.body() != null) {
-                    adapter = new SolicitudesProveedorAdapter(
-                            getContext(),
-                            response.body(),
-                            solicitud -> aprobarSolicitud(solicitud.getId_user()) // callback del botón
-                    );
-                    recyclerView.setAdapter(adapter);
+            public void onResponse(Call<SolicitudesProveedorResponse> call, Response<SolicitudesProveedorResponse> response) {
+                if (response.isSuccessful() && response.body() != null && response.body().isSuccess()) {
+                    List<SolicitudesProveedorRequest> lista = response.body().getData();
+                    if (lista != null && !lista.isEmpty()) {
+                        adapter = new SolicitudesProveedorAdapter(
+                                getContext(),
+                                lista,
+                                solicitud -> aprobarSolicitud(solicitud.getId_user())
+                        );
+                        recyclerView.setAdapter(adapter);
+                    } else {
+                        Toast.makeText(getContext(), "No hay solicitudes pendientes", Toast.LENGTH_SHORT).show();
+                    }
                 } else {
-                    Toast.makeText(getContext(), "No hay solicitudes pendientes", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(), "Error al obtener solicitudes", Toast.LENGTH_SHORT).show();
                 }
             }
 
             @Override
-            public void onFailure(Call<List<SolicitudesProveedorRequest>> call, Throwable t) {
+            public void onFailure(Call<SolicitudesProveedorResponse> call, Throwable t) {
                 Toast.makeText(getContext(), "Error al cargar solicitudes", Toast.LENGTH_SHORT).show();
             }
         });
     }
+
 
     private void aprobarSolicitud(int idUser) {
         AprobarProveedorRequest request = new AprobarProveedorRequest(idUser); // rol 2 por defecto

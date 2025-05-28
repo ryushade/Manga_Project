@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="10dp"
+    card_view:cardElevation="6dp"
+    card_view:cardCornerRadius="14dp"
+    card_view:cardBackgroundColor="#222437"
+    android:padding="0dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="18dp">
+
+        <!-- Miniatura de la portada (opcional, si tienes la url) -->
+        <ImageView
+            android:id="@+id/img_portada_historieta"
+            android:layout_width="match_parent"
+            android:layout_height="170dp"
+            android:layout_marginBottom="10dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/ic_placeholder_portada" />
+
+        <TextView
+            android:id="@+id/tv_titulo_historieta"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Título: El Viaje de Marco"
+            android:textSize="18sp"
+            android:textColor="#FFFFFF"
+            android:textStyle="bold"
+            android:letterSpacing="0.02"
+            android:paddingBottom="2dp" />
+
+        <TextView
+            android:id="@+id/tv_tipo_historieta"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Tipo: Manga"
+            android:textSize="15sp"
+            android:textColor="#B0B0B0"
+            android:paddingBottom="2dp" />
+
+        <TextView
+            android:id="@+id/tv_autor_historieta"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Autor: Marco Rioja"
+            android:textSize="15sp"
+            android:textColor="#B0B0B0"
+            android:paddingBottom="2dp" />
+
+        <TextView
+            android:id="@+id/tv_correo_contacto"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Contacto: marco@gmail.com"
+            android:textSize="14sp"
+            android:textColor="#88B4C4"
+            android:paddingBottom="2dp" />
+
+        <TextView
+            android:id="@+id/tv_fecha_solicitud"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Solicitado: 28/05/2025"
+            android:textSize="13sp"
+            android:textColor="#77C5F8"
+            android:paddingBottom="12dp"
+            android:paddingTop="2dp"
+            android:fontFamily="sans-serif-medium"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="end">
+
+            <Button
+                android:id="@+id/btn_ver_contenido"
+                android:layout_width="wrap_content"
+                android:layout_height="38dp"
+                android:text="Ver contenido"
+                android:layout_marginRight="12dp"
+                android:backgroundTint="#384ED9"
+                android:textColor="#FFFFFF"
+                android:textAllCaps="false"
+                android:fontFamily="sans-serif-medium"
+                android:elevation="3dp"
+                android:foreground="?attr/selectableItemBackground" />
+
+            <Button
+                android:id="@+id/btn_aprobar"
+                android:layout_width="wrap_content"
+                android:layout_height="38dp"
+                android:text="Aprobar publicación"
+                android:backgroundTint="#51C357"
+                android:textColor="#FFFFFF"
+                android:textAllCaps="false"
+                android:fontFamily="sans-serif-medium"
+                android:elevation="3dp"
+                android:foreground="?attr/selectableItemBackground" />
+        </LinearLayout>
+    </LinearLayout>
+</androidx.cardview.widget.CardView>

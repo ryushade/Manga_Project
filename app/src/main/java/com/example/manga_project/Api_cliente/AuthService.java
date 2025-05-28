@@ -8,6 +8,7 @@ import com.example.manga_project.Modelos.RegisterResponse;
 import com.example.manga_project.Modelos.PerfilResponse;
 import com.example.manga_project.Modelos.SolicitudResponse;
 import com.example.manga_project.Modelos.SolicitudesProveedorRequest;
+import com.example.manga_project.Modelos.SolicitudesProveedorResponse;
 
 import java.util.List;
 
@@ -28,8 +29,8 @@ public interface AuthService {
     @GET("/api_obtener_usuario_data")
     Call<PerfilResponse> getPerfil();
 
-    @GET("/api_obtener_proveedor")
-    Call<List<SolicitudesProveedorRequest>> obtenerSolicitudesProveedor();
+    @GET("api_obtener_proveedor")
+    Call<SolicitudesProveedorResponse> obtenerSolicitudesProveedor();
 
 
     @POST("/api_aprobar_proveedor")
