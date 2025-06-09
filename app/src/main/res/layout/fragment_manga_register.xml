@@ -10,18 +10,33 @@
         android:layout_height="wrap_content"
         android:gravity="center_horizontal">
 
-        <!-- TÍTULO PRINCIPAL -->
-        <TextView
-            android:id="@+id/tvTituloPublicar"
+        <RelativeLayout
             android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="24dp"
+            android:paddingStart="8dp"
+            android:paddingEnd="8dp">
+
+        <ImageView
+            android:id="@+id/btnBack"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:src="@drawable/ico_back"
+            android:tint="@color/ic_launcher_background"
+            android:layout_alignParentStart="true"
+            android:layout_centerVertical="true" />
+
+        <TextView
+            android:id="@+id/tvTituloPublicarManga"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="PUBLICAR MANGA"
             android:textSize="24sp"
             android:textStyle="bold"
-            android:gravity="center"
             android:textColor="#5545E0"
-            android:layout_marginBottom="24dp"
-            android:layout_marginTop="8dp"/>
+            android:layout_centerInParent="true"/>
+        </RelativeLayout>
 
         <!-- Imagen del Manga -->
         <FrameLayout

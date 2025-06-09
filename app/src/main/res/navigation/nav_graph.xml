@@ -22,6 +22,42 @@
         android:label="Solicitudes"
         tools:layout="@layout/fragment_solicitudes_proveedor" />
 
+    <fragment
+        android:id="@+id/pedidosFragment"
+        android:name="com.example.manga_project.fragments.SolicitudesPublicacionFragment"
+        android:label="Publicaciones"
+        tools:layout="@layout/fragment_solicitud_historieta_proveedor" />
+
+    <fragment
+        android:id="@+id/configuracionFragment"
+        android:name="com.example.manga_project.fragments.PerfilFragment"
+        tools:layout="@layout/fragment_perfil" />
+
+    <fragment
+        android:id="@+id/publicarFragment"
+        android:name="com.example.manga_project.fragments.TipoPublicacionFragment"
+        tools:layout="@layout/fragment_seleccionar_tipo_publi">
+
+        <action
+            android:id="@+id/action_tipoPublicacionFragment_to_publicarMangaFragment"
+            app:destination="@id/publicarMangaFragment" />
+
+        <action
+            android:id="@+id/action_tipoPublicacionFragment_to_publicarComicFragment"
+            app:destination="@id/publicarComicFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/publicarMangaFragment"
+        android:name="com.example.manga_project.fragments.PublicarMangaFragment"
+        tools:layout="@layout/fragment_manga_register" />
+
+    <fragment
+        android:id="@+id/publicarComicFragment"
+        android:name="com.example.manga_project.fragments.PublicarComicFragment"
+        tools:layout="@layout/fragment_register_comic" />
+
+
 
     <!-- Search Fragment -->
     <fragment

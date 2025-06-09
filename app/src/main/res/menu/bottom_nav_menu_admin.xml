@@ -12,7 +12,7 @@
     <item
         android:id="@+id/pedidosFragment"
         android:icon="@drawable/ico_pedidos"
-        android:title="Pedidos" />
+        android:title="Publicaciones" />
 
     <item
         android:id="@+id/productosFragment"
