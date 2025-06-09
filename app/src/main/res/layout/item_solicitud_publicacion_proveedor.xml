@@ -92,17 +92,6 @@
                 android:elevation="3dp"
                 android:foreground="?attr/selectableItemBackground" />
 
-            <Button
-                android:id="@+id/btn_aprobar"
-                android:layout_width="wrap_content"
-                android:layout_height="38dp"
-                android:text="Aprobar publicación"
-                android:backgroundTint="#51C357"
-                android:textColor="#FFFFFF"
-                android:textAllCaps="false"
-                android:fontFamily="sans-serif-medium"
-                android:elevation="3dp"
-                android:foreground="?attr/selectableItemBackground" />
         </LinearLayout>
     </LinearLayout>
 </androidx.cardview.widget.CardView>

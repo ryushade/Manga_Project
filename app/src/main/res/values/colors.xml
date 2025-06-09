@@ -13,4 +13,6 @@
     <color name="backgroundGeneral">#FFFFFF</color>
     <color name="textInputOutlineColor">@color/colorPrimary</color>
     <color name="colorText">#6c4e31</color>
+    <color name="colorAccent">#FFAB40</color>
+
 </resources>

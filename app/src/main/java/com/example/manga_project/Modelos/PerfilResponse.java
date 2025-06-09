@@ -3,6 +3,7 @@ package com.example.manga_project.Modelos;
 public class PerfilResponse {
     private String nombre;
     private String email;
+    private boolean proveedor_solicitud;  // Campo adicional
 
     public PerfilResponse() {}
 
@@ -21,5 +22,13 @@ public class PerfilResponse {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public boolean isProveedor_solicitud() {
+        return proveedor_solicitud;
+    }
+
+    public void setProveedor_solicitud(boolean proveedor_solicitud) {
+        this.proveedor_solicitud = proveedor_solicitud;
     }
 }

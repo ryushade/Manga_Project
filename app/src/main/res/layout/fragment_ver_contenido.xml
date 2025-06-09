@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="#1B1B1B"
+    android:padding="16dp">
+
+    <ImageView
+        android:id="@+id/img_preview_portada"
+        android:layout_width="match_parent"
+        android:layout_height="220dp"
+        android:scaleType="centerCrop"
+        android:src="@drawable/ic_placeholder_portada"
+        android:layout_marginBottom="12dp" />
+
+    <TextView
+        android:id="@+id/tv_preview_titulo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Título: El Viaje de Marco"
+        android:textSize="18sp"
+        android:textColor="#FFFFFF"
+        android:textStyle="bold"/>
+
+    <TextView
+        android:id="@+id/tv_preview_autor"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Autor(es): Marco Rioja"
+        android:textSize="14sp"
+        android:textColor="#D0D0D0"
+        android:layout_marginBottom="8dp"/>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+
+        <TextView
+            android:id="@+id/tv_preview_descripcion"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Descripción de la obra..."
+            android:textSize="14sp"
+            android:textColor="#C0C0C0"/>
+    </ScrollView>
+
+    <EditText
+        android:id="@+id/et_motivo_rechazo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Motivo de rechazo (opcional)"
+        android:minLines="3"
+        android:textColor="#FFFFFF"
+        android:textColorHint="#888888"
+        android:background="#2A2A2A"
+        android:gravity="top"
+        android:padding="8dp"
+        android:layout_marginTop="8dp"/>
+
+    <!-- Botones de acción -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="end"
+        android:layout_marginTop="12dp">
+
+        <Button
+            android:id="@+id/btn_rechazar_final"
+            android:layout_width="wrap_content"
+            android:layout_height="38dp"
+            android:text="Rechazar"
+            android:backgroundTint="#E04C49"
+            android:textColor="#FFFFFF"
+            android:textAllCaps="false"
+            android:layout_marginEnd="12dp"
+            android:fontFamily="sans-serif-medium"/>
+
+        <Button
+            android:id="@+id/btn_aprobar_final"
+            android:layout_width="wrap_content"
+            android:layout_height="38dp"
+            android:text="Aprobar"
+            android:backgroundTint="#51C357"
+            android:textColor="#FFFFFF"
+            android:textAllCaps="false"
+            android:fontFamily="sans-serif-medium"/>
+    </LinearLayout>
+
+</LinearLayout>

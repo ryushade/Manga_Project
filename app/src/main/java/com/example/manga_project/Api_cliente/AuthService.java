@@ -16,6 +16,7 @@ import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
+import retrofit2.http.PUT;
 import retrofit2.http.Path;
 
 public interface AuthService {
@@ -37,6 +38,8 @@ public interface AuthService {
     Call<SolicitudResponse> aprobarProveedor(@Body AprobarProveedorRequest request);
 
 
+    @PUT("/api_solicitar_proveedor")
+    Call<Void> solicitarProveedor();
 
 
     @GET("/api_libro")

@@ -1,54 +1,34 @@
-<?xml version="1.0" encoding="utf-8"?>
 <androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fillViewport="true"
-    android:background="#121212">
+    android:background="#121212"
+    android:fillViewport="true">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingStart="24dp"
-        android:paddingEnd="24dp"
-        android:paddingTop="24dp"
-        android:paddingBottom="32dp">
+        android:orientation="vertical"
+        android:padding="24dp">
 
-        <!-- Flecha back -->
+        <!-- Back button -->
         <ImageView
             android:id="@+id/btnBack"
             android:layout_width="24dp"
             android:layout_height="24dp"
             android:src="@drawable/ico_back"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:tint="#FFFFFF" />
+            android:tint="#FFFFFF" />
 
-        <!-- Título centrado -->
-        <TextView
-            android:id="@+id/txtTitulo"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Mi perfil"
-            android:textColor="#FFFFFF"
-            android:textSize="18sp"
-            android:textStyle="bold"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent" />
-
-        <!-- Foto perfil circular usando ShapeableImageView -->
+        <!-- Foto de perfil -->
         <com.google.android.material.imageview.ShapeableImageView
             android:id="@+id/imgFotoPerfil"
-            android:layout_width="120dp"
-            android:layout_height="120dp"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_gravity="center_horizontal"
             android:src="@drawable/logo_manga"
+            android:layout_marginTop="24dp"
             android:scaleType="centerCrop"
-            app:shapeAppearanceOverlay="@style/CircleImage"
-            app:layout_constraintTop_toBottomOf="@id/txtTitulo"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            android:layout_marginTop="32dp"/>
+            app:shapeAppearanceOverlay="@style/CircleImage" />
 
         <!-- Nombre -->
         <TextView
@@ -57,12 +37,10 @@
             android:layout_height="wrap_content"
             android:text="Mangas y Comics"
             android:textColor="#FFFFFF"
-            android:textSize="22sp"
+            android:textSize="20sp"
             android:textStyle="bold"
-            app:layout_constraintTop_toBottomOf="@id/imgFotoPerfil"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            android:layout_marginTop="16dp"/>
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="12dp" />
 
         <!-- Email -->
         <TextView
@@ -70,75 +48,70 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="comics@gmail.com"
-            android:textColor="#9E9E9E"
+            android:textColor="#BBBBBB"
             android:textSize="14sp"
-            app:layout_constraintTop_toBottomOf="@id/txtNombreUsuario"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            android:layout_marginTop="4dp"/>
+            android:layout_gravity="center_horizontal" />
 
-        <!-- Botón Edit Profile -->
+
+
+        <!-- Divider -->
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#333333"
+            android:layout_marginVertical="24dp" />
+
+        <!-- Opción: Convertirse en proveedor -->
         <LinearLayout
-            android:id="@+id/btnEditProfile"
-            android:layout_width="wrap_content"
+            android:id="@+id/btnConvertirseProveedor"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
+            android:padding="12dp"
             android:clickable="true"
-            android:focusable="true"
-            app:layout_constraintTop_toBottomOf="@id/txtEmail"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            android:layout_marginTop="12dp">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Editar perfil"
-                android:textColor="#FF6E40"
-                android:textStyle="bold"/>
+            android:focusable="true">
 
             <ImageView
-                android:layout_width="18dp"
-                android:layout_height="18dp"
-                android:layout_marginStart="4dp"
-                android:src="@drawable/ico_edit"
-                app:tint="#FF6E40" />
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:src="@drawable/ico_briefcase"
+                android:tint="#FFFFFF" />
 
-            <!-- Espacio flexible para centrar el texto -->
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:layout_width="0dp"
+            <TextView
+                android:id="@+id/txtConvertirseProveedor"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:layout_constraintWidth_percent="0.5"/>
-
-
-
+                android:text="Convertirse en proveedor"
+                android:textColor="#FFFFFF"
+                android:textSize="16sp"
+                android:layout_marginStart="12dp" />
         </LinearLayout>
 
-
-        <!-- Cerrar sesión -->
-        <TextView
-            android:id="@+id/txtCerrarSesion"
-            android:layout_width="wrap_content"
+        <!-- Opción: Cerrar sesión -->
+        <LinearLayout
+            android:id="@+id/btnCerrarSesion"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Cerrar sesión"
-            android:background="@drawable/bg_clickable_text"
-            android:textColor="#FF5252"
-            android:textSize="16sp"
-            android:textStyle="bold"
+            android:orientation="horizontal"
+            android:padding="12dp"
+            android:layout_marginTop="12dp"
             android:clickable="true"
-            android:focusable="true"
-            android:layout_marginTop="32dp"
-            app:layout_constraintTop_toBottomOf="@id/btnEditProfile"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent" />
+            android:focusable="true">
 
+            <ImageView
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:src="@drawable/ico_logout"
+                android:tint="#FF5252" />
 
-
-
-
-
-
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
-
+            <TextView
+                android:id="@+id/txtCerrarSesion"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Cerrar sesión"
+                android:textColor="#FF5252"
+                android:textSize="16sp"
+                android:layout_marginStart="12dp" />
+        </LinearLayout>
+    </LinearLayout>
 </androidx.core.widget.NestedScrollView>

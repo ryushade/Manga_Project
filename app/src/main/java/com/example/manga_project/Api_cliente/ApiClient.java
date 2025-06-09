@@ -12,63 +12,68 @@ import java.io.IOException;
 
 public class ApiClient {
 
-    private static final String BASE_URL = "https://grupo1damb.pythonanywhere.com/";
-
     private static Retrofit retrofitSinToken = null;
     private static Retrofit retrofitConToken = null;
-    private static Context context;  // Agregar variable estática para el contexto
+    private static Context context;
 
-    // Establecer el contexto de la aplicación
+    // URLs para local y remoto
+    private static final String BASE_URL_LOCAL = "http://10.0.2.2:5000/";
+    private static final String BASE_URL_REMOTA = "https://grupo1damb.pythonanywhere.com/";
+
+    private static String baseUrlActual = BASE_URL_REMOTA; // Se puede cambiar dinámicamente
+
     public static void setContext(Context appContext) {
-        context = appContext.getApplicationContext();  // Se asegura de obtener el contexto de la aplicación
+        context = appContext.getApplicationContext();
     }
 
-    // Interceptor para agregar el token al encabezado Authorization
+    // Llamar esto en el inicio de la app o desde preferencias
+    public static void usarBackendLocal(boolean usarLocal) {
+        baseUrlActual = usarLocal ? BASE_URL_LOCAL : BASE_URL_REMOTA;
+        retrofitSinToken = null;  // Reinicia los clientes para que usen la nueva URL
+        retrofitConToken = null;
+    }
+
     private static Interceptor getAuthInterceptor() {
         return new Interceptor() {
             @Override
             public Response intercept(Chain chain) throws IOException {
                 if (context != null) {
                     SharedPreferences sharedPreferences = context.getSharedPreferences("myPrefs", Context.MODE_PRIVATE);
-                    String token = sharedPreferences.getString("token", null); // Obtener el token guardado
-
+                    String token = sharedPreferences.getString("token", null);
                     if (token != null) {
                         Request newRequest = chain.request().newBuilder()
-                                .addHeader("Authorization", "Bearer " + token) // Agregar el token al encabezado
+                                .addHeader("Authorization", "Bearer " + token)
                                 .build();
                         return chain.proceed(newRequest);
                     }
                 }
-                return chain.proceed(chain.request()); // No agregar token si no hay token
+                return chain.proceed(chain.request());
             }
         };
     }
 
-    // Método para obtener el cliente Retrofit sin token
     public static Retrofit getClientSinToken() {
         if (retrofitSinToken == null) {
             retrofitSinToken = new Retrofit.Builder()
-                    .baseUrl(BASE_URL)
+                    .baseUrl(baseUrlActual)
                     .addConverterFactory(GsonConverterFactory.create())
                     .build();
         }
         return retrofitSinToken;
     }
 
-    // Método para obtener el cliente Retrofit con token
     public static Retrofit getClientConToken() {
         if (retrofitConToken == null && context != null) {
             OkHttpClient client = new OkHttpClient.Builder()
-                    .addInterceptor(getAuthInterceptor()) // Aplicar el Interceptor para agregar el token
+                    .addInterceptor(getAuthInterceptor())
                     .build();
 
             retrofitConToken = new Retrofit.Builder()
-                    .baseUrl(BASE_URL)
-                    .client(client) // Usar el cliente con el interceptor
+                    .baseUrl(baseUrlActual)
+                    .client(client)
                     .addConverterFactory(GsonConverterFactory.create())
                     .build();
         } else if (context == null) {
-            // Aquí podrías lanzar una excepción o manejar el caso de alguna otra manera
             throw new IllegalStateException("El contexto no ha sido inicializado.");
         }
         return retrofitConToken;

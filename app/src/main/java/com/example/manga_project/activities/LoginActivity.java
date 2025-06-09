@@ -49,6 +49,11 @@ public class LoginActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        // 🔧 Configurar ApiClient para usar local o remoto
+        ApiClient.setContext(getApplicationContext());
+        ApiClient.usarBackendLocal(true); // ✅ true para local (http://10.0.2.2), false para PythonAnywhere
+
         binding = ActivityLoginBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
@@ -61,21 +66,19 @@ public class LoginActivity extends AppCompatActivity {
 
         mAuth = FirebaseAuth.getInstance();
 
-        // Configura el botón para el inicio de sesión de Google
+        // Botón login con Google
         binding.btnGoogle.setOnClickListener(v -> signInWithGoogle());
 
-        // Configura el texto con enlace para ir al registro
-        setupRegisterLink();
-
-        // Configura el botón para iniciar sesión con correo y contraseña
+        // Botón login normal
         binding.btnCorreo.setOnClickListener(v -> loginUser(
                 binding.txtEmail.getText().toString(),
                 binding.txtContrasena.getText().toString()
         ));
+
+        setupRegisterLink();
     }
 
     private void signInWithGoogle() {
-        // Cierra sesión para asegurarte de que se muestre el selector de cuenta
         mGoogleSignInClient.signOut().addOnCompleteListener(this, task -> {
             Intent signInIntent = mGoogleSignInClient.getSignInIntent();
             startActivityForResult(signInIntent, RC_SIGN_IN);
@@ -93,7 +96,6 @@ public class LoginActivity extends AppCompatActivity {
                 firebaseAuthWithGoogle(account.getIdToken());
             } catch (ApiException e) {
                 Log.w("TAG", "Google sign in failed", e);
-                //Toast.makeText(this, "Google sign in failed: " + e.getMessage(), Toast.LENGTH_SHORT).show();
             }
         }
     }
@@ -106,34 +108,38 @@ public class LoginActivity extends AppCompatActivity {
                         FirebaseUser user = mAuth.getCurrentUser();
 
                         if (user != null && user.getEmail() != null) {
-                            saveUserEmail(user.getEmail());  // Guarda el correo aquí
+                            saveUserEmail(user.getEmail());
                         }
 
                         if (user != null) {
                             saveUserToken(user);
 
-                            //navigateToMainScreen();
-                            //Toast.makeText(this, "Logueado", Toast.LENGTH_SHORT).show();
-                            // Enviar las credenciales al backend para obtener un token de acceso (email + password)
                             String email = "admin@gmail.com";
-                            String password = "admin";  // Aquí puedes obtener o generar la contraseña, dependiendo de tu lógica
+                            String password = "admin";
 
-                            // Crear una solicitud para obtener el token
                             AuthService authService = ApiClient.getClientSinToken().create(AuthService.class);
                             LoginRequest loginRequest = new LoginRequest(email, password);
 
-                            // Realizar la solicitud
                             authService.login(loginRequest).enqueue(new Callback<LoginResponse>() {
                                 @Override
                                 public void onResponse(Call<LoginResponse> call, Response<LoginResponse> response) {
                                     if (response.isSuccessful()) {
                                         String token = response.body().getToken();
-                                        saveToken(token);  // Guarda el token recibido del backend
-                                        navigateToMainScreen();  // Navega a la pantalla principal
+                                        int idRol = response.body().getIdRol();  // 👈 extrae el rol
+
+                                        SharedPreferences prefs = getSharedPreferences("myPrefs", Context.MODE_PRIVATE);
+                                        prefs.edit()
+                                                .putString("token", token)
+                                                .putInt("id_rol", idRol) // 👈 guarda el rol
+                                                .putBoolean("is_google_user", true)
+                                                .apply();
+
+                                        navigateToMainScreen();
                                     } else {
                                         Log.e("AuthError", "Error al obtener el token: " + response.message());
                                     }
                                 }
+
 
                                 @Override
                                 public void onFailure(Call<LoginResponse> call, Throwable t) {
@@ -143,13 +149,9 @@ public class LoginActivity extends AppCompatActivity {
                         }
                     } else {
                         Log.w("TAG", "signInWithCredential:failure", task.getException());
-                        //Toast.makeText(this, "Authentication failed.", Toast.LENGTH_SHORT).show();
                     }
                 });
     }
-
-
-
 
     private void loginUser(String email, String password) {
         AuthService authService = ApiClient.getClientSinToken().create(AuthService.class);
@@ -162,33 +164,29 @@ public class LoginActivity extends AppCompatActivity {
                     saveToken(response.body().getToken());
                     saveUserEmail(email);
 
-
-                    // Elimina la marca de usuario de Google
                     SharedPreferences prefs = getSharedPreferences("myPrefs", Context.MODE_PRIVATE);
                     prefs.edit()
                             .putBoolean("is_google_user", false)
                             .putInt("id_rol", response.body().getIdRol())
                             .apply();
 
-
                     navigateToMainScreen();
-                    //Toast.makeText(LoginActivity.this, "Login normal", Toast.LENGTH_SHORT).show();
                 } else {
                     try {
                         if (response.errorBody() != null) {
                             JSONObject errorObj = new JSONObject(response.errorBody().string());
                             String errorMessage = errorObj.optString("message", "Error en el login");
-                            //Toast.makeText(LoginActivity.this, "Error en el login: " + errorMessage, Toast.LENGTH_SHORT).show();
+                            Log.e("LoginError", errorMessage);
                         }
                     } catch (Exception e) {
-                        //Toast.makeText(LoginActivity.this, "Error procesando la respuesta del servidor", Toast.LENGTH_SHORT).show();
+                        Log.e("LoginError", "Error procesando la respuesta");
                     }
                 }
             }
 
             @Override
             public void onFailure(Call<LoginResponse> call, Throwable t) {
-                //Toast.makeText(LoginActivity.this, "Error en la conexión: " + t.getMessage(), Toast.LENGTH_SHORT).show();
+                Log.e("LoginError", "Fallo de conexión: " + t.getMessage());
             }
         });
     }
@@ -201,7 +199,6 @@ public class LoginActivity extends AppCompatActivity {
         spannableString.setSpan(new ClickableSpan() {
             @Override
             public void onClick(@NonNull View widget) {
-                // Código para navegar al fragmento de registro
                 startActivity(new Intent(LoginActivity.this, SelectRegisterActivity.class));
             }
 
@@ -221,28 +218,22 @@ public class LoginActivity extends AppCompatActivity {
     private void saveUserToken(FirebaseUser user) {
         if (user != null) {
             SharedPreferences prefs = getSharedPreferences("myPrefs", Context.MODE_PRIVATE);
-            SharedPreferences.Editor editor = prefs.edit();
-            editor.putString("token", user.getUid());
-            editor.apply();
+            prefs.edit().putString("token", user.getUid()).apply();
         }
     }
 
     private void saveUserEmail(String email) {
         SharedPreferences prefs = getSharedPreferences("myPrefs", Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = prefs.edit();
-        editor.putString("email_user", email);
-        editor.putBoolean("is_google_user", true); // Marca como usuario de Google
-        editor.apply();
-
-        Log.d("LoginActivity", "Correo guardado: " + email);  // Log para verificar
-        //Toast.makeText(this, "Correo guardado en SharedPreferences", Toast.LENGTH_SHORT).show();
+        prefs.edit()
+                .putString("email_user", email)
+                .putBoolean("is_google_user", true)
+                .apply();
+        Log.d("LoginActivity", "Correo guardado: " + email);
     }
 
     private void saveToken(String token) {
         SharedPreferences prefs = getSharedPreferences("myPrefs", Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = prefs.edit();
-        editor.putString("token", token);
-        editor.apply();
+        prefs.edit().putString("token", token).apply();
     }
 
     private void navigateToMainScreen() {
@@ -250,7 +241,6 @@ public class LoginActivity extends AppCompatActivity {
         int idRol = prefs.getInt("id_rol", -1);
 
         Intent intent;
-
         switch (idRol) {
             case 3:
                 intent = new Intent(this, MainAdminActivity.class);
@@ -267,5 +257,4 @@ public class LoginActivity extends AppCompatActivity {
         startActivity(intent);
         finish();
     }
-
 }
