@@ -4,6 +4,7 @@ import com.example.manga_project.Modelos.Genero;
 import com.example.manga_project.Modelos.AprobarProveedorRequest;
 import com.example.manga_project.Modelos.LoginRequest;
 import com.example.manga_project.Modelos.LoginResponse;
+import com.example.manga_project.Modelos.RechazarProveedorRequest;
 import com.example.manga_project.Modelos.RegisterRequest;
 import com.example.manga_project.Modelos.RegisterResponse;
 import com.example.manga_project.Modelos.PerfilResponse;
@@ -44,6 +45,9 @@ public interface AuthService {
 
     @POST("/api_aprobar_proveedor")
     Call<SolicitudResponse> aprobarProveedor(@Body AprobarProveedorRequest request);
+
+    @POST("/api_rechazar_proveedor")
+    Call<SolicitudResponse> rechazarProveedor(@Body RechazarProveedorRequest request);
 
 
     @PUT("/api_solicitar_proveedor")

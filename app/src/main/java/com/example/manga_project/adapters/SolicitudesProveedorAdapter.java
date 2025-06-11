@@ -15,17 +15,21 @@ import com.example.manga_project.Modelos.SolicitudesProveedorRequest;
 
 import java.util.List;
 
-public class SolicitudesProveedorAdapter extends RecyclerView.Adapter<SolicitudesProveedorAdapter.SolicitudViewHolder> {
+public class SolicitudesProveedorAdapter
+        extends RecyclerView.Adapter<SolicitudesProveedorAdapter.SolicitudViewHolder> {
 
-    private List<SolicitudesProveedorRequest> listaSolicitudes;
-    private Context context;
-    private OnAprobarClickListener listener;
-
-    public interface OnAprobarClickListener {
+    public interface OnActionClickListener {
         void onAprobarClick(SolicitudesProveedorRequest solicitud);
+        void onRechazarClick(SolicitudesProveedorRequest solicitud);
     }
 
-    public SolicitudesProveedorAdapter(Context context, List<SolicitudesProveedorRequest> listaSolicitudes, OnAprobarClickListener listener) {
+    private final List<SolicitudesProveedorRequest> listaSolicitudes;
+    private final Context context;
+    private final OnActionClickListener listener;
+
+    public SolicitudesProveedorAdapter(Context context,
+                                       List<SolicitudesProveedorRequest> listaSolicitudes,
+                                       OnActionClickListener listener) {
         this.context = context;
         this.listaSolicitudes = listaSolicitudes;
         this.listener = listener;
@@ -34,7 +38,8 @@ public class SolicitudesProveedorAdapter extends RecyclerView.Adapter<Solicitude
     @NonNull
     @Override
     public SolicitudViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View vista = LayoutInflater.from(context).inflate(R.layout.item_solicitud_proveedor, parent, false);
+        View vista = LayoutInflater.from(context)
+                .inflate(R.layout.item_solicitud_proveedor, parent, false);
         return new SolicitudViewHolder(vista);
     }
 
@@ -45,9 +50,10 @@ public class SolicitudesProveedorAdapter extends RecyclerView.Adapter<Solicitude
         holder.tvCorreo.setText(solicitud.getEmail());
 
         holder.btnAprobar.setOnClickListener(v -> {
-            if (listener != null) {
-                listener.onAprobarClick(solicitud);
-            }
+            listener.onAprobarClick(solicitud);
+        });
+        holder.btnRechazar.setOnClickListener(v -> {
+            listener.onRechazarClick(solicitud);
         });
     }
 
@@ -56,15 +62,16 @@ public class SolicitudesProveedorAdapter extends RecyclerView.Adapter<Solicitude
         return listaSolicitudes.size();
     }
 
-    public static class SolicitudViewHolder extends RecyclerView.ViewHolder {
+    static class SolicitudViewHolder extends RecyclerView.ViewHolder {
         TextView tvNombre, tvCorreo;
-        Button btnAprobar;
+        Button btnAprobar, btnRechazar;
 
         public SolicitudViewHolder(@NonNull View itemView) {
             super(itemView);
-            tvNombre = itemView.findViewById(R.id.tv_nombre_usuario);
-            tvCorreo = itemView.findViewById(R.id.tv_correo_usuario);
+            tvNombre   = itemView.findViewById(R.id.tv_nombre_usuario);
+            tvCorreo   = itemView.findViewById(R.id.tv_correo_usuario);
             btnAprobar = itemView.findViewById(R.id.btn_aprobar);
+            btnRechazar= itemView.findViewById(R.id.btn_rechazar);
         }
     }
 }

@@ -145,7 +145,7 @@
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="16dp"
         android:layout_marginBottom="8dp"
-        android:background="121212"
+        android:background="#121212"
         app:tabIndicatorColor="@color/colorPrincipal"
         app:tabSelectedTextColor="@color/colorPrincipal"
         app:tabTextColor="@color/colorPrincipal"

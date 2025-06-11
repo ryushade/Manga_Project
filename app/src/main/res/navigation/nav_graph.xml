@@ -39,6 +39,11 @@
         tools:layout="@layout/fragment_perfil" />
 
     <fragment
+        android:id="@+id/configFragment"
+        android:name="com.example.manga_project.fragments.PerfilFragment"
+        tools:layout="@layout/fragment_perfil" />
+
+    <fragment
         android:id="@+id/publicarFragment"
         android:name="com.example.manga_project.fragments.TipoPublicacionFragment"
         tools:layout="@layout/fragment_seleccionar_tipo_publi">

@@ -16,10 +16,11 @@ import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
+import com.example.manga_project.Logout;
 import com.example.manga_project.R;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements Logout {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

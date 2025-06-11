@@ -11,13 +11,7 @@
         android:orientation="vertical"
         android:padding="24dp">
 
-        <!-- Back button -->
-        <ImageView
-            android:id="@+id/btnBack"
-            android:layout_width="24dp"
-            android:layout_height="24dp"
-            android:src="@drawable/ico_back"
-            android:tint="#FFFFFF" />
+
 
         <!-- Foto de perfil -->
         <com.google.android.material.imageview.ShapeableImageView

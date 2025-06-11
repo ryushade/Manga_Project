@@ -5,9 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
-
 import android.app.AlertDialog;
-
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -18,6 +16,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.manga_project.Api_cliente.ApiClient;
 import com.example.manga_project.Api_cliente.AuthService;
 import com.example.manga_project.Modelos.AprobarProveedorRequest;
+import com.example.manga_project.Modelos.RechazarProveedorRequest;
 import com.example.manga_project.Modelos.SolicitudResponse;
 import com.example.manga_project.Modelos.SolicitudesProveedorRequest;
 import com.example.manga_project.Modelos.SolicitudesProveedorResponse;
@@ -43,9 +42,11 @@ public class SolicitudesProveedorFragment extends Fragment {
 
     @Nullable
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater,
+                             @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_solicitudes_proveedor, container, false);
+
         recyclerView = view.findViewById(R.id.recyclerSolicitudes);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
@@ -58,64 +59,116 @@ public class SolicitudesProveedorFragment extends Fragment {
     }
 
     private void cargarSolicitudes() {
-        Call<SolicitudesProveedorResponse> call = authService.obtenerSolicitudesProveedor();
-
-        call.enqueue(new Callback<SolicitudesProveedorResponse>() {
-            @Override
-            public void onResponse(Call<SolicitudesProveedorResponse> call, Response<SolicitudesProveedorResponse> response) {
-                if (response.isSuccessful() && response.body() != null && response.body().isSuccess()) {
-                    List<SolicitudesProveedorRequest> lista = response.body().getData();
-                    if (lista != null && !lista.isEmpty()) {
-                        adapter = new SolicitudesProveedorAdapter(
-                                getContext(),
-                                lista,
-                                solicitud -> aprobarSolicitud(solicitud.getId_user())
-                        );
-                        recyclerView.setAdapter(adapter);
-                    } else {
-                        Toast.makeText(getContext(), "No hay solicitudes pendientes", Toast.LENGTH_SHORT).show();
+        authService.obtenerSolicitudesProveedor()
+                .enqueue(new Callback<SolicitudesProveedorResponse>() {
+                    @Override
+                    public void onResponse(Call<SolicitudesProveedorResponse> call,
+                                           Response<SolicitudesProveedorResponse> response) {
+                        if (response.isSuccessful() && response.body() != null
+                                && response.body().isSuccess()) {
+                            List<SolicitudesProveedorRequest> lista = response.body().getData();
+                            if (lista != null && !lista.isEmpty()) {
+                                adapter = new SolicitudesProveedorAdapter(
+                                        getContext(),
+                                        lista,
+                                        new SolicitudesProveedorAdapter.OnActionClickListener() {
+                                            @Override
+                                            public void onAprobarClick(SolicitudesProveedorRequest s) {
+                                                aprobarSolicitud(s.getId_user());
+                                            }
+                                            @Override
+                                            public void onRechazarClick(SolicitudesProveedorRequest s) {
+                                                rechazarSolicitud(s.getId_user());
+                                            }
+                                        }
+                                );
+                                recyclerView.setAdapter(adapter);
+                            } else {
+                                Toast.makeText(getContext(),
+                                        "No hay solicitudes pendientes",
+                                        Toast.LENGTH_SHORT).show();
+                            }
+                        } else {
+                            Toast.makeText(getContext(),
+                                    "Error al obtener solicitudes",
+                                    Toast.LENGTH_SHORT).show();
+                        }
                     }
-                } else {
-                    Toast.makeText(getContext(), "Error al obtener solicitudes", Toast.LENGTH_SHORT).show();
-                }
-            }
 
-            @Override
-            public void onFailure(Call<SolicitudesProveedorResponse> call, Throwable t) {
-                Toast.makeText(getContext(), "Error al cargar solicitudes", Toast.LENGTH_SHORT).show();
-            }
-        });
+                    @Override
+                    public void onFailure(Call<SolicitudesProveedorResponse> call, Throwable t) {
+                        Toast.makeText(getContext(),
+                                "Error al cargar solicitudes",
+                                Toast.LENGTH_SHORT).show();
+                    }
+                });
     }
-
 
     private void aprobarSolicitud(int idUser) {
         new AlertDialog.Builder(getContext())
                 .setTitle("¿Aprobar solicitud?")
                 .setMessage("¿Estás seguro de que deseas aprobar a este usuario como proveedor?")
-                .setPositiveButton("Sí, aprobar", (dialog, which) -> {
-                    AprobarProveedorRequest request = new AprobarProveedorRequest(idUser);
-                    Call<SolicitudResponse> call = authService.aprobarProveedor(request);
-
-                    call.enqueue(new Callback<SolicitudResponse>() {
-                        @Override
-                        public void onResponse(Call<SolicitudResponse> call, Response<SolicitudResponse> response) {
-                            if (response.isSuccessful() && response.body() != null && response.body().isSuccess()) {
-                                Toast.makeText(getContext(), "Proveedor aprobado", Toast.LENGTH_SHORT).show();
-                                cargarSolicitudes(); // recarga la lista
-                            } else {
-                                Toast.makeText(getContext(), "Error: " + response.body().getMessage(), Toast.LENGTH_SHORT).show();
-                            }
-                        }
-
-                        @Override
-                        public void onFailure(Call<SolicitudResponse> call, Throwable t) {
-                            Toast.makeText(getContext(), "Error al aprobar", Toast.LENGTH_SHORT).show();
-                        }
-                    });
+                .setPositiveButton("Sí, aprobar", (d, w) -> {
+                    authService.aprobarProveedor(new AprobarProveedorRequest(idUser))
+                            .enqueue(new Callback<SolicitudResponse>() {
+                                @Override
+                                public void onResponse(Call<SolicitudResponse> call,
+                                                       Response<SolicitudResponse> resp) {
+                                    if (resp.isSuccessful() && resp.body() != null
+                                            && resp.body().isSuccess()) {
+                                        Toast.makeText(getContext(),
+                                                "Proveedor aprobado",
+                                                Toast.LENGTH_SHORT).show();
+                                        cargarSolicitudes();
+                                    } else {
+                                        Toast.makeText(getContext(),
+                                                "Error: " + resp.body().getMessage(),
+                                                Toast.LENGTH_SHORT).show();
+                                    }
+                                }
+                                @Override
+                                public void onFailure(Call<SolicitudResponse> call, Throwable t) {
+                                    Toast.makeText(getContext(),
+                                            "Error al aprobar",
+                                            Toast.LENGTH_SHORT).show();
+                                }
+                            });
                 })
                 .setNegativeButton("Cancelar", null)
                 .show();
     }
 
-
+    private void rechazarSolicitud(int idUser) {
+        new AlertDialog.Builder(getContext())
+                .setTitle("¿Rechazar solicitud?")
+                .setMessage("¿Estás seguro de que deseas rechazar a este usuario como proveedor?")
+                .setPositiveButton("Sí, rechazar", (d, w) -> {
+                    authService.rechazarProveedor(new RechazarProveedorRequest(idUser))
+                            .enqueue(new Callback<SolicitudResponse>() {
+                                @Override
+                                public void onResponse(Call<SolicitudResponse> call,
+                                                       Response<SolicitudResponse> resp) {
+                                    if (resp.isSuccessful() && resp.body() != null
+                                            && resp.body().isSuccess()) {
+                                        Toast.makeText(getContext(),
+                                                "Proveedor rechazado",
+                                                Toast.LENGTH_SHORT).show();
+                                        cargarSolicitudes();
+                                    } else {
+                                        Toast.makeText(getContext(),
+                                                "Error: " + resp.body().getMessage(),
+                                                Toast.LENGTH_SHORT).show();
+                                    }
+                                }
+                                @Override
+                                public void onFailure(Call<SolicitudResponse> call, Throwable t) {
+                                    Toast.makeText(getContext(),
+                                            "Error al rechazar",
+                                            Toast.LENGTH_SHORT).show();
+                                }
+                            });
+                })
+                .setNegativeButton("Cancelar", null)
+                .show();
+    }
 }
