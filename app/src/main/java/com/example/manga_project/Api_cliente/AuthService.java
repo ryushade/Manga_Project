@@ -56,6 +56,9 @@ public interface AuthService {
     @GET("api_obtener_mis_solicitudes")
     Call<SoliHistorietaProveedorResponse> obtenerMisSolicitudes();
 
+    @GET("api_obtener_solicitud_historieta")
+    Call<SolicitudPublicacionRequest> obtenerSolicitudHistorieta(@Query("id_solicitud") int idSolicitud);
+
     @Multipart
     @POST("/upload_portada")
     Call<ResponseBody> subirPortada(@Part MultipartBody.Part file);
