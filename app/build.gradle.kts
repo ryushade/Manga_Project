@@ -37,6 +37,7 @@ android {
 
 dependencies {
     implementation(libs.appcompat)
+    implementation(libs.swiperefreshlayout)
     implementation(libs.material)
     implementation(libs.constraintlayout)
     implementation(libs.navigation.fragment)
@@ -46,6 +47,7 @@ dependencies {
     implementation(libs.lifecycle.livedata.ktx)
     implementation(libs.lifecycle.viewmodel.ktx)
     testImplementation(libs.junit)
+    implementation(libs.picasso)
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)
     implementation (libs.retrofit)
@@ -55,6 +57,8 @@ dependencies {
     implementation(platform(libs.firebase.bom))
     implementation(libs.firebase.analytics)
     implementation (libs.firebase.auth)
+    implementation(libs.okhttp.v4120)
+    implementation(libs.logging.interceptor)
     annotationProcessor (libs.compiler)
     implementation (libs.okhttp)
     implementation(libs.compose.wallet.button)

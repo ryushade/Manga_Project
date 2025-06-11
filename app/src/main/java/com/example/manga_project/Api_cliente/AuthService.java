@@ -1,23 +1,30 @@
 package com.example.manga_project.Api_cliente;
 
+import com.example.manga_project.Modelos.Genero;
 import com.example.manga_project.Modelos.AprobarProveedorRequest;
 import com.example.manga_project.Modelos.LoginRequest;
 import com.example.manga_project.Modelos.LoginResponse;
 import com.example.manga_project.Modelos.RegisterRequest;
 import com.example.manga_project.Modelos.RegisterResponse;
 import com.example.manga_project.Modelos.PerfilResponse;
+import com.example.manga_project.Modelos.SolicitudPublicacionRequest;
+import com.example.manga_project.Modelos.SolicitudPublicacionResponse;
 import com.example.manga_project.Modelos.SolicitudResponse;
-import com.example.manga_project.Modelos.SolicitudesProveedorRequest;
 import com.example.manga_project.Modelos.SolicitudesProveedorResponse;
 
 import java.util.List;
 
+import okhttp3.MultipartBody;
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
+import retrofit2.http.Multipart;
 import retrofit2.http.POST;
 import retrofit2.http.PUT;
+import retrofit2.http.Part;
 import retrofit2.http.Path;
+import retrofit2.http.Query;
 
 public interface AuthService {
 
@@ -40,6 +47,25 @@ public interface AuthService {
 
     @PUT("/api_solicitar_proveedor")
     Call<Void> solicitarProveedor();
+
+
+    @GET("/api_obtener_generos")
+    Call<List<Genero>> obtenerGeneros(@Query("tipo") String tipo);
+
+
+    @Multipart
+    @POST("/upload_portada")
+    Call<ResponseBody> subirPortada(@Part MultipartBody.Part file);
+
+    @Multipart
+    @POST("/upload_zip")
+    Call<ResponseBody> subirZip(@Part MultipartBody.Part file);
+
+    @POST("/api_registrar_solicitud")
+    Call<SolicitudPublicacionResponse> registrarSolicitud(@Body SolicitudPublicacionRequest request);
+
+
+
 
 
     @GET("/api_libro")

@@ -38,7 +38,6 @@
                 android:layout_centerInParent="true" />
         </RelativeLayout>
 
-
         <!-- Imagen del cómic -->
         <FrameLayout
             android:layout_width="180dp"
@@ -76,7 +75,7 @@
                 android:id="@+id/btnUploadPdf"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Subir PDF"
+                android:text="Subir ZIP"
                 android:backgroundTint="#F6E05E"
                 android:textColor="#5545E0"
                 android:drawableStart="@drawable/ico_upload"
@@ -114,6 +113,7 @@
             android:padding="12dp"
             android:textSize="16sp"
             android:layout_marginBottom="6dp"/>
+
         <TextView
             android:id="@+id/tvAddMoreAuthor"
             android:layout_width="wrap_content"
@@ -160,21 +160,16 @@
                 android:textSize="16sp"/>
         </LinearLayout>
 
-        <!-- Género/Categoría -->
-        <TextView
-            android:id="@+id/tvChooseCategory"
+        <!-- Género con Spinner -->
+        <Spinner
+            android:id="@+id/spGenero"
             android:layout_width="match_parent"
             android:layout_height="50dp"
-            android:text="Elige género"
             android:background="@drawable/bg_field"
-            android:padding="12dp"
-            android:textSize="16sp"
-            android:drawableEnd="@drawable/ic_arrow_right"
-            android:gravity="center_vertical"
-            android:layout_marginBottom="10dp"
-            android:textColor="#757575"/>
+            android:padding="8dp"
+            android:layout_marginBottom="10dp"/>
 
-        <!-- Número edición (Issue) y precio -->
+        <!-- Número edición y precio -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -207,9 +202,6 @@
                 android:padding="12dp"
                 android:textSize="16sp"/>
         </LinearLayout>
-
-        <!-- Número de calificaciones -->
-
 
         <!-- Descripción -->
         <EditText
