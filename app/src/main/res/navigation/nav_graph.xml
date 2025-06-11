@@ -29,6 +29,11 @@
         tools:layout="@layout/fragment_solicitud_historieta_proveedor" />
 
     <fragment
+        android:id="@+id/misSolicitudes"
+        android:name="com.example.manga_project.fragments.MisSolicitudesFragment"
+        tools:layout="@layout/fragment_mis_solicitudes_historieta" />
+
+    <fragment
         android:id="@+id/configuracionFragment"
         android:name="com.example.manga_project.fragments.PerfilFragment"
         tools:layout="@layout/fragment_perfil" />

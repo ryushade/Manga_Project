@@ -7,6 +7,7 @@ import com.example.manga_project.Modelos.LoginResponse;
 import com.example.manga_project.Modelos.RegisterRequest;
 import com.example.manga_project.Modelos.RegisterResponse;
 import com.example.manga_project.Modelos.PerfilResponse;
+import com.example.manga_project.Modelos.SoliHistorietaProveedorResponse;
 import com.example.manga_project.Modelos.SolicitudPublicacionRequest;
 import com.example.manga_project.Modelos.SolicitudPublicacionResponse;
 import com.example.manga_project.Modelos.SolicitudResponse;
@@ -52,6 +53,8 @@ public interface AuthService {
     @GET("/api_obtener_generos")
     Call<List<Genero>> obtenerGeneros(@Query("tipo") String tipo);
 
+    @GET("api_obtener_mis_solicitudes")
+    Call<SoliHistorietaProveedorResponse> obtenerMisSolicitudes();
 
     @Multipart
     @POST("/upload_portada")

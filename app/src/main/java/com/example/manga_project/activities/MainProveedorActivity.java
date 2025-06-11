@@ -25,7 +25,7 @@ public class MainProveedorActivity extends AppCompatActivity {
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_main_proveedor);
 
         AppBarConfiguration appBarConfiguration = new AppBarConfiguration.Builder(
-                R.id.inicioFragment, R.id.publicarFragment, R.id.pedidosFragment, R.id.prodFragment, R.id.configFragment
+                R.id.inicioFragment, R.id.publicarFragment, R.id.pedidosFragment, R.id.misSolicitudes, R.id.configFragment
         ).build();
 
         NavigationUI.setupWithNavController(navView, navController);

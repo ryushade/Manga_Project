@@ -10,9 +10,9 @@
         android:title="Publicar" />
 
     <item
-        android:id="@+id/prodFragment"
+        android:id="@+id/misSolicitudes"
         android:icon="@drawable/ico_pedidos"
-        android:title="Productos" />
+        android:title="Solicitudes" />
 
     <item
         android:id="@+id/configFragment"

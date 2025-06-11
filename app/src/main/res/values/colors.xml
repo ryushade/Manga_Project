@@ -14,5 +14,9 @@
     <color name="textInputOutlineColor">@color/colorPrimary</color>
     <color name="colorText">#6c4e31</color>
     <color name="colorAccent">#FFAB40</color>
+    <color name="red">#F44336</color>
+    <color name="green">#4CAF50</color>
+    <color name="amber">#FFC107</color>
+
 
 </resources>
