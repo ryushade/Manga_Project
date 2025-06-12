@@ -49,17 +49,26 @@ public class SolicitudesProveedorAdapter
         holder.tvNombre.setText(solicitud.getNombre());
         holder.tvCorreo.setText(solicitud.getEmail());
 
-        holder.btnAprobar.setOnClickListener(v -> {
-            listener.onAprobarClick(solicitud);
-        });
-        holder.btnRechazar.setOnClickListener(v -> {
-            listener.onRechazarClick(solicitud);
-        });
+        holder.btnAprobar.setOnClickListener(v -> listener.onAprobarClick(solicitud));
+        holder.btnRechazar.setOnClickListener(v -> listener.onRechazarClick(solicitud));
     }
 
     @Override
     public int getItemCount() {
         return listaSolicitudes.size();
+    }
+
+    /**
+     * Elimina del listado la solicitud cuyo id_user coincida y notifica el cambio
+     */
+    public void eliminarSolicitud(int idUser) {
+        for (int i = 0; i < listaSolicitudes.size(); i++) {
+            if (listaSolicitudes.get(i).getId_user() == idUser) {
+                listaSolicitudes.remove(i);
+                notifyItemRemoved(i);
+                break;
+            }
+        }
     }
 
     static class SolicitudViewHolder extends RecyclerView.ViewHolder {

@@ -1,14 +1,12 @@
 package com.example.manga_project.Modelos;
 
+import com.google.gson.annotations.SerializedName;
+
 public class SolicitudResponse {
-    private boolean success;
-    private String message;
+    @SerializedName("msg")
+    private String msg;
 
-    public boolean isSuccess() {
-        return success;
-    }
-
-    public String getMessage() {
-        return message;
+    public String getMsg() {
+        return msg;
     }
 }
