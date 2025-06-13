@@ -31,6 +31,8 @@ public class PerfilFragment extends Fragment {
 
     private TextView txtNombreUsuario, txtEmail, txtConvertirseProveedor;
 
+    private PerfilResponse perfil;
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -47,6 +49,13 @@ public class PerfilFragment extends Fragment {
         txtNombreUsuario        = view.findViewById(R.id.txtNombreUsuario);
         txtEmail                = view.findViewById(R.id.txtEmail);
         txtConvertirseProveedor = view.findViewById(R.id.txtConvertirseProveedor);
+
+        if (perfil.isProveedor_solicitud() || perfil.getId_rol() == 2 || perfil.getId_rol() == 3) {
+            txtConvertirseProveedor.setVisibility(View.GONE);
+        } else {
+            txtConvertirseProveedor.setVisibility(View.VISIBLE);
+        }
+
 
         ApiClient.setContext(requireContext());
         obtenerDatosPerfil();

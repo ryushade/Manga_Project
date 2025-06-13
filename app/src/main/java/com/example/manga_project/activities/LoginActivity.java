@@ -75,6 +75,12 @@ public class LoginActivity extends AppCompatActivity {
                 binding.txtContrasena.getText().toString()
         ));
 
+        // Redirección a Olvidar Password
+        binding.txtContrasenaOlvidada.setOnClickListener(v -> {
+            Intent intent = new Intent(LoginActivity.this, OlvidarPasswordActivity.class);
+            startActivity(intent);
+        });
+
         setupRegisterLink();
     }
 
