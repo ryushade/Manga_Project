@@ -8,16 +8,6 @@
     android:background="#121212">
 
     <!-- Toolbar con flecha de retroceso -->
-    <androidx.appcompat.widget.Toolbar
-        android:id="@+id/toolbar"
-        android:layout_width="0dp"
-        android:layout_height="56dp"
-        android:background="@android:color/transparent"
-        app:titleTextColor="@color/white"
-        app:navigationIcon="@drawable/ico_back_white"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
 
 
     <!-- Portada con degradado y título -->
@@ -94,8 +84,6 @@
             android:layout_height="wrap_content"
             android:textColor="#888888"
             android:textSize="14sp" />
-
-
     </LinearLayout>
 
     <!-- Sinopsis -->
@@ -116,15 +104,39 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <TextView
-                android:id="@+id/tvSynopsisLabel"
-                android:layout_width="wrap_content"
+            <!-- Línea con título Sinopsis + Precio -->
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Sinopsis"
-                android:textColor="#FFFFFF"
-                android:textSize="18sp"
-                android:textStyle="bold"/>
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:layout_marginBottom="4dp">
 
+                <TextView
+                    android:id="@+id/tvSynopsisLabel"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Sinopsis"
+                    android:textColor="#FFFFFF"
+                    android:textSize="18sp"
+                    android:textStyle="bold"/>
+
+                <TextView
+                    android:id="@+id/tvPrice"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="$3.99"
+                    android:textColor="#FFFF"
+                    android:textSize="14sp"
+                    android:textStyle="bold"
+                    android:background="@drawable/price_background"
+                    android:paddingHorizontal="10dp"
+                    android:paddingVertical="4dp"
+                    android:layout_marginStart="8dp"/>
+            </LinearLayout>
+
+            <!-- Descripción -->
             <TextView
                 android:id="@+id/tvSynopsis"
                 android:layout_width="match_parent"
@@ -135,10 +147,9 @@
                 android:textSize="14sp"/>
 
         </LinearLayout>
-
     </ScrollView>
 
-    <!-- TabLayout con pestañas "Capítulos" y "Detalles" -->
+    <!-- TabLayout -->
     <com.google.android.material.tabs.TabLayout
         android:id="@+id/tabLayout"
         android:layout_width="0dp"
@@ -164,10 +175,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Detalles"/>
-
     </com.google.android.material.tabs.TabLayout>
 
-    <!-- ViewPager2 para el contenido de cada pestaña -->
+    <!-- ViewPager2 -->
     <androidx.viewpager2.widget.ViewPager2
         android:id="@+id/viewPager"
         android:layout_width="0dp"
@@ -176,8 +186,16 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"/>
-
-    <!-- Botón flotante "Read" -->
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fabRead"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_play_arrow"
+        android:backgroundTint="#FF5722"
+        android:contentDescription="Read"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_margin="16dp"/>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

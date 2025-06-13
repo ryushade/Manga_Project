@@ -200,8 +200,7 @@ public class LibroAdapter extends RecyclerView.Adapter<LibroAdapter.LibroViewHol
             super(itemView);
             imageView = itemView.findViewById(R.id.imageView);
             textViewName = itemView.findViewById(R.id.textViewName);
-            textViewPrice = itemView.findViewById(R.id.textViewPrice);
-            saveButton = itemView.findViewById(R.id.saveButton);
+
         }
     }
 

@@ -50,13 +50,6 @@ public class PerfilFragment extends Fragment {
         txtEmail                = view.findViewById(R.id.txtEmail);
         txtConvertirseProveedor = view.findViewById(R.id.txtConvertirseProveedor);
 
-        if (perfil.isProveedor_solicitud() || perfil.getId_rol() == 2 || perfil.getId_rol() == 3) {
-            txtConvertirseProveedor.setVisibility(View.GONE);
-        } else {
-            txtConvertirseProveedor.setVisibility(View.VISIBLE);
-        }
-
-
         ApiClient.setContext(requireContext());
         obtenerDatosPerfil();
 
@@ -108,10 +101,21 @@ public class PerfilFragment extends Fragment {
                     txtNombreUsuario.setText(perfil.getNombre());
                     txtEmail.setText(perfil.getEmail());
 
+                    // Mostrar u ocultar el botón según el rol y estado de solicitud
+                    if (perfil.isProveedor_solicitud() || perfil.getId_rol() == 2 || perfil.getId_rol() == 3) {
+                        txtConvertirseProveedor.setVisibility(View.GONE);
+                    } else {
+                        txtConvertirseProveedor.setVisibility(View.VISIBLE);
+                    }
+
                     if (perfil.isProveedor_solicitud()) {
                         txtConvertirseProveedor.setText("Solicitud en revisión");
                         txtConvertirseProveedor.setTextColor(
                                 getResources().getColor(R.color.colorAccent));
+                    } else {
+                        txtConvertirseProveedor.setText("Convertirse en proveedor");
+                        txtConvertirseProveedor.setTextColor(
+                                getResources().getColor(R.color.colorPrimary));
                     }
                 } else {
                     int code = response.code();

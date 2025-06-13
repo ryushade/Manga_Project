@@ -26,7 +26,7 @@
         app:icon="@drawable/ico_arrow"
         app:iconGravity="textStart"
         app:iconTint="#FF3D00"
-        app:textColor="#FF3D00"
+        android:textColor="#FF3D00"
         android:backgroundTint="@android:color/transparent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
