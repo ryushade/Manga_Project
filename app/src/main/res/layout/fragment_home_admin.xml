@@ -1,6 +1,201 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.core.widget.NestedScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="#0F0F0F"
+    android:paddingHorizontal="24dp"
+    android:paddingTop="24dp"
+    android:fillViewport="true"
+    >
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <!-- Título principal -->
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/lblDashboardTitle"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="Dashboard"
+            android:textSize="28sp"
+            android:textColor="#FFFFFF"
+            android:fontFamily="@font/sourcesans3_black"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+        <!-- Nombre de usuario -->
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/lblUserName"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="Javier Rojas"
+            android:textSize="16sp"
+            android:textColor="#BBBBBB"
+            android:fontFamily="@font/sourcesans3_regular"
+            app:layout_constraintTop_toBottomOf="@id/lblDashboardTitle"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginTop="4dp" />
+
+        <!-- Fecha actual -->
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/lblDate"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="sábado, 24 de mayo de 2025"
+            android:textSize="14sp"
+            android:textColor="#888888"
+            android:fontFamily="@font/sourcesans3_light"
+            app:layout_constraintTop_toBottomOf="@id/lblUserName"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginTop="2dp"
+            android:layout_marginBottom="24dp" />
+
+        <!-- Estadísticas: Pendientes Proveedores y Publicaciones -->
+        <LinearLayout
+            android:id="@+id/llStats"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center"
+            app:layout_constraintTop_toBottomOf="@id/lblDate"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginBottom="24dp">
+
+            <!-- Card: Proveedores Pendientes -->
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/cardProviders"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                app:cardCornerRadius="8dp"
+                app:cardBackgroundColor="#1E1E1E"
+                app:cardElevation="2dp"
+                android:layout_marginEnd="8dp"
+                android:clickable="false">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="16dp"
+                    android:gravity="center">
+
+                    <ImageView
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:src="@drawable/ic_provider"
+                        android:tint="#FF9800" />
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/tvCountProviders"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="12"
+                        android:textSize="20sp"
+                        android:textColor="#FFFFFF"
+                        android:fontFamily="@font/sourcesans3_bold"
+                        android:layout_marginTop="8dp" />
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Proveedores"
+                        android:textSize="14sp"
+                        android:textColor="#BBBBBB"
+                        android:fontFamily="@font/sourcesans3_regular"
+                        android:layout_marginTop="4dp" />
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <!-- Card: Publicaciones Pendientes -->
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/cardPublications"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                app:cardCornerRadius="8dp"
+                app:cardBackgroundColor="#1E1E1E"
+                app:cardElevation="2dp"
+                android:layout_marginStart="8dp"
+                android:clickable="false">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="16dp"
+                    android:gravity="center">
+
+                    <ImageView
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:src="@drawable/ic_publicacion"
+                        android:tint="#4CAF50" />
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/tvCountPublications"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="30"
+                        android:textSize="20sp"
+                        android:textColor="#FFFFFF"
+                        android:fontFamily="@font/sourcesans3_bold"
+                        android:layout_marginTop="8dp" />
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Publicaciones"
+                        android:textSize="14sp"
+                        android:textColor="#BBBBBB"
+                        android:fontFamily="@font/sourcesans3_regular"
+                        android:layout_marginTop="4dp" />
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+        </LinearLayout>
+
+        <!-- Gráfico de Solicitudes esta semana -->
+        <com.github.mikephil.charting.charts.LineChart
+            android:id="@+id/chartRequests"
+            android:layout_width="0dp"
+            android:layout_height="200dp"
+            app:layout_constraintTop_toBottomOf="@id/llStats"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginBottom="24dp" />
+
+        <!-- Lista de Solicitudes Recientes -->
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/lblRecent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Solicitudes recientes"
+            android:textSize="18sp"
+            android:textColor="#FFFFFF"
+            android:fontFamily="@font/sourcesans3_medium"
+            app:layout_constraintTop_toBottomOf="@id/chartRequests"
+            app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginBottom="8dp" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvRecentRequests"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:nestedScrollingEnabled="false"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            android:clipToPadding="false"
+            android:paddingBottom="16dp"
+            app:layout_constraintTop_toBottomOf="@id/lblRecent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.core.widget.NestedScrollView>

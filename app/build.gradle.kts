@@ -54,6 +54,8 @@ dependencies {
     implementation (libs.converter.gson)
     implementation (libs.play.services.auth)
     implementation (libs.glide)
+    implementation(libs.photoview)
+    implementation (libs.mpandroidchart)
     implementation(platform(libs.firebase.bom))
     implementation(libs.firebase.analytics)
     implementation (libs.firebase.auth)
