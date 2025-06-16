@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -20,6 +21,7 @@ import com.example.manga_project.Api_cliente.ApiClient;
 import com.example.manga_project.Api_cliente.AuthService;
 import com.example.manga_project.Modelos.CapituloResponse;
 import com.example.manga_project.Modelos.PaginaResponse;
+import com.example.manga_project.Modelos.SolicitudDetalle;
 import com.example.manga_project.activities.HistorietaReaderActivity;
 import com.example.manga_project.adapters.CapituloAdapter;
 import com.example.manga_project.R;
@@ -41,6 +43,8 @@ public class RevisionFragment extends Fragment {
     private CapituloAdapter chapterAdapter;
     private AuthService  api;
     private int          idSolicitud;
+    private TextView     tvTitle, tvAuthor, tvSynopsis, tvPrice;
+    private ImageView     ivCover;
 
     @Nullable @Override
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -59,6 +63,11 @@ public class RevisionFragment extends Fragment {
         chapterListContainer = view.findViewById(R.id.chapterListContainer);
         tvChapterHeader      = view.findViewById(R.id.tvChapterHeader);
         rvChapters           = view.findViewById(R.id.rvChapters);
+        tvTitle              = view.findViewById(R.id.tvTitle);
+        tvAuthor             = view.findViewById(R.id.tvAuthor);
+        tvSynopsis           = view.findViewById(R.id.tvSynopsis);
+        tvPrice              = view.findViewById(R.id.tvPrice);
+        ivCover              = view.findViewById(R.id.ivCover);
 
         rvChapters.setLayoutManager(
                 new LinearLayoutManager(getContext())
@@ -78,6 +87,9 @@ public class RevisionFragment extends Fragment {
                     .getInt("ID_SOLICITUD");
         }
 
+        // Llamar a la función para cargar los detalles de la solicitud
+        loadSolicitudDetails();
+
         tabLayout.addOnTabSelectedListener(
                 new TabLayout.OnTabSelectedListener() {
                     @Override public void onTabSelected(TabLayout.Tab tab) {
@@ -95,6 +107,34 @@ public class RevisionFragment extends Fragment {
                 });
         TabLayout.Tab first = tabLayout.getTabAt(0);
         if (first != null) first.select();
+    }
+
+    private void loadSolicitudDetails() {
+        // Llama al endpoint para obtener los detalles de la solicitud
+        api.getSolicitudById(idSolicitud).enqueue(new Callback<SolicitudDetalle>() {
+            @Override
+            public void onResponse(Call<SolicitudDetalle> call, Response<SolicitudDetalle> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    SolicitudDetalle solicitud = response.body();
+                    tvTitle.setText("Título: " + solicitud.getTitulo());
+                    tvAuthor.setText("Autor(es): " + solicitud.getAutores());
+                    tvSynopsis.setText(solicitud.getDescripcion());
+                    tvPrice.setText("$" + solicitud.getPrecio_volumen());
+                    // Cargar imagen de portada si hay URL
+                    if (solicitud.getUrl_portada() != null && !solicitud.getUrl_portada().isEmpty()) {
+                        // Usa tu librería de imágenes preferida, por ejemplo Glide:
+                        // Glide.with(getContext()).load(solicitud.getUrl_portada()).into(ivCover);
+                    }
+                } else {
+                    Toast.makeText(getContext(), "No se pudo cargar la solicitud", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<SolicitudDetalle> call, Throwable t) {
+                Toast.makeText(getContext(), "Error de red al cargar la solicitud", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     private void loadChapters() {

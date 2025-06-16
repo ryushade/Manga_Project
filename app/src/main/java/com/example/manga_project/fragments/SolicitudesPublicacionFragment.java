@@ -11,13 +11,13 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
 import com.example.manga_project.Modelos.Solicitud;
 import com.example.manga_project.Api_cliente.ApiClient;
 import com.example.manga_project.Api_cliente.AuthService;
 
 import com.example.manga_project.R;
-import com.example.manga_project.adapters.PublicacionAdapter;
-import com.example.manga_project.Modelos.PublicacionItem;
+import com.example.manga_project.adapters.SolicitudAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,8 +29,8 @@ import retrofit2.Response;
 public class SolicitudesPublicacionFragment extends Fragment {
 
     private RecyclerView recyclerView;
-    private PublicacionAdapter adapter;
-    private List<PublicacionItem> listaPublicaciones;
+    private SolicitudAdapter adapter;
+    private List<Solicitud> listaSolicitudes;
     private AuthService api;
 
     @Nullable @Override
@@ -44,10 +44,10 @@ public class SolicitudesPublicacionFragment extends Fragment {
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
         // Inicializar lista vacía
-        listaPublicaciones = new ArrayList<>();
+        listaSolicitudes = new ArrayList<>();
 
         // Inicializar el adaptador
-        adapter = new PublicacionAdapter(getContext(), listaPublicaciones, getParentFragmentManager());
+        adapter = new SolicitudAdapter(listaSolicitudes);
         recyclerView.setAdapter(adapter);
 
         // Inicializar Retrofit
@@ -64,20 +64,8 @@ public class SolicitudesPublicacionFragment extends Fragment {
             @Override
             public void onResponse(Call<List<Solicitud>> call, Response<List<Solicitud>> response) {
                 if (response.isSuccessful() && response.body() != null) {
-                    List<Solicitud> solicitudes = response.body();
-                    // Mapeamos las solicitudes a PublicacionItem
-                    for (Solicitud solicitud : solicitudes) {
-                        listaPublicaciones.add(new PublicacionItem(
-                                solicitud.getId_solicitud(),
-                                solicitud.getTitulo(),
-                                solicitud.getTipo(),
-                                solicitud.getAutores(),
-                                solicitud.getEmail(),
-                                solicitud.getFecha_solicitud(),
-                                solicitud.getUrl_portada()
-                        ));
-                    }
-                    // Notificar al adaptador que los datos cambiaron
+                    listaSolicitudes.clear();
+                    listaSolicitudes.addAll(response.body());
                     adapter.notifyDataSetChanged();
                 } else {
                     Toast.makeText(getContext(), "Error al cargar solicitudes", Toast.LENGTH_SHORT).show();
@@ -91,6 +79,3 @@ public class SolicitudesPublicacionFragment extends Fragment {
         });
     }
 }
-
-
-

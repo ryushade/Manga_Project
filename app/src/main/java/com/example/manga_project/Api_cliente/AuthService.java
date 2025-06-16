@@ -12,6 +12,7 @@ import com.example.manga_project.Modelos.RegisterResponse;
 import com.example.manga_project.Modelos.PerfilResponse;
 import com.example.manga_project.Modelos.SoliHistorietaProveedorResponse;
 import com.example.manga_project.Modelos.Solicitud;
+import com.example.manga_project.Modelos.SolicitudDetalle;
 import com.example.manga_project.Modelos.SolicitudPublicacionRequest;
 import com.example.manga_project.Modelos.SolicitudPublicacionResponse;
 import com.example.manga_project.Modelos.SolicitudResponse;
@@ -66,6 +67,9 @@ public interface AuthService {
 
     @GET("/api_obtener_solicitud_historieta")
     Call<List<Solicitud>> obtenerSolicitudesPublicacion();
+
+    @GET("/api_solicitud_publicacion/{id}")
+    Call<SolicitudDetalle> getSolicitudById(@Path("id") int idSolicitud);
 
     @GET("/solicitudes/{id}/chapters")
     Call<CapituloResponse> getChapters(@Path("id") int idSolicitud);
