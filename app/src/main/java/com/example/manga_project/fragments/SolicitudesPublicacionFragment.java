@@ -52,7 +52,7 @@ public class SolicitudesPublicacionFragment extends Fragment {
     private List<PublicacionItem> cargarDatosDeEjemplo() {
         List<PublicacionItem> lista = new ArrayList<>();
         lista.add(new PublicacionItem(
-                "El Viaje de Marco",
+                "El Viaje de Ñofi",
                 "Manga",
                 "Marco Rioja",
                 "marco@gmail.com",

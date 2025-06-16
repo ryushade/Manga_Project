@@ -95,8 +95,6 @@
                     app:trackHeight="2dp"
                     app:thumbRadius="8dp"
                     app:thumbColor="#FF3D00"
-                    app:trackActiveTint="#FFFFFF"
-                    app:trackInactiveTint="#888888"
                     app:tickVisible="false" />
 
                 <!-- TEXTO TOTAL PÁGINAS -->
