@@ -68,21 +68,21 @@ public class SolicitudAdapter
         void bind(Solicitud s) {
             // Carga de imagen con Glide (si tienes URL)
             Glide.with(imgPortada.getContext())
-                    .load(s.getUrlPortada())
+                    .load(s.getUrl_portada())
                     .placeholder(R.drawable.ic_placeholder_portada)
                     .into(imgPortada);
 
             tvTitulo   .setText("Título: "  + s.getTitulo());
             tvTipo     .setText("Tipo: "    + s.getTipo());
-            tvAutor    .setText("Autor: "   + s.getAutor());
-            tvContacto .setText("Contacto: "+ s.getContacto());
-            tvFecha    .setText("Solicitado: " + s.getFecha());
+            tvAutor    .setText("Autor: "   + s.getAutores());
+            tvContacto .setText("Contacto: "+ s.getEmail());
+            tvFecha    .setText("Solicitado: " + s.getFecha_solicitud());
 
             btnVerContenido.setOnClickListener(v -> {
                 // Prepara el fragment y sus argumentos
                 RevisionFragment frag = new RevisionFragment();
                 Bundle args = new Bundle();
-                args.putInt("ID_SOLICITUD", s.getIdSolicitud());
+                args.putInt("ID_SOLICITUD", s.getId_solicitud());
                 frag.setArguments(args);
 
                 // Lanza el fragment sobre el contenedor de tu Activity

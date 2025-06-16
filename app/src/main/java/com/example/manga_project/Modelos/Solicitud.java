@@ -1,55 +1,69 @@
 package com.example.manga_project.Modelos;
 
 public class Solicitud {
-    private final int    idSolicitud;
-    private final String urlPortada;
-    private final String titulo;
-    private final String tipo;
-    private final String autor;
-    private final String contacto;
-    private final String fecha;
+    private int id_solicitud;
+    private String titulo;
+    private String tipo;
+    private String autores;
+    private String email;
+    private String fecha_solicitud;
+    private String url_portada;
 
-    public Solicitud(int idSolicitud,
-                     String urlPortada,
-                     String titulo,
-                     String tipo,
-                     String autor,
-                     String contacto,
-                     String fecha) {
-        this.idSolicitud = idSolicitud;
-        this.urlPortada  = urlPortada;
-        this.titulo      = titulo;
-        this.tipo        = tipo;
-        this.autor       = autor;
-        this.contacto    = contacto;
-        this.fecha       = fecha;
+    // Agrega getters y setters
+
+    public int getId_solicitud() {
+        return id_solicitud;
     }
 
-    public int getIdSolicitud() {
-        return idSolicitud;
-    }
-
-    public String getUrlPortada() {
-        return urlPortada;
+    public void setId_solicitud(int id_solicitud) {
+        this.id_solicitud = id_solicitud;
     }
 
     public String getTitulo() {
         return titulo;
     }
 
+    public void setTitulo(String titulo) {
+        this.titulo = titulo;
+    }
+
     public String getTipo() {
         return tipo;
     }
 
-    public String getAutor() {
-        return autor;
+    public void setTipo(String tipo) {
+        this.tipo = tipo;
     }
 
-    public String getContacto() {
-        return contacto;
+    public String getAutores() {
+        return autores;
     }
 
-    public String getFecha() {
-        return fecha;
+    public void setAutores(String autores) {
+        this.autores = autores;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getFecha_solicitud() {
+        return fecha_solicitud;
+    }
+
+    public void setFecha_solicitud(String fecha_solicitud) {
+        this.fecha_solicitud = fecha_solicitud;
+    }
+
+    public String getUrl_portada() {
+        return url_portada;
+    }
+
+    public void setUrl_portada(String url_portada) {
+        this.url_portada = url_portada;
     }
 }

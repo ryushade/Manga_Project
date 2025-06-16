@@ -1,6 +1,7 @@
 package com.example.manga_project.Modelos;
 
 public class PublicacionItem {
+    private int IdSolicitud;
     private String titulo;
     private String tipo;
     private String autor;
@@ -9,7 +10,7 @@ public class PublicacionItem {
     private String urlPortada;
 
     // Constructor
-    public PublicacionItem(String titulo, String tipo, String autor, String correoContacto, String fechaSolicitud, String urlPortada) {
+    public PublicacionItem(int IdSolicitud, String titulo, String tipo, String autor, String correoContacto, String fechaSolicitud, String urlPortada) {
         this.titulo = titulo;
         this.tipo = tipo;
         this.autor = autor;
@@ -41,5 +42,9 @@ public class PublicacionItem {
 
     public String getUrlPortada() {
         return urlPortada;
+    }
+
+    public int getIdSolicitud() {
+        return IdSolicitud;
     }
 }

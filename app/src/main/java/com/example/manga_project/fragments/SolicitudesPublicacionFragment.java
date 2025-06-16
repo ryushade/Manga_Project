@@ -11,6 +11,9 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import com.example.manga_project.Modelos.Solicitud;
+import com.example.manga_project.Api_cliente.ApiClient;
+import com.example.manga_project.Api_cliente.AuthService;
 
 import com.example.manga_project.R;
 import com.example.manga_project.adapters.PublicacionAdapter;
@@ -19,19 +22,20 @@ import com.example.manga_project.Modelos.PublicacionItem;
 import java.util.ArrayList;
 import java.util.List;
 
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
 public class SolicitudesPublicacionFragment extends Fragment {
 
     private RecyclerView recyclerView;
     private PublicacionAdapter adapter;
     private List<PublicacionItem> listaPublicaciones;
+    private AuthService api;
 
-    public SolicitudesPublicacionFragment() {
-        // Constructor vacío obligatorio
-    }
-
-    @Nullable
-    @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
+    @Nullable @Override
+    public View onCreateView(@NonNull LayoutInflater inflater,
+                             @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
 
         View view = inflater.inflate(R.layout.fragment_solicitud_historieta_proveedor, container, false);
@@ -39,34 +43,54 @@ public class SolicitudesPublicacionFragment extends Fragment {
         recyclerView = view.findViewById(R.id.recyclerSolicitudesPublicacion);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
-        // Simulación de datos: luego puedes reemplazar con tu llamada Retrofit
-        listaPublicaciones = cargarDatosDeEjemplo();
+        // Inicializar lista vacía
+        listaPublicaciones = new ArrayList<>();
 
-        adapter = new PublicacionAdapter(getContext(), listaPublicaciones);
+        // Inicializar el adaptador
+        adapter = new PublicacionAdapter(getContext(), listaPublicaciones, getParentFragmentManager());
         recyclerView.setAdapter(adapter);
+
+        // Inicializar Retrofit
+        api = ApiClient.getClientConToken().create(AuthService.class);
+
+        // Llamada al backend para obtener solicitudes
+        obtenerSolicitudes();
 
         return view;
     }
 
-    // Simulación de datos, reemplazar por datos reales desde backend
-    private List<PublicacionItem> cargarDatosDeEjemplo() {
-        List<PublicacionItem> lista = new ArrayList<>();
-        lista.add(new PublicacionItem(
-                "El Viaje de Ñofi",
-                "Manga",
-                "Marco Rioja",
-                "marco@gmail.com",
-                "28/05/2025",
-                "https://example.com/portada1.jpg" // usa una URL real o placeholder
-        ));
-        lista.add(new PublicacionItem(
-                "Aventura Estelar",
-                "Cómic",
-                "Ana Torres",
-                "ana@gmail.com",
-                "01/06/2025",
-                "https://example.com/portada2.jpg"
-        ));
-        return lista;
+    private void obtenerSolicitudes() {
+        api.obtenerSolicitudesPublicacion().enqueue(new Callback<List<Solicitud>>() {
+            @Override
+            public void onResponse(Call<List<Solicitud>> call, Response<List<Solicitud>> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    List<Solicitud> solicitudes = response.body();
+                    // Mapeamos las solicitudes a PublicacionItem
+                    for (Solicitud solicitud : solicitudes) {
+                        listaPublicaciones.add(new PublicacionItem(
+                                solicitud.getId_solicitud(),
+                                solicitud.getTitulo(),
+                                solicitud.getTipo(),
+                                solicitud.getAutores(),
+                                solicitud.getEmail(),
+                                solicitud.getFecha_solicitud(),
+                                solicitud.getUrl_portada()
+                        ));
+                    }
+                    // Notificar al adaptador que los datos cambiaron
+                    adapter.notifyDataSetChanged();
+                } else {
+                    Toast.makeText(getContext(), "Error al cargar solicitudes", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<Solicitud>> call, Throwable t) {
+                Toast.makeText(getContext(), "Fallo de conexión", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 }
+
+
+
