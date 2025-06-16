@@ -1,9 +1,11 @@
 package com.example.manga_project.Api_cliente;
 
+import com.example.manga_project.Modelos.CapituloResponse;
 import com.example.manga_project.Modelos.Genero;
 import com.example.manga_project.Modelos.AprobarProveedorRequest;
 import com.example.manga_project.Modelos.LoginRequest;
 import com.example.manga_project.Modelos.LoginResponse;
+import com.example.manga_project.Modelos.PaginaResponse;
 import com.example.manga_project.Modelos.RechazarProveedorRequest;
 import com.example.manga_project.Modelos.RegisterRequest;
 import com.example.manga_project.Modelos.RegisterResponse;
@@ -62,6 +64,16 @@ public interface AuthService {
 
     @GET("api_obtener_solicitud_historieta")
     Call<SolicitudPublicacionRequest> obtenerSolicitudHistorieta(@Query("id_solicitud") int idSolicitud);
+
+
+    @GET("/solicitudes/{id}/chapters")
+    Call<CapituloResponse> getChapters(@Path("id") int idSolicitud);
+
+    @GET("/solicitudes/{id}/chapters/{chapter}/pages")
+    Call<PaginaResponse> getChapterPages(
+            @Path("id") int idSolicitud,
+            @Path("chapter") String nombreCapitulo
+    );
 
     @Multipart
     @POST("/upload_portada")

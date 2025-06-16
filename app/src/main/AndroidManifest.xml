@@ -55,6 +55,11 @@
             android:windowSoftInputMode="adjustPan" />
 
         <activity
+            android:name=".activities.HistorietaReaderActivity"
+            android:exported="false"
+            android:windowSoftInputMode="adjustPan" />
+
+        <activity
             android:name="com.example.manga_project.activities.DescriptionBookActivity"
             android:exported="false" />
         <activity
