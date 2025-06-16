@@ -1,18 +1,19 @@
 package com.example.manga_project.fragments;
 
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 
 import com.example.manga_project.Api_cliente.ApiClient;
@@ -30,7 +31,6 @@ import retrofit2.Retrofit;
 public class PerfilFragment extends Fragment {
 
     private TextView txtNombreUsuario, txtEmail, txtConvertirseProveedor;
-
     private PerfilResponse perfil;
 
     @Nullable
@@ -46,40 +46,41 @@ public class PerfilFragment extends Fragment {
                               @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        ApiClient.setContext(requireContext());
+
+        // Inicializar vistas
         txtNombreUsuario        = view.findViewById(R.id.txtNombreUsuario);
         txtEmail                = view.findViewById(R.id.txtEmail);
         txtConvertirseProveedor = view.findViewById(R.id.txtConvertirseProveedor);
+        TextView txtCerrarSesion       = view.findViewById(R.id.txtCerrarSesion);
+        CardView btnConvertirseProveedor = view.findViewById(R.id.btnConvertirseProveedor);
 
-        ApiClient.setContext(requireContext());
-        obtenerDatosPerfil();
-
-        TextView txtCerrarSesion = view.findViewById(R.id.txtCerrarSesion);
+        // Listener Cerrar sesión
         txtCerrarSesion.setOnClickListener(v -> {
-            // Si la Activity actual implementa Logout, usar su logout()
             if (getActivity() instanceof Logout) {
                 ((Logout) getActivity()).logout();
-            }
-            // Si no, hacer logout manual
-            else {
+            } else {
                 SharedPreferences prefs = requireContext()
-                        .getSharedPreferences("myPrefs", getContext().MODE_PRIVATE);
+                        .getSharedPreferences("myPrefs", Context.MODE_PRIVATE);
                 prefs.edit().clear().apply();
 
-                Intent intent = new Intent(requireContext(), LoginActivity.class);
-                startActivity(intent);
+                startActivity(new Intent(requireContext(), LoginActivity.class));
                 requireActivity().finish();
             }
         });
 
-        LinearLayout btnConvertirseProveedor =
-                view.findViewById(R.id.btnConvertirseProveedor);
+        // Listener Convertirse en proveedor
         btnConvertirseProveedor.setOnClickListener(v ->
-                mostrarDialogoSolicitudProveedor());
+                mostrarDialogoSolicitudProveedor()
+        );
+
+        // Cargar datos del perfil
+        obtenerDatosPerfil();
     }
 
     private void obtenerDatosPerfil() {
-        SharedPreferences prefs =
-                requireContext().getSharedPreferences("myPrefs", getContext().MODE_PRIVATE);
+        SharedPreferences prefs = requireContext()
+                .getSharedPreferences("myPrefs", Context.MODE_PRIVATE);
         String token = prefs.getString("token", null);
 
         if (token == null) {
@@ -88,7 +89,7 @@ public class PerfilFragment extends Fragment {
             return;
         }
 
-        Retrofit retrofit    = ApiClient.getClientConToken();
+        Retrofit retrofit = ApiClient.getClientConToken();
         AuthService apiService = retrofit.create(AuthService.class);
         Call<PerfilResponse> call = apiService.getPerfil();
 
@@ -97,18 +98,20 @@ public class PerfilFragment extends Fragment {
             public void onResponse(Call<PerfilResponse> call,
                                    Response<PerfilResponse> response) {
                 if (response.isSuccessful() && response.body() != null) {
-                    PerfilResponse perfil = response.body();
+                    perfil = response.body();
                     txtNombreUsuario.setText(perfil.getNombre());
                     txtEmail.setText(perfil.getEmail());
 
-                    // Mostrar u ocultar el botón según el rol y estado de solicitud
-                    if (perfil.isProveedor_solicitud() || perfil.getId_rol() == 2 || perfil.getId_rol() == 3) {
+                    boolean esProveedor = perfil.getId_rol() == 2 || perfil.getId_rol() == 3;
+                    boolean solicitudEnviada = perfil.isProveedor_solicitud();
+
+                    if (esProveedor || solicitudEnviada) {
                         txtConvertirseProveedor.setVisibility(View.GONE);
                     } else {
                         txtConvertirseProveedor.setVisibility(View.VISIBLE);
                     }
 
-                    if (perfil.isProveedor_solicitud()) {
+                    if (solicitudEnviada) {
                         txtConvertirseProveedor.setText("Solicitud en revisión");
                         txtConvertirseProveedor.setTextColor(
                                 getResources().getColor(R.color.colorAccent));
@@ -117,17 +120,16 @@ public class PerfilFragment extends Fragment {
                         txtConvertirseProveedor.setTextColor(
                                 getResources().getColor(R.color.colorPrimary));
                     }
+
                 } else {
                     int code = response.code();
                     if (code == 401 || code == 403) {
-                        SharedPreferences prefs = requireContext()
-                                .getSharedPreferences("myPrefs", getContext().MODE_PRIVATE);
-                        prefs.edit().clear().apply();
-                        startActivity(new Intent(requireContext(), LoginActivity.class));
-                        requireActivity().finish();
+                        cerrarSesionPorTokenInvalido();
                     } else {
                         txtNombreUsuario.setText("Error (" + code + ")");
                         txtEmail.setText("");
+                        Toast.makeText(requireContext(),
+                                "Error al cargar perfil: " + code, Toast.LENGTH_SHORT).show();
                     }
                 }
             }
@@ -135,13 +137,13 @@ public class PerfilFragment extends Fragment {
             @Override
             public void onFailure(Call<PerfilResponse> call, Throwable t) {
                 Toast.makeText(requireContext(),
-                        "Error de conexión", Toast.LENGTH_SHORT).show();
+                        "Error de conexión al cargar perfil", Toast.LENGTH_SHORT).show();
             }
         });
     }
 
     private void mostrarDialogoSolicitudProveedor() {
-        new AlertDialog.Builder(requireContext())
+        new AlertDialog .Builder(requireContext())
                 .setTitle("Convertirse en proveedor")
                 .setMessage("¿Deseas solicitar ser proveedor y subir tus propios mangas o cómics?")
                 .setPositiveButton("Sí, solicitar", (dialog, which) -> enviarSolicitudProveedor())
@@ -150,7 +152,7 @@ public class PerfilFragment extends Fragment {
     }
 
     private void enviarSolicitudProveedor() {
-        Retrofit retrofit    = ApiClient.getClientConToken();
+        Retrofit retrofit = ApiClient.getClientConToken();
         AuthService apiService = retrofit.create(AuthService.class);
         Call<Void> call = apiService.solicitarProveedor();
 
@@ -173,8 +175,16 @@ public class PerfilFragment extends Fragment {
             @Override
             public void onFailure(Call<Void> call, Throwable t) {
                 Toast.makeText(requireContext(),
-                        "Error de conexión", Toast.LENGTH_SHORT).show();
+                        "Error de conexión al enviar solicitud", Toast.LENGTH_SHORT).show();
             }
         });
+    }
+
+    private void cerrarSesionPorTokenInvalido() {
+        SharedPreferences prefs = requireContext()
+                .getSharedPreferences("myPrefs", Context.MODE_PRIVATE);
+        prefs.edit().clear().apply();
+        startActivity(new Intent(requireContext(), LoginActivity.class));
+        requireActivity().finish();
     }
 }

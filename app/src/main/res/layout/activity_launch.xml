@@ -52,6 +52,7 @@
         android:layout_marginBottom="50dp"
         android:fontFamily="@font/sourcesans3_semibold"
         android:text="@string/text_start"
+        app:cornerRadius="30dp"
         android:backgroundTint="#FF3D00"
         android:textSize="18sp"
         app:layout_constraintBottom_toBottomOf="parent"
