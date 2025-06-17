@@ -119,7 +119,7 @@ public class RevisionFragment extends Fragment {
                     tvTitle.setText("Título: " + solicitud.getTitulo());
                     tvAuthor.setText("Autor(es): " + solicitud.getAutores());
                     tvSynopsis.setText(solicitud.getDescripcion());
-                    tvPrice.setText("$" + solicitud.getPrecio_volumen());
+                    tvPrice.setText("S/" + solicitud.getPrecio_volumen());
                     // Cargar imagen de portada si hay URL
                     if (solicitud.getUrl_portada() != null && !solicitud.getUrl_portada().isEmpty()) {
                         // Usa tu librería de imágenes preferida, por ejemplo Glide:

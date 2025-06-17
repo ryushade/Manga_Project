@@ -27,7 +27,7 @@
         <View
             android:layout_width ="match_parent"
             android:layout_height="match_parent"
-            android:background   ="@drawable/gradient_black_top" />
+            />
     </FrameLayout>
 
     <!-- Grupo de detalles (oculto/visible por tab) -->
@@ -35,7 +35,6 @@
         android:id="@+id/detailsGroup"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:constraint_referenced_ids="coverContainer,chipContainer,ratingContainer,scrollSynopsis"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
