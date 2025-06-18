@@ -34,6 +34,10 @@ public class MainAdminActivity extends AppCompatActivity implements Logout {
         ).build();
 
         NavigationUI.setupWithNavController(navView, navController);
+
+        if (savedInstanceState == null) {
+            navController.navigate(R.id.dashboardFragment);
+        }
     }
 
     @Override

@@ -3,6 +3,7 @@ package com.example.manga_project.Api_cliente;
 import com.example.manga_project.Modelos.CapituloResponse;
 import com.example.manga_project.Modelos.Genero;
 import com.example.manga_project.Modelos.AprobarProveedorRequest;
+import com.example.manga_project.Modelos.AprobarPublicacionRequest;
 import com.example.manga_project.Modelos.LoginRequest;
 import com.example.manga_project.Modelos.LoginResponse;
 import com.example.manga_project.Modelos.PaginaResponse;
@@ -119,5 +120,7 @@ public interface AuthService {
     @GET("/api_libros_comprados/{email_user}")
     Call<ApiResponse> obtenerLibrosComprados(@Path("email_user") String emailUser);
 
+    @POST("/api_aprobar_publicacion")
+    Call<SolicitudResponse> aprobarPublicacion(@Body AprobarPublicacionRequest request);
 
 }

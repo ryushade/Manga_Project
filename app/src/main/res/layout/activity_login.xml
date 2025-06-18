@@ -68,76 +68,98 @@
         android:layout_marginTop="5dp"
         android:layout_marginBottom="5dp"
         android:text="@string/textO"
+        android:textColor="#cfd1d3"
         app:layout_constraintBottom_toTopOf="@+id/txtEmailLayout"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        android:textColor="#cfd1d3"
         app:layout_constraintTop_toBottomOf="@id/btnGoogle" />
 
+    <!-- Email Input -->
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/txtEmailLayout"
         style="@style/Widget.Manga_Project.TextInputLayout"
         app:layout_constraintBottom_toTopOf="@+id/txtPasswordLayout"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView7">
+        app:layout_constraintTop_toBottomOf="@+id/textView7"
+        app:boxBackgroundMode="filled"
+        app:boxBackgroundColor="#2A2A2A"
+        app:boxStrokeColor="#cfd1d3"
+        app:boxCornerRadiusTopStart="10dp"
+        app:boxCornerRadiusTopEnd="10dp"
+        app:boxCornerRadiusBottomStart="10dp"
+        app:boxCornerRadiusBottomEnd="10dp">
+
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/txtEmail"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/textEmail"
-            android:background="#2A2A2A"
-            android:textColor="#FFFFFF"
-            android:textColorHint="#FFFFFF"
             android:inputType="textEmailAddress"
-            app:cornerRadius="10dp"/>
+            android:padding="15dp"
+
+            android:textColor="#FFFFFF"
+            android:textColorHint="#cfd1d3" />
 
     </com.google.android.material.textfield.TextInputLayout>
 
+    <!-- Password Input -->
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/txtPasswordLayout"
         style="@style/Widget.Manga_Project.TextInputLayout"
         app:layout_constraintBottom_toTopOf="@+id/btnCorreo"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/txtEmailLayout">
+        app:layout_constraintTop_toBottomOf="@id/txtEmailLayout"
+        app:boxBackgroundMode="filled"
+        app:boxBackgroundColor="#2A2A2A"
+        android:paddingTop="8dp"
+        app:boxStrokeColor="#cfd1d3"
+        app:boxCornerRadiusTopStart="10dp"
+        app:boxCornerRadiusTopEnd="10dp"
+        app:boxCornerRadiusBottomStart="10dp"
+        app:boxCornerRadiusBottomEnd="10dp"
+        app:endIconMode="password_toggle">
+
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/txtContrasena"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/textContrasena"
-            android:background="#2A2A2A"
-            android:textColorHint="#FFFFFF"
-            android:textColor="#FFFFFF"
             android:inputType="textPassword"
-            app:cornerRadius="10dp"/>
+
+            android:padding="15dp"
+            android:textColor="#FFFFFF"
+            android:textColorHint="#cfd1d3" />
+
     </com.google.android.material.textfield.TextInputLayout>
 
-  <com.google.android.material.button.MaterialButton
-      android:id="@+id/btnCorreo"
-      android:layout_width="0dp"
-      android:layout_height="60dp"
-      android:layout_marginStart="20dp"
-      android:layout_marginEnd="20dp"
-      android:layout_marginBottom="15dp"
-      android:fontFamily="@font/sourcesans3_extrabold"
-      android:text="@string/textButtonLogin"
-      android:textSize="18sp"
-      android:backgroundTint="#FF3D00"
-      app:layout_constraintBottom_toTopOf="@+id/txtContrasenaOlvidada"
-      app:layout_constraintEnd_toEndOf="parent"
-      app:layout_constraintStart_toStartOf="parent"
-      app:layout_constraintTop_toBottomOf="@id/txtPasswordLayout"
-      app:cornerRadius="10dp" />
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btnCorreo"
+        android:layout_width="0dp"
+        android:layout_height="60dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="15dp"
+        android:fontFamily="@font/sourcesans3_extrabold"
+        android:text="@string/textButtonLogin"
+        android:textSize="18sp"
+        android:backgroundTint="#FF3D00"
+        app:cornerRadius="10dp"
+        app:layout_constraintBottom_toTopOf="@+id/txtContrasenaOlvidada"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/txtPasswordLayout" />
 
     <com.google.android.material.textview.MaterialTextView
         android:id="@+id/txtContrasenaOlvidada"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/textForgotPassword"
+        android:textColor="#cfd1d3"
         app:layout_constraintBottom_toTopOf="@+id/lblRedRegister"
         app:layout_constraintEnd_toEndOf="parent"
-        android:textColor="#cfd1d3"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/btnCorreo" />
 
@@ -154,6 +176,5 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>

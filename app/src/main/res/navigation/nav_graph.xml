@@ -27,6 +27,8 @@
         android:name="com.example.manga_project.fragments.PerfilFragment"
         tools:layout="@layout/fragment_perfil" />
 
+
+
     <fragment
         android:id="@+id/solicitudesProveedorFragment"
         android:name="com.example.manga_project.fragments.SolicitudesProveedorFragment"

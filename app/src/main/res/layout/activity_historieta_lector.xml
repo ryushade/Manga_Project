@@ -130,4 +130,30 @@
         </androidx.cardview.widget.CardView>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <!-- PRELOAD OVERLAY -->
+    <FrameLayout
+        android:id="@+id/flPreload"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#CC000000"
+        android:visibility="gone">
+
+        <ProgressBar
+            android:id="@+id/pbPreload"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center" />
+
+        <TextView
+            android:id="@+id/tvProgress"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center|bottom"
+            android:layout_marginBottom="48dp"
+            android:textColor="#FFF"
+            android:textSize="18sp"
+            android:text="Cargando..." />
+    </FrameLayout>
+
 </FrameLayout>
