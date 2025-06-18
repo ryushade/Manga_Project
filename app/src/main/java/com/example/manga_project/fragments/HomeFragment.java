@@ -21,9 +21,12 @@ import com.example.manga_project.Api_cliente.ApiResponse;
 import com.example.manga_project.Api_cliente.AuthService;
 import com.example.manga_project.Api_cliente.AutoresApiResponse;
 import com.example.manga_project.Api_cliente.Libro;
+import com.example.manga_project.Modelos.VolumenResponse;
 import com.example.manga_project.R;
 import com.example.manga_project.Section;
+import com.example.manga_project.SectionVolumen;
 import com.example.manga_project.adapters.SectionAdapter;
+import com.example.manga_project.adapters.SectionVolumenAdapter;
 import com.example.manga_project.activities.LoginActivity;
 import com.example.manga_project.databinding.FragmentHomeBinding;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
@@ -53,120 +56,60 @@ public class HomeFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
-        // Configura Google Sign-In para cerrar sesión
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestEmail()
                 .build();
         mGoogleSignInClient = GoogleSignIn.getClient(requireActivity(), gso);
-
-        // Configura Retrofit y AuthService
-        // Asegúrate de que el contexto esté configurado en ApiClient
-        ApiClient.setContext(requireContext());  // Establecer el contexto de la aplicación
-
-        // Configura Retrofit y AuthService usando el cliente con token
-        Retrofit retrofit = ApiClient.getClientConToken();  // Obtener el cliente Retrofit con el token
+        ApiClient.setContext(requireContext());
+        Retrofit retrofit = ApiClient.getClientConToken();
         authService = retrofit.create(AuthService.class);
-
-        // Configurar el RecyclerView principal con disposición vertical
         RecyclerView recyclerView = binding.mRvHome;
         recyclerView.setLayoutManager(new LinearLayoutManager(requireContext()));
-
-
-        // Llamada a las diferentes APIs
-        cargarSecciones(recyclerView);
+        cargarSeccionesVolumen(recyclerView);
     }
 
-    private void cargarSecciones(RecyclerView recyclerView) {
-        List<Section> sections = new ArrayList<>();
-
-        // Cargar cada sección llamando a las diferentes APIs
-        cargarLibrosMasVendidos(sections, recyclerView);
-        cargarMejoresAutoresLibros(sections, recyclerView);
-        cargarLibrosAntiguos(sections, recyclerView);
-        cargarLibrosActuales(sections, recyclerView);
-    }
-
-    private void cargarLibrosMasVendidos(List<Section> sections, RecyclerView recyclerView) {
-        Call<ApiResponse> call = authService.obtenerLibrosMasVendidos();
-        call.enqueue(new Callback<ApiResponse>() {
+    private void cargarSeccionesVolumen(RecyclerView recyclerView) {
+        List<SectionVolumen> sections = new ArrayList<>();
+        // Novedades
+        authService.getNovedades().enqueue(new Callback<List<VolumenResponse>>() {
             @Override
-            public void onResponse(Call<ApiResponse> call, Response<ApiResponse> response) {
+            public void onResponse(Call<List<VolumenResponse>> call, Response<List<VolumenResponse>> response) {
                 if (response.isSuccessful() && response.body() != null) {
-                    List<Libro> libros = response.body().getLibros();
-                    sections.add(new Section("Libros más vendidos", libros));
-                    actualizarAdaptador(recyclerView, sections);
+                    sections.add(new SectionVolumen("Novedades", response.body()));
+                    actualizarAdaptadorVolumen(recyclerView, sections);
                 }
             }
 
-            @Override
-            public void onFailure(Call<ApiResponse> call, Throwable t) {
-                Log.e("API Response", "Error: " + t.getMessage());
-            }
+            @Override public void onFailure(Call<List<VolumenResponse>> call, Throwable t) {}
         });
-    }
-
-    private void cargarMejoresAutoresLibros(List<Section> sections, RecyclerView recyclerView) {
-        Call<AutoresApiResponse> call = authService.obtenerMejoresAutoresLibros();
-        call.enqueue(new Callback<AutoresApiResponse>() {
+        // Más vendidas
+        authService.getMasVendidas().enqueue(new Callback<List<VolumenResponse>>() {
             @Override
-            public void onResponse(Call<AutoresApiResponse> call, Response<AutoresApiResponse> response) {
+            public void onResponse(Call<List<VolumenResponse>> call, Response<List<VolumenResponse>> response) {
                 if (response.isSuccessful() && response.body() != null) {
-                    List<Libro> libros = response.body().getLibros();
-                    sections.add(new Section("Mejores escritores", libros));
-                    actualizarAdaptador(recyclerView, sections);
+                    sections.add(new SectionVolumen("Más vendidas", response.body()));
+                    actualizarAdaptadorVolumen(recyclerView, sections);
                 }
             }
 
-            @Override
-            public void onFailure(Call<AutoresApiResponse> call, Throwable t) {
-                Log.e("API Response", "Error: " + t.getMessage());
-            }
+            @Override public void onFailure(Call<List<VolumenResponse>> call, Throwable t) {}
         });
-    }
-
-
-    private void cargarLibrosAntiguos(List<Section> sections, RecyclerView recyclerView) {
-        Call<ApiResponse> call = authService.obtenerLibrosAntiguos();
-        call.enqueue(new Callback<ApiResponse>() {
+        // Por género (ejemplo: género 1)
+        authService.getPorGenero(1).enqueue(new Callback<List<VolumenResponse>>() {
             @Override
-            public void onResponse(Call<ApiResponse> call, Response<ApiResponse> response) {
+            public void onResponse(Call<List<VolumenResponse>> call, Response<List<VolumenResponse>> response) {
                 if (response.isSuccessful() && response.body() != null) {
-                    List<Libro> libros = response.body().getLibros();
-                    sections.add(new Section("Libros antiguos", libros));
-                    actualizarAdaptador(recyclerView, sections);
+                    sections.add(new SectionVolumen("Por género", response.body()));
+                    actualizarAdaptadorVolumen(recyclerView, sections);
                 }
             }
 
-            @Override
-            public void onFailure(Call<ApiResponse> call, Throwable t) {
-                Log.e("API Response", "Error: " + t.getMessage());
-            }
+            @Override public void onFailure(Call<List<VolumenResponse>> call, Throwable t) {}
         });
     }
 
-    private void cargarLibrosActuales(List<Section> sections, RecyclerView recyclerView) {
-        Call<ApiResponse> call = authService.obtenerLibrosActuales();
-        call.enqueue(new Callback<ApiResponse>() {
-            @Override
-            public void onResponse(Call<ApiResponse> call, Response<ApiResponse> response) {
-                if (response.isSuccessful() && response.body() != null) {
-                    List<Libro> libros = response.body().getLibros();
-                    sections.add(new Section("Libros actuales", libros));
-                    actualizarAdaptador(recyclerView, sections);
-                }
-            }
-
-            @Override
-            public void onFailure(Call<ApiResponse> call, Throwable t) {
-                Log.e("API Response", "Error: " + t.getMessage());
-            }
-        });
-    }
-
-    private void actualizarAdaptador(RecyclerView recyclerView, List<Section> sections) {
-        // Crea el adaptador solo con la lista de secciones y el contexto
-        SectionAdapter adapter = new SectionAdapter(sections, requireContext());
+    private void actualizarAdaptadorVolumen(RecyclerView recyclerView, List<SectionVolumen> sections) {
+        SectionVolumenAdapter adapter = new SectionVolumenAdapter(sections, requireContext());
         recyclerView.setAdapter(adapter);
     }
 

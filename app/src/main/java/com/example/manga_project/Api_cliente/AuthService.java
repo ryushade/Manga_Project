@@ -18,6 +18,7 @@ import com.example.manga_project.Modelos.SolicitudPublicacionRequest;
 import com.example.manga_project.Modelos.SolicitudPublicacionResponse;
 import com.example.manga_project.Modelos.SolicitudResponse;
 import com.example.manga_project.Modelos.SolicitudesProveedorResponse;
+import com.example.manga_project.Modelos.VolumenResponse;
 
 import java.util.List;
 
@@ -122,5 +123,14 @@ public interface AuthService {
 
     @POST("/api_aprobar_publicacion")
     Call<SolicitudResponse> aprobarPublicacion(@Body AprobarPublicacionRequest request);
+
+    @GET("/historietas/novedades")
+    Call<List<VolumenResponse>> getNovedades();
+
+    @GET("/historietas/mas_vendidas")
+    Call<List<VolumenResponse>> getMasVendidas();
+
+    @GET("/historietas/genero/{id_genero}")
+    Call<List<VolumenResponse>> getPorGenero(@Path("id_genero") int idGenero);
 
 }
