@@ -16,7 +16,7 @@ import com.example.manga_project.Modelos.FichaVolumenResponse;
 import com.example.manga_project.Modelos.CapituloResponse;
 import com.example.manga_project.Modelos.PaginaResponse;
 import com.example.manga_project.R;
-import com.example.manga_project.adapters.CapituloAdapter;
+import com.example.manga_project.adapters.EpisodioAdapter;
 import com.squareup.picasso.Picasso;
 import java.util.ArrayList;
 import retrofit2.Call;
@@ -29,7 +29,7 @@ public class HistorietaActivity extends AppCompatActivity {
     private ImageView ivCover;
     private TextView tvTitle, tvPrice, tvSynopsis;
     private RecyclerView rvChapters;
-    private CapituloAdapter capituloAdapter;
+    private EpisodioAdapter episodioAdapter;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -49,10 +49,10 @@ public class HistorietaActivity extends AppCompatActivity {
         tvTitle = findViewById(R.id.tvTitle);
         tvPrice = findViewById(R.id.tvPrice);
         tvSynopsis = findViewById(R.id.tvSynopsis);
-        rvChapters = findViewById(R.id.rvChapters); // Debes agregar este RecyclerView en el layout si no existe
+        rvChapters = findViewById(R.id.rvChapters);
+        episodioAdapter = new EpisodioAdapter(new ArrayList<>(), episodeId -> cargarPaginasCapitulo(episodeId));
         rvChapters.setLayoutManager(new LinearLayoutManager(this));
-        capituloAdapter = new CapituloAdapter(new ArrayList<>(), chapter -> cargarPaginasCapitulo(chapter));
-        rvChapters.setAdapter(capituloAdapter);
+        rvChapters.setAdapter(episodioAdapter);
 
         // Inicializar API
         api = ApiClient.getClientConToken().create(AuthService.class);
@@ -85,7 +85,7 @@ public class HistorietaActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<CapituloResponse> call, Response<CapituloResponse> response) {
                 if (response.isSuccessful() && response.body() != null && response.body().code == 0) {
-                    capituloAdapter.actualizarDatos(response.body().chapters);
+                    episodioAdapter.actualizarDatos(response.body().chapters);
                 }
             }
             @Override
