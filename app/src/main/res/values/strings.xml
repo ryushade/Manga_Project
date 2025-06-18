@@ -18,6 +18,7 @@
     <string name="textForgotPassword">¿Olvidaste tu contraseña?</string>
     <string name="textRegisterGoogle">Registrate con Google</string>
     <string name="textO">o</string>
+    <string name="precio_soles">S/ %.2f</string>
     <string name="textRegister">Registrate y comienza a leer</string>
     <string name="textDni">DNI</string>
     <string name="txtApellidos">Apellidos</string>

@@ -22,6 +22,7 @@ import com.example.manga_project.Modelos.VolumenResponse;
 import com.example.manga_project.Modelos.FichaVolumenResponse;
 import com.example.manga_project.Modelos.CarritoRequest;
 import com.example.manga_project.Modelos.RespuestaGenerica;
+import com.example.manga_project.Modelos.ListarCarritoResponse;
 
 import java.util.List;
 
@@ -29,6 +30,7 @@ import okhttp3.MultipartBody;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
+import retrofit2.http.DELETE;
 import retrofit2.http.GET;
 import retrofit2.http.Multipart;
 import retrofit2.http.POST;
@@ -147,4 +149,13 @@ public interface AuthService {
 
     @POST("/carrito/agregar")
     Call<RespuestaGenerica> agregarAlCarrito(@Body CarritoRequest request);
+
+    @GET("/carrito")
+    Call<ListarCarritoResponse> listarCarrito();
+
+    @POST("/carrito/vaciar")
+    Call<RespuestaGenerica> vaciarCarrito();
+
+    @DELETE("/carrito/item")
+    Call<RespuestaGenerica> eliminarItemCarrito(@Query("id_volumen") int idVolumen);
 }

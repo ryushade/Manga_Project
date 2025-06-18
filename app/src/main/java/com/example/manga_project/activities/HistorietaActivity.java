@@ -15,6 +15,7 @@ import com.example.manga_project.Api_cliente.AuthService;
 import com.example.manga_project.Modelos.CarritoRequest;
 import com.example.manga_project.Modelos.FichaVolumenResponse;
 import com.example.manga_project.Modelos.CapituloResponse;
+import com.example.manga_project.Modelos.ListarCarritoResponse;
 import com.example.manga_project.Modelos.PaginaResponse;
 import com.example.manga_project.Modelos.RespuestaGenerica;
 import com.example.manga_project.R;
@@ -35,6 +36,7 @@ public class HistorietaActivity extends AppCompatActivity {
     private EpisodioAdapter episodioAdapter;
     private FloatingActionButton fabRead;
     private FloatingActionButton fabAddToCart;
+    private boolean volumenEnCarrito = false;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -63,17 +65,40 @@ public class HistorietaActivity extends AppCompatActivity {
         api = ApiClient.getClientConToken().create(AuthService.class);
 
         // Inicializar botones flotantes
-
         fabAddToCart = findViewById(R.id.fabAddToCart);
-        fabAddToCart.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+        fabAddToCart.setOnClickListener(v -> {
+            if (volumenEnCarrito) {
+                Toast.makeText(HistorietaActivity.this, "Ya está en tu carrito", Toast.LENGTH_SHORT).show();
+            } else {
                 agregarAlCarrito();
             }
         });
 
+        verificarVolumenEnCarrito();
         cargarFicha();
         cargarCapitulos();
+    }
+
+    private void verificarVolumenEnCarrito() {
+        api.listarCarrito().enqueue(new Callback<ListarCarritoResponse>() {
+            @Override
+            public void onResponse(Call<ListarCarritoResponse> call, Response<ListarCarritoResponse> response) {
+                if (response.isSuccessful() && response.body() != null && response.body().items != null) {
+                    for (ListarCarritoResponse.ItemCarrito item : response.body().items) {
+                        if (item.id_volumen == idVolumen) {
+                            volumenEnCarrito = true;
+                            fabAddToCart.setEnabled(false);
+                            fabAddToCart.setImageResource(R.drawable.ic_check);
+                            break;
+                        }
+                    }
+                }
+            }
+            @Override
+            public void onFailure(Call<ListarCarritoResponse> call, Throwable t) {
+                // No hacer nada especial
+            }
+        });
     }
 
     private void cargarFicha() {
@@ -83,7 +108,7 @@ public class HistorietaActivity extends AppCompatActivity {
                 if (response.isSuccessful() && response.body() != null) {
                     FichaVolumenResponse ficha = response.body();
                     tvTitle.setText(ficha.titulo);
-                    tvPrice.setText("S/" + ficha.precio);
+                    tvPrice.setText(getString(R.string.precio_soles, ficha.precio));
                     tvSynopsis.setText(ficha.sinopsis);
                     Picasso.get().load(ficha.portada).placeholder(R.drawable.ic_placeholder_portada).into(ivCover);
                 }
@@ -131,22 +156,30 @@ public class HistorietaActivity extends AppCompatActivity {
     }
 
     private void agregarAlCarrito() {
-        // Crear request para agregar al carrito
         CarritoRequest req = new CarritoRequest(idVolumen, 1);
         api.agregarAlCarrito(req).enqueue(new Callback<RespuestaGenerica>() {
             @Override
             public void onResponse(Call<RespuestaGenerica> call, Response<RespuestaGenerica> response) {
-                if (response.isSuccessful() && response.body() != null && response.body().code == 0) {
-                    Toast.makeText(HistorietaActivity.this, "Añadido al carrito", Toast.LENGTH_SHORT).show();
+                if (response.isSuccessful() && response.body() != null) {
+                    int code = response.body().code;
+                    String msg = response.body().msg;
+                    if (code == 0) {
+                        Toast.makeText(HistorietaActivity.this, "¡Volumen añadido a tu carrito!", Toast.LENGTH_SHORT).show();
+                    } else if (code == 2) {
+                        Toast.makeText(HistorietaActivity.this, "Este volumen ya está en tu carrito.", Toast.LENGTH_LONG).show();
+                    } else if (code == 1) {
+                        Toast.makeText(HistorietaActivity.this, "La cantidad debe ser al menos 1.", Toast.LENGTH_LONG).show();
+                    } else {
+                        Toast.makeText(HistorietaActivity.this, msg != null ? msg : "No se pudo agregar al carrito.", Toast.LENGTH_LONG).show();
+                    }
                 } else {
-                    Toast.makeText(HistorietaActivity.this, "No se pudo agregar al carrito", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(HistorietaActivity.this, "No se pudo agregar al carrito. Intenta más tarde.", Toast.LENGTH_LONG).show();
                 }
             }
             @Override
             public void onFailure(Call<RespuestaGenerica> call, Throwable t) {
-                Toast.makeText(HistorietaActivity.this, "Error de red", Toast.LENGTH_SHORT).show();
+                Toast.makeText(HistorietaActivity.this, "Error de conexión. Revisa tu internet.", Toast.LENGTH_LONG).show();
             }
         });
     }
 }
-
