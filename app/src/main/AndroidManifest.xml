@@ -76,6 +76,10 @@
             android:name="com.example.manga_project.activities.OlvidarPasswordActivity"
             android:exported="false"
             android:label="Recuperar contraseña" />
+        <activity
+            android:name="com.example.manga_project.activities.HistorietaActivity"
+            android:exported="false"
+            android:windowSoftInputMode="adjustPan" />
         <meta-data
             android:name="com.google.android.gms.auth.api.signin.default_web_client_id"
             android:value="@string/default_web_client_id" />

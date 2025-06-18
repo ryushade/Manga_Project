@@ -19,6 +19,7 @@ import com.example.manga_project.Modelos.SolicitudPublicacionResponse;
 import com.example.manga_project.Modelos.SolicitudResponse;
 import com.example.manga_project.Modelos.SolicitudesProveedorResponse;
 import com.example.manga_project.Modelos.VolumenResponse;
+import com.example.manga_project.Modelos.FichaVolumenResponse;
 
 import java.util.List;
 
@@ -133,4 +134,12 @@ public interface AuthService {
     @GET("/historietas/genero/{id_genero}")
     Call<List<VolumenResponse>> getPorGenero(@Path("id_genero") int idGenero);
 
+    @GET("/volumenes/{id_vol}")
+    Call<FichaVolumenResponse> getFichaVolumen(@Path("id_vol") int idVol);
+
+    @GET("/volumenes/{id_vol}/chapters")
+    Call<CapituloResponse> getCapitulosVolumen(@Path("id_vol") int idVol);
+
+    @GET("/volumenes/{id_vol}/chapters/{chapter}/pages")
+    Call<PaginaResponse> getPaginasCapitulo(@Path("id_vol") int idVol, @Path("chapter") String chapter);
 }
