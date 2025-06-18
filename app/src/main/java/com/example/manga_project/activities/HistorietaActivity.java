@@ -12,11 +12,14 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import com.example.manga_project.Api_cliente.ApiClient;
 import com.example.manga_project.Api_cliente.AuthService;
+import com.example.manga_project.Modelos.CarritoRequest;
 import com.example.manga_project.Modelos.FichaVolumenResponse;
 import com.example.manga_project.Modelos.CapituloResponse;
 import com.example.manga_project.Modelos.PaginaResponse;
+import com.example.manga_project.Modelos.RespuestaGenerica;
 import com.example.manga_project.R;
 import com.example.manga_project.adapters.EpisodioAdapter;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.squareup.picasso.Picasso;
 import java.util.ArrayList;
 import retrofit2.Call;
@@ -30,6 +33,8 @@ public class HistorietaActivity extends AppCompatActivity {
     private TextView tvTitle, tvPrice, tvSynopsis;
     private RecyclerView rvChapters;
     private EpisodioAdapter episodioAdapter;
+    private FloatingActionButton fabRead;
+    private FloatingActionButton fabAddToCart;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -56,6 +61,16 @@ public class HistorietaActivity extends AppCompatActivity {
 
         // Inicializar API
         api = ApiClient.getClientConToken().create(AuthService.class);
+
+        // Inicializar botones flotantes
+
+        fabAddToCart = findViewById(R.id.fabAddToCart);
+        fabAddToCart.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                agregarAlCarrito();
+            }
+        });
 
         cargarFicha();
         cargarCapitulos();
@@ -114,4 +129,24 @@ public class HistorietaActivity extends AppCompatActivity {
             }
         });
     }
+
+    private void agregarAlCarrito() {
+        // Crear request para agregar al carrito
+        CarritoRequest req = new CarritoRequest(idVolumen, 1);
+        api.agregarAlCarrito(req).enqueue(new Callback<RespuestaGenerica>() {
+            @Override
+            public void onResponse(Call<RespuestaGenerica> call, Response<RespuestaGenerica> response) {
+                if (response.isSuccessful() && response.body() != null && response.body().code == 0) {
+                    Toast.makeText(HistorietaActivity.this, "Añadido al carrito", Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(HistorietaActivity.this, "No se pudo agregar al carrito", Toast.LENGTH_SHORT).show();
+                }
+            }
+            @Override
+            public void onFailure(Call<RespuestaGenerica> call, Throwable t) {
+                Toast.makeText(HistorietaActivity.this, "Error de red", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
 }
+

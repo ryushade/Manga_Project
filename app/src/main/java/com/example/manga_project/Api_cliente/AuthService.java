@@ -20,6 +20,8 @@ import com.example.manga_project.Modelos.SolicitudResponse;
 import com.example.manga_project.Modelos.SolicitudesProveedorResponse;
 import com.example.manga_project.Modelos.VolumenResponse;
 import com.example.manga_project.Modelos.FichaVolumenResponse;
+import com.example.manga_project.Modelos.CarritoRequest;
+import com.example.manga_project.Modelos.RespuestaGenerica;
 
 import java.util.List;
 
@@ -142,4 +144,7 @@ public interface AuthService {
 
     @GET("/volumenes/{id_vol}/chapters/{chapter}/pages")
     Call<PaginaResponse> getPaginasCapitulo(@Path("id_vol") int idVol, @Path("chapter") String chapter);
+
+    @POST("/carrito/agregar")
+    Call<RespuestaGenerica> agregarAlCarrito(@Body CarritoRequest request);
 }

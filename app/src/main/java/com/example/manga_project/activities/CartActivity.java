@@ -37,7 +37,6 @@ import okhttp3.MediaType;
 
 public class CartActivity extends AppCompatActivity {
 
-    private MaterialButton backButton;
     private static final String TAG = "CartActivity";
     private RecyclerView recyclerViewBooks;
     private CartAdapter cartAdapter;
@@ -59,8 +58,14 @@ public class CartActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cart);
 
-        // Inicializar los elementos de la UI
-        backButton = findViewById(R.id.backButton);
+        // Configurar Toolbar con flecha de retroceso
+        androidx.appcompat.widget.Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            getSupportActionBar().setHomeAsUpIndicator(R.drawable.ico_back); // usa tu drawable
+        }
+
         recyclerViewBooks = findViewById(R.id.recyclerViewBooks);
         totalAmountTextView = findViewById(R.id.totalAmountTextView);
         payWithStripeButton = findViewById(R.id.payWithStripeButton);
@@ -84,9 +89,6 @@ public class CartActivity extends AppCompatActivity {
 
         // Configurar el botón de pago con Stripe
         payWithStripeButton.setOnClickListener(v -> presentarHojaDePago());
-
-        // Configurar retroceso
-        backButton.setOnClickListener(v -> finish());
     }
 
     private List<Libro> cargarCarrito() {
@@ -434,5 +436,11 @@ public class CartActivity extends AppCompatActivity {
                 Log.e(TAG, "Error en la solicitud para enviar el correo con el PDF", e);
             }
         }).start();
+    }
+
+    @Override
+    public boolean onSupportNavigateUp() {
+        finish();
+        return true;
     }
 }

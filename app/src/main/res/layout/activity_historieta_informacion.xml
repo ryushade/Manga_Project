@@ -195,7 +195,7 @@
         android:overScrollMode="ifContentScrolls"/>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/fabRead"
+        android:id="@+id/fabAddToCart"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:src="@drawable/ic_play_arrow"
