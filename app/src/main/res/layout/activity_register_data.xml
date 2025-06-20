@@ -9,27 +9,25 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content">
 
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/textView2"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
             android:layout_marginStart="15dp"
             android:layout_marginTop="20dp"
             android:text="@string/textSloganRegister2"
             android:textSize="24sp"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/txtEmailLayout"
             style="@style/Widget.Manga_Project.TextInputLayout"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
             android:layout_marginStart="20dp"
@@ -45,52 +43,48 @@
                 android:inputType="textEmailAddress"/>
         </com.google.android.material.textfield.TextInputLayout>
 
-        <LinearLayout
-            android:id="@+id/linearLayout"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_marginEnd="20dp"
-            android:orientation="horizontal"
-            app:layout_constraintEnd_toEndOf="parent"
+        <!-- Reemplazo de LinearLayout por ConstraintLayout para mejor rendimiento -->
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/txtDniLayout"
+            style="@style/Widget.Manga_Project.TextInputLayout"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="8dp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/txtEmailLayout">
-
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/txtDniLayout"
-                style="@style/Widget.Manga_Project.TextInputLayout"
+            app:layout_constraintTop_toBottomOf="@+id/txtEmailLayout"
+            app:layout_constraintEnd_toStartOf="@+id/dni_search_button">
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/txtDni"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="15dp"
-                android:layout_weight="1">
+                android:hint="@string/textDni"
+                android:inputType="number" />
+        </com.google.android.material.textfield.TextInputLayout>
 
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/txtDni"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="@string/textDni"
-                    android:inputType="number" />
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/dni_search_button"
-                android:layout_width="50dp"
-                android:layout_height="63dp"
-                app:icon="@drawable/ico_search"
-                app:iconSize="20dp"
-                android:backgroundTint="@color/colorPrincipal"
-                />
-
-        </LinearLayout>
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/dni_search_button"
+            android:layout_width="55dp"
+            android:layout_height="63dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="20dp"
+            app:icon="@drawable/ico_search"
+            app:iconSize="20dp"
+            android:backgroundTint="@color/colorPrincipal"
+            app:layout_constraintStart_toEndOf="@+id/txtDniLayout"
+            app:layout_constraintTop_toBottomOf="@+id/txtEmailLayout"
+            app:layout_constraintEnd_toEndOf="parent"/>
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/txtNamesLayout"
             style="@style/Widget.Manga_Project.TextInputLayout"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="20dp"
             android:layout_marginEnd="20dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/linearLayout">
+            app:layout_constraintTop_toBottomOf="@+id/dni_search_button">
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/txtNames"
                 android:layout_height="wrap_content"
@@ -102,7 +96,7 @@
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/txtLastNamesLayout"
             style="@style/Widget.Manga_Project.TextInputLayout"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="20dp"
             android:layout_marginEnd="20dp"
@@ -120,7 +114,7 @@
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/txtDateLayout"
             style="@style/Widget.Manga_Project.TextInputLayout"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="20dp"
             android:layout_marginEnd="20dp"
@@ -138,7 +132,7 @@
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/txtPasswordLayout"
             style="@style/Widget.Manga_Project.TextInputLayout"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="20dp"
             android:layout_marginEnd="20dp"
@@ -156,7 +150,7 @@
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/txtConfirmPasswordLayout"
             style="@style/Widget.Manga_Project.TextInputLayout"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="20dp"
             android:layout_marginEnd="20dp"
@@ -171,7 +165,6 @@
                 android:inputType="textPassword"/>
         </com.google.android.material.textfield.TextInputLayout>
 
-        <!-- Switch para escoger si será proveedor -->
         <com.google.android.material.switchmaterial.SwitchMaterial
             android:id="@+id/provider_switch"
             android:layout_width="0dp"
