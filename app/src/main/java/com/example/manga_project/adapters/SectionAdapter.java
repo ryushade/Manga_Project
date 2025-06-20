@@ -12,7 +12,6 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.manga_project.R;
-import com.example.manga_project.Section;
 
 import java.util.ArrayList;
 import java.util.List;

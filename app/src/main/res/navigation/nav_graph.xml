@@ -83,37 +83,10 @@
 
 
     <!-- Search Fragment -->
-    <fragment
-        android:id="@+id/searchFragment"
-        android:name="com.example.manga_project.fragments.SearchFragment"
-        tools:layout="@layout/fragment_search" />
 
-    <!-- Library Fragment -->
-    <fragment
-        android:id="@+id/libraryFragment"
-        android:name="com.example.manga_project.fragments.LibraryFragment"
-        tools:layout="@layout/fragment_library" >
 
-        <!-- Acción para navegar a PreviewFragment -->
-        <action
-            android:id="@+id/action_libraryFragment_to_previewFragment"
-            app:destination="@id/previewFragment" />
-    </fragment>
 
-    <!-- Preview Fragment -->
-    <fragment
-        android:id="@+id/previewFragment"
-        android:name="com.example.manga_project.fragments.PreviewFragment"
-        tools:layout="@layout/fragment_preview" />
 
-    <!-- Description Book Fragment -->
-    <fragment
-        android:id="@+id/descriptionBookActivity"
-        android:name="com.example.manga_project.activities.DescriptionBookActivity"
-        android:label="activity_description_book">
-        <action
-            android:id="@+id/action_descriptionBookActivity_to_previewFragment"
-            app:destination="@id/previewFragment" />
-    </fragment>
+
 
 </navigation>
