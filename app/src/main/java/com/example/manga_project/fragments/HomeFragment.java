@@ -109,22 +109,7 @@ public class HomeFragment extends Fragment {
 
 
 
-    // Método para mostrar el PopupMenu
-    private void showPopupMenu(View view) {
-        PopupMenu popupMenu = new PopupMenu(requireContext(), view);
-        popupMenu.getMenuInflater().inflate(R.menu.app_bar_menu, popupMenu.getMenu());
 
-        // Manejar los clics en las opciones del menú
-        popupMenu.setOnMenuItemClickListener(item -> {
-            if (item.getItemId() == R.id.action_logout) {
-                logout();
-                return true;
-            }
-            return false;
-        });
-
-        popupMenu.show();
-    }
 
     // Método para cerrar sesión
     private void logout() {

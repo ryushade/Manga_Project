@@ -3,13 +3,11 @@ package com.example.manga_project.adapters;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.bumptech.glide.Glide;
 import com.example.manga_project.R;
 
 import java.util.ArrayList;
@@ -47,11 +45,9 @@ public class EpisodioAdapter
 
     // ───────── ViewHolder ─────────────────────────────────────────────
     static class VH extends RecyclerView.ViewHolder {
-        final ImageView ivThumb;
         final TextView  tvTitle, tvPages;
         VH(@NonNull View v) {
             super(v);
-            ivThumb = v.findViewById(R.id.ivChapterThumb);   // mismo ID que tu layout
             tvTitle = v.findViewById(R.id.tvChapterTitle);
             tvPages = v.findViewById(R.id.tvChapterPages);
         }
@@ -74,9 +70,6 @@ public class EpisodioAdapter
         h.tvTitle.setText("Capítulo " + numero);
 
         h.tvPages.setText("");
-        Glide.with(h.ivThumb.getContext())
-                .load(R.drawable.ic_placeholder_portada)
-                .into(h.ivThumb);
         h.itemView.setOnClickListener(v -> listener.onEpisodeClick(epId));
     }
 
