@@ -1,6 +1,5 @@
 package com.example.manga_project;
 
-import com.example.manga_project.Api_cliente.Libro;
 import java.util.List;
 
 public class Section {

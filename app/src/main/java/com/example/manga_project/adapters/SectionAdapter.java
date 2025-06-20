@@ -11,7 +11,6 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.manga_project.activities.DescriptionBookActivity;
 import com.example.manga_project.R;
 import com.example.manga_project.Section;
 

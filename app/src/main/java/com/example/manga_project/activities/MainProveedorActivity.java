@@ -30,6 +30,10 @@ public class MainProveedorActivity extends AppCompatActivity implements Logout {
         ).build();
 
         NavigationUI.setupWithNavController(navView, navController);
+
+        if (savedInstanceState == null) {
+            navController.navigate(R.id.inicioFragment);
+        }
     }
 
     public void logout() {
