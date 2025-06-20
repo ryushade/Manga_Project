@@ -125,4 +125,7 @@
     <string name="title_sample">Título de ejemplo</string>
     <string name="author_sample">Autor de ejemplo</string>
     <string name="precio_sample">S/ 00.00</string>
+    <string name="comment_user">Usuario</string>
+    <string name="comment_time_ago">Hace 2 horas</string>
+    <string name="comment_sample_text">Este es un comentario de ejemplo sobre la historieta.</string>
 </resources>

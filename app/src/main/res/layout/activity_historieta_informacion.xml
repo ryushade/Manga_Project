@@ -178,10 +178,10 @@
             android:text="@string/tab_chapters"/>
 
         <com.google.android.material.tabs.TabItem
-            android:id="@+id/tabItemDetails"
+            android:id="@+id/tabItemComments"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/tab_details"/>
+            android:text="Comentarios"/>
     </com.google.android.material.tabs.TabLayout>
 
     <!-- RecyclerView para capítulos -->
@@ -196,6 +196,21 @@
         android:clipToPadding="false"
         android:paddingTop="8dp"
         android:paddingBottom="8dp"
+        android:overScrollMode="ifContentScrolls"/>
+
+    <!-- RecyclerView para comentarios -->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvComments"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintTop_toBottomOf="@id/tabLayout"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:clipToPadding="false"
+        android:paddingTop="8dp"
+        android:paddingBottom="8dp"
+        android:visibility="gone"
         android:overScrollMode="ifContentScrolls"/>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
