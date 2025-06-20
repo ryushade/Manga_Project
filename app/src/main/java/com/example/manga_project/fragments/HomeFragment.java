@@ -20,7 +20,7 @@ import com.example.manga_project.Api_cliente.AuthService;
 import com.example.manga_project.Modelos.VolumenResponse;
 import com.example.manga_project.R;
 import com.example.manga_project.SectionVolumen;
-import com.example.manga_project.adapters.SectionVolumenAdapter;
+import com.example.manga_project.adapters.HomeAdapter;
 import com.example.manga_project.activities.LoginActivity;
 import com.example.manga_project.databinding.FragmentHomeBinding;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
@@ -103,7 +103,8 @@ public class HomeFragment extends Fragment {
     }
 
     private void actualizarAdaptadorVolumen(RecyclerView recyclerView, List<SectionVolumen> sections) {
-        SectionVolumenAdapter adapter = new SectionVolumenAdapter(sections, requireContext());
+        HomeAdapter adapter = new HomeAdapter(requireContext(), sections);
+        recyclerView.setHasFixedSize(true);
         recyclerView.setAdapter(adapter);
     }
 
