@@ -16,7 +16,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.manga_project.Api_cliente.ApiClient;
 import com.example.manga_project.Api_cliente.ApiResponse;
 import com.example.manga_project.Api_cliente.AuthService;
-import com.example.manga_project.adapters.SearchBookAdapter;
 import com.example.manga_project.databinding.FragmentSearchBinding;
 import com.google.android.material.textfield.TextInputEditText;
 
