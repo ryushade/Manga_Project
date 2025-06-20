@@ -19,7 +19,8 @@ android {
 
     buildTypes {
         release {
-            isMinifyEnabled = false
+            isMinifyEnabled = true
+            isShrinkResources = true
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
@@ -62,10 +63,8 @@ dependencies {
     implementation(libs.okhttp.v4120)
     implementation(libs.logging.interceptor)
     annotationProcessor (libs.compiler)
-    implementation (libs.okhttp)
     implementation(libs.compose.wallet.button)
     implementation (libs.play.services.pay)
     implementation(libs.play.services.wallet)
-    implementation (libs.fuel)
     implementation (libs.stripe.android)
 }
