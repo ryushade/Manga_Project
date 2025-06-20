@@ -18,14 +18,7 @@
         android:padding="12dp"
         android:gravity="center_vertical">
 
-        <!-- Miniatura del capítulo -->
-        <ImageView
-            android:id="@+id/ivChapterThumb"
-            android:layout_width="48dp"
-            android:layout_height="64dp"
-            android:scaleType="centerCrop"
-            android:src="@drawable/ic_placeholder_portada"
-            android:contentDescription="Thumbnail" />
+
 
         <!-- Texto de información -->
         <LinearLayout
