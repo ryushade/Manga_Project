@@ -10,7 +10,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
-        android:textColor="@color/colorText"
+        android:textColor="@color/color6"
         android:text="Self Developments"
         android:textSize="20sp"
         android:textStyle="bold"
@@ -43,7 +43,8 @@
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/moreButton"
-        tools:listitem="@layout/item_book_image" />
+        tools:listitem="@layout/item_book_image"
+        android:textColor="#FFFFFF" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

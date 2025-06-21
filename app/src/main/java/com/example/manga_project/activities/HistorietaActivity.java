@@ -3,7 +3,10 @@ package com.example.manga_project.activities;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 import androidx.annotation.Nullable;
@@ -20,7 +23,11 @@ import com.example.manga_project.Modelos.PaginaResponse;
 import com.example.manga_project.Modelos.RespuestaGenerica;
 import com.example.manga_project.R;
 import com.example.manga_project.adapters.EpisodioAdapter;
+import com.example.manga_project.adapters.ComentarioAdapter;
+import com.example.manga_project.Modelos.Comentario;
+import com.example.manga_project.Modelos.CrearComentarioRequest;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.tabs.TabLayout;
 import com.squareup.picasso.Picasso;
 import java.util.ArrayList;
 import retrofit2.Call;
@@ -32,11 +39,17 @@ public class HistorietaActivity extends AppCompatActivity {
     private AuthService api;
     private ImageView ivCover;
     private TextView tvTitle, tvPrice, tvSynopsis;
-    private RecyclerView rvChapters;
+    private RecyclerView rvChapters, rvComments;
     private EpisodioAdapter episodioAdapter;
+    private ComentarioAdapter comentarioAdapter;
     private FloatingActionButton fabRead;
     private FloatingActionButton fabAddToCart;
     private boolean volumenEnCarrito = false;
+    private ArrayList<Comentario> listaComentarios = new ArrayList<>();
+    private LinearLayout commentInputContainer;
+    private EditText etComment;
+    private ImageButton btnSendComment;
+    private TabLayout tabLayout;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -57,9 +70,17 @@ public class HistorietaActivity extends AppCompatActivity {
         tvPrice = findViewById(R.id.tvPrice);
         tvSynopsis = findViewById(R.id.tvSynopsis);
         rvChapters = findViewById(R.id.rvChapters);
+        rvComments = findViewById(R.id.rvComments);
         episodioAdapter = new EpisodioAdapter(new ArrayList<>(), episodeId -> cargarPaginasCapitulo(episodeId));
         rvChapters.setLayoutManager(new LinearLayoutManager(this));
         rvChapters.setAdapter(episodioAdapter);
+        comentarioAdapter = new ComentarioAdapter(listaComentarios);
+        rvComments.setLayoutManager(new LinearLayoutManager(this));
+        rvComments.setAdapter(comentarioAdapter);
+        commentInputContainer = findViewById(R.id.commentInputContainer);
+        etComment = findViewById(R.id.etComment);
+        btnSendComment = findViewById(R.id.btnSendComment);
+        tabLayout = findViewById(R.id.tabLayout);
 
         // Inicializar API
         api = ApiClient.getClientConToken().create(AuthService.class);
@@ -71,6 +92,49 @@ public class HistorietaActivity extends AppCompatActivity {
                 Toast.makeText(HistorietaActivity.this, "Ya está en tu carrito", Toast.LENGTH_SHORT).show();
             } else {
                 agregarAlCarrito();
+            }
+        });
+
+        tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+            @Override
+            public void onTabSelected(TabLayout.Tab tab) {
+                if (tab.getPosition() == 1) { // Comentarios
+                    rvChapters.setVisibility(View.GONE);
+                    rvComments.setVisibility(View.VISIBLE);
+                    commentInputContainer.setVisibility(View.VISIBLE);
+                } else {
+                    rvChapters.setVisibility(View.VISIBLE);
+                    rvComments.setVisibility(View.GONE);
+                    commentInputContainer.setVisibility(View.GONE);
+                }
+            }
+            @Override public void onTabUnselected(TabLayout.Tab tab) {}
+            @Override public void onTabReselected(TabLayout.Tab tab) {}
+        });
+
+        btnSendComment.setOnClickListener(v -> {
+            String texto = etComment.getText().toString().trim();
+            if (!texto.isEmpty()) {
+                CrearComentarioRequest req = new CrearComentarioRequest(idVolumen, texto);
+                api.crearComentario(req).enqueue(new retrofit2.Callback<RespuestaGenerica>() {
+                    @Override
+                    public void onResponse(retrofit2.Call<RespuestaGenerica> call, retrofit2.Response<RespuestaGenerica> response) {
+                        if (response.isSuccessful() && response.body() != null && response.body().code == 0) {
+                            Comentario comentario = new Comentario("Tú", "Hace un momento", texto);
+                            comentarioAdapter.agregarComentario(comentario);
+                            rvComments.scrollToPosition(0);
+                            etComment.setText("");
+                        } else {
+                            Toast.makeText(HistorietaActivity.this, "No se pudo publicar el comentario", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                    @Override
+                    public void onFailure(retrofit2.Call<RespuestaGenerica> call, Throwable t) {
+                        Toast.makeText(HistorietaActivity.this, "Error de red al comentar", Toast.LENGTH_SHORT).show();
+                    }
+                });
+            } else {
+                Toast.makeText(this, "Escribe un comentario", Toast.LENGTH_SHORT).show();
             }
         });
 

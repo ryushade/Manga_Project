@@ -23,6 +23,7 @@ import com.example.manga_project.Modelos.FichaVolumenResponse;
 import com.example.manga_project.Modelos.CarritoRequest;
 import com.example.manga_project.Modelos.RespuestaGenerica;
 import com.example.manga_project.Modelos.ListarCarritoResponse;
+import com.example.manga_project.Modelos.CrearComentarioRequest;
 
 import java.util.List;
 
@@ -158,4 +159,7 @@ public interface AuthService {
 
     @DELETE("/carrito/item")
     Call<RespuestaGenerica> eliminarItemCarrito(@Query("id_volumen") int idVolumen);
+
+    @POST("/api_crear_comentario")
+    Call<RespuestaGenerica> crearComentario(@Body CrearComentarioRequest request);
 }
