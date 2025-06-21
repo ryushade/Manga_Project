@@ -113,7 +113,7 @@ public interface AuthService {
 //    Call<ApiResponse> obtenerLibrosAntiguos();
 //
 //    @GET("/api_libros_actuales")
-//    Call<ApiResponse> obtenerLibrosActuales();
+//    Call<ApiResponse> obtenerLibrosActuales;
 
 //    @GET("/api_mejores_autores_libros")
 //    Call<AutoresApiResponse> obtenerMejoresAutoresLibros();
@@ -162,4 +162,7 @@ public interface AuthService {
 
     @POST("/api_crear_comentario")
     Call<RespuestaGenerica> crearComentario(@Body CrearComentarioRequest request);
+
+    @PUT("/api_cancelar_solicitud_proveedor")
+    Call<RespuestaGenerica> cancelarSolicitudProveedor();
 }

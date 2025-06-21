@@ -32,6 +32,7 @@ public class PerfilFragment extends Fragment {
 
     private TextView txtNombreUsuario, txtEmail, txtConvertirseProveedor;
     private PerfilResponse perfil;
+    private boolean solicitudEnviada = false;
 
     @Nullable
     @Override
@@ -70,9 +71,13 @@ public class PerfilFragment extends Fragment {
         });
 
         // Listener Convertirse en proveedor
-        btnConvertirseProveedor.setOnClickListener(v ->
-                mostrarDialogoSolicitudProveedor()
-        );
+        btnConvertirseProveedor.setOnClickListener(v -> {
+            if (solicitudEnviada) {
+                mostrarDialogoCancelarSolicitudProveedor();
+            } else {
+                mostrarDialogoSolicitudProveedor();
+            }
+        });
 
         // Cargar datos del perfil
         obtenerDatosPerfil();
@@ -103,24 +108,22 @@ public class PerfilFragment extends Fragment {
                     txtEmail.setText(perfil.getEmail());
 
                     boolean esProveedor = perfil.getId_rol() == 2 || perfil.getId_rol() == 3;
-                    boolean solicitudEnviada = perfil.isProveedor_solicitud();
+                    solicitudEnviada = perfil.isProveedor_solicitud();
 
-                    if (esProveedor || solicitudEnviada) {
+                    if (esProveedor) {
                         txtConvertirseProveedor.setVisibility(View.GONE);
                     } else {
                         txtConvertirseProveedor.setVisibility(View.VISIBLE);
+                        if (solicitudEnviada) {
+                            txtConvertirseProveedor.setText("Cancelar solicitud");
+                            txtConvertirseProveedor.setTextColor(
+                                    getResources().getColor(R.color.colorAccent));
+                        } else {
+                            txtConvertirseProveedor.setText("Convertirse en proveedor");
+                            txtConvertirseProveedor.setTextColor(
+                                    getResources().getColor(R.color.colorPrimary));
+                        }
                     }
-
-                    if (solicitudEnviada) {
-                        txtConvertirseProveedor.setText("Solicitud en revisión");
-                        txtConvertirseProveedor.setTextColor(
-                                getResources().getColor(R.color.colorAccent));
-                    } else {
-                        txtConvertirseProveedor.setText("Convertirse en proveedor");
-                        txtConvertirseProveedor.setTextColor(
-                                getResources().getColor(R.color.colorPrimary));
-                    }
-
                 } else {
                     int code = response.code();
                     if (code == 401 || code == 403) {
@@ -163,9 +166,15 @@ public class PerfilFragment extends Fragment {
                 if (response.isSuccessful()) {
                     Toast.makeText(requireContext(),
                             "Solicitud enviada con éxito", Toast.LENGTH_SHORT).show();
+                    // Actualiza el estado localmente
+                    if (perfil != null) {
+                        perfil.setProveedor_solicitud(true);
+                    }
                     txtConvertirseProveedor.setText("Solicitud en revisión");
                     txtConvertirseProveedor.setTextColor(
                             getResources().getColor(R.color.colorAccent));
+                    // Refresca el perfil desde el backend para asegurar consistencia
+                    obtenerDatosPerfil();
                 } else {
                     Toast.makeText(requireContext(),
                             "Error: " + response.code(), Toast.LENGTH_SHORT).show();
@@ -176,6 +185,38 @@ public class PerfilFragment extends Fragment {
             public void onFailure(Call<Void> call, Throwable t) {
                 Toast.makeText(requireContext(),
                         "Error de conexión al enviar solicitud", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    private void mostrarDialogoCancelarSolicitudProveedor() {
+        new AlertDialog.Builder(requireContext())
+                .setTitle("Cancelar solicitud")
+                .setMessage("¿Seguro que deseas cancelar tu solicitud de proveedor?")
+                .setPositiveButton("Sí, cancelar", (dialog, which) -> cancelarSolicitudProveedor())
+                .setNegativeButton("No", null)
+                .show();
+    }
+
+    private void cancelarSolicitudProveedor() {
+        Retrofit retrofit = ApiClient.getClientConToken();
+        AuthService apiService = retrofit.create(AuthService.class);
+        Call<com.example.manga_project.Modelos.RespuestaGenerica> call = apiService.cancelarSolicitudProveedor();
+        call.enqueue(new Callback<com.example.manga_project.Modelos.RespuestaGenerica>() {
+            @Override
+            public void onResponse(Call<com.example.manga_project.Modelos.RespuestaGenerica> call, Response<com.example.manga_project.Modelos.RespuestaGenerica> response) {
+                if (response.isSuccessful() && response.body() != null && response.body().code == 0) {
+                    Toast.makeText(requireContext(), "Solicitud cancelada", Toast.LENGTH_SHORT).show();
+                    solicitudEnviada = false;
+                    if (perfil != null) perfil.setProveedor_solicitud(false);
+                    obtenerDatosPerfil();
+                } else {
+                    Toast.makeText(requireContext(), "No se pudo cancelar la solicitud", Toast.LENGTH_SHORT).show();
+                }
+            }
+            @Override
+            public void onFailure(Call<com.example.manga_project.Modelos.RespuestaGenerica> call, Throwable t) {
+                Toast.makeText(requireContext(), "Error de red al cancelar", Toast.LENGTH_SHORT).show();
             }
         });
     }
