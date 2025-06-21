@@ -1,6 +1,64 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/ic_launcher_background">
+
+    <!-- Barra de título -->
+    <TextView
+        android:id="@+id/tvLibraryTitle"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Mi librería"
+        android:textColor="@color/white"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        android:gravity="center"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="24dp" />
+
+    <!-- TabLayout para las pestañas 'Comprados' y 'Mi lista' -->
+    <com.google.android.material.tabs.TabLayout
+        android:id="@+id/tabLayoutLibrary"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:tabIndicatorColor="@color/colorAccent"
+        app:tabSelectedTextColor="@color/white"
+        app:tabTextColor="@color/gray"
+        app:tabBackground="@color/card_dark"
+        app:layout_constraintTop_toBottomOf="@id/tvLibraryTitle"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="16dp"
+        android:background="@color/card_dark">
+
+        <com.google.android.material.tabs.TabItem
+            android:id="@+id/tabItemComprados"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Comprados"/>
+
+        <com.google.android.material.tabs.TabItem
+            android:id="@+id/tabItemMiLista"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Mi lista"/>
+    </com.google.android.material.tabs.TabLayout>
+
+    <!-- ViewPager2 para mostrar el contenido de cada tab -->
+    <androidx.viewpager2.widget.ViewPager2
+        android:id="@+id/viewPagerLibrary"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintTop_toBottomOf="@id/tabLayoutLibrary"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="8dp"
+        android:padding="8dp"
+        android:clipToPadding="false"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
