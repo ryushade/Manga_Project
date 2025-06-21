@@ -26,6 +26,7 @@ import com.example.manga_project.R;
 import com.example.manga_project.adapters.EpisodioAdapter;
 import com.example.manga_project.adapters.ComentarioAdapter;
 import com.example.manga_project.Modelos.Comentario;
+import com.example.manga_project.Modelos.ComentariosResponse;
 import com.example.manga_project.Modelos.CrearComentarioRequest;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.tabs.TabLayout;
@@ -81,13 +82,14 @@ public class HistorietaActivity extends AppCompatActivity {
         comentarioAdapter = new ComentarioAdapter(listaComentarios);
         rvComments.setLayoutManager(new LinearLayoutManager(this));
         rvComments.setAdapter(comentarioAdapter);
+        // Inicializar API antes de cargar comentarios
+        api = ApiClient.getClientConToken().create(AuthService.class);
+        // Cargar comentarios al entrar a la actividad
+        cargarComentarios();
         commentInputContainer = findViewById(R.id.commentInputContainer);
         etComment = findViewById(R.id.etComment);
         btnSendComment = findViewById(R.id.btnSendComment);
         tabLayout = findViewById(R.id.tabLayout);
-
-        // Inicializar API
-        api = ApiClient.getClientConToken().create(AuthService.class);
 
         // Inicializar botones flotantes
         fabAddToCart = findViewById(R.id.fabAddToCart);
@@ -198,11 +200,12 @@ public class HistorietaActivity extends AppCompatActivity {
                 if (response.isSuccessful() && response.body() != null && response.body().code == 0) {
                     episodioAdapter.actualizarDatos(response.body().chapters);
                 }
-                @Override
-                public void onFailure(Call<CapituloResponse> call, Throwable t) {
-                    Toast.makeText(HistorietaActivity.this, "Error al cargar capítulos", Toast.LENGTH_SHORT).show();
-                }
-            });
+            }
+            @Override
+            public void onFailure(Call<CapituloResponse> call, Throwable t) {
+                Toast.makeText(HistorietaActivity.this, "Error al cargar capítulos", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     private void cargarPaginasCapitulo(String chapter) {
@@ -254,17 +257,18 @@ public class HistorietaActivity extends AppCompatActivity {
     }
 
     private void cargarComentarios() {
-        api.getComentarios(idVolumen).enqueue(new Callback<List<Comentario>>() {
+        Call<ComentariosResponse> call = api.getComentarios(idVolumen);
+        call.enqueue(new retrofit2.Callback<ComentariosResponse>() {
             @Override
-            public void onResponse(Call<List<Comentario>> call, Response<List<Comentario>> response) {
+            public void onResponse(Call<ComentariosResponse> call, Response<ComentariosResponse> response) {
                 if (response.isSuccessful() && response.body() != null) {
-                    comentarioAdapter.setComentarios(response.body());
+                    comentarioAdapter.setComentarios(response.body().comentarios);
                 } else {
                     comentarioAdapter.setComentarios(new ArrayList<>());
                 }
             }
             @Override
-            public void onFailure(Call<List<Comentario>> call, Throwable t) {
+            public void onFailure(Call<ComentariosResponse> call, Throwable t) {
                 comentarioAdapter.setComentarios(new ArrayList<>());
             }
         });

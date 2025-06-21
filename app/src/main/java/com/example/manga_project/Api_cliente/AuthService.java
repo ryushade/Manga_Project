@@ -28,6 +28,7 @@ import com.example.manga_project.Modelos.ListarCarritoResponse;
 import com.example.manga_project.Modelos.CrearComentarioRequest;
 import com.example.manga_project.Modelos.BusquedaHistorieta;
 import com.example.manga_project.Modelos.BusquedaHistorietaResponse;
+import com.example.manga_project.Modelos.ComentariosResponse;
 
 import java.util.List;
 
@@ -173,6 +174,6 @@ public interface AuthService {
     @GET("/api_lista_busqueda")
     Call<BusquedaHistorietaResponse> buscarHistorietas(@Query("q") String query);
 
-    @GET("/api_obtener_comentarios/{id_historieta}")
-    Call<List<Comentario>> getComentarios(@Path("id_historieta") int idHistorieta);
+    @GET("api_obtener_comentarios/{id_historieta}")
+    Call<ComentariosResponse> getComentarios(@Path("id_historieta") int idHistorieta);
 }
