@@ -16,6 +16,7 @@ import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
+import com.example.manga_project.Api_cliente.ApiClient;
 import com.example.manga_project.Logout;
 import com.example.manga_project.R;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -24,6 +25,7 @@ public class MainActivity extends AppCompatActivity implements Logout {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        ApiClient.setContext(getApplicationContext());
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 

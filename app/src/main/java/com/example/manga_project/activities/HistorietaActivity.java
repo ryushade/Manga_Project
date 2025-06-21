@@ -16,6 +16,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.manga_project.Api_cliente.ApiClient;
 import com.example.manga_project.Api_cliente.AuthService;
 import com.example.manga_project.Modelos.CarritoRequest;
+import com.example.manga_project.Modelos.CrearComentarioResponse;
 import com.example.manga_project.Modelos.FichaVolumenResponse;
 import com.example.manga_project.Modelos.CapituloResponse;
 import com.example.manga_project.Modelos.ListarCarritoResponse;
@@ -29,7 +30,10 @@ import com.example.manga_project.Modelos.CrearComentarioRequest;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.tabs.TabLayout;
 import com.squareup.picasso.Picasso;
+
 import java.util.ArrayList;
+import java.util.List;
+
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -115,21 +119,21 @@ public class HistorietaActivity extends AppCompatActivity {
         btnSendComment.setOnClickListener(v -> {
             String texto = etComment.getText().toString().trim();
             if (!texto.isEmpty()) {
+                // Crear el comentario
                 CrearComentarioRequest req = new CrearComentarioRequest(idVolumen, texto);
-                api.crearComentario(req).enqueue(new retrofit2.Callback<RespuestaGenerica>() {
+                api.crearComentario(req).enqueue(new Callback<CrearComentarioResponse>() {
                     @Override
-                    public void onResponse(retrofit2.Call<RespuestaGenerica> call, retrofit2.Response<RespuestaGenerica> response) {
-                        if (response.isSuccessful() && response.body() != null && response.body().code == 0) {
-                            Comentario comentario = new Comentario("Tú", "Hace un momento", texto);
-                            comentarioAdapter.agregarComentario(comentario);
-                            rvComments.scrollToPosition(0);
+                    public void onResponse(Call<CrearComentarioResponse> call, Response<CrearComentarioResponse> response) {
+                        if (response.isSuccessful() && response.body() != null) {
+                            // Después de crear, refresca la lista de comentarios
+                            cargarComentarios();
                             etComment.setText("");
                         } else {
                             Toast.makeText(HistorietaActivity.this, "No se pudo publicar el comentario", Toast.LENGTH_SHORT).show();
                         }
                     }
                     @Override
-                    public void onFailure(retrofit2.Call<RespuestaGenerica> call, Throwable t) {
+                    public void onFailure(Call<CrearComentarioResponse> call, Throwable t) {
                         Toast.makeText(HistorietaActivity.this, "Error de red al comentar", Toast.LENGTH_SHORT).show();
                     }
                 });
@@ -137,6 +141,9 @@ public class HistorietaActivity extends AppCompatActivity {
                 Toast.makeText(this, "Escribe un comentario", Toast.LENGTH_SHORT).show();
             }
         });
+
+        // Cargar comentarios al iniciar
+        cargarComentarios();
 
         verificarVolumenEnCarrito();
         cargarFicha();
@@ -191,12 +198,11 @@ public class HistorietaActivity extends AppCompatActivity {
                 if (response.isSuccessful() && response.body() != null && response.body().code == 0) {
                     episodioAdapter.actualizarDatos(response.body().chapters);
                 }
-            }
-            @Override
-            public void onFailure(Call<CapituloResponse> call, Throwable t) {
-                Toast.makeText(HistorietaActivity.this, "Error al cargar capítulos", Toast.LENGTH_SHORT).show();
-            }
-        });
+                @Override
+                public void onFailure(Call<CapituloResponse> call, Throwable t) {
+                    Toast.makeText(HistorietaActivity.this, "Error al cargar capítulos", Toast.LENGTH_SHORT).show();
+                }
+            });
     }
 
     private void cargarPaginasCapitulo(String chapter) {
@@ -243,6 +249,23 @@ public class HistorietaActivity extends AppCompatActivity {
             @Override
             public void onFailure(Call<RespuestaGenerica> call, Throwable t) {
                 Toast.makeText(HistorietaActivity.this, "Error de conexión. Revisa tu internet.", Toast.LENGTH_LONG).show();
+            }
+        });
+    }
+
+    private void cargarComentarios() {
+        api.getComentarios(idVolumen).enqueue(new Callback<List<Comentario>>() {
+            @Override
+            public void onResponse(Call<List<Comentario>> call, Response<List<Comentario>> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    comentarioAdapter.setComentarios(response.body());
+                } else {
+                    comentarioAdapter.setComentarios(new ArrayList<>());
+                }
+            }
+            @Override
+            public void onFailure(Call<List<Comentario>> call, Throwable t) {
+                comentarioAdapter.setComentarios(new ArrayList<>());
             }
         });
     }

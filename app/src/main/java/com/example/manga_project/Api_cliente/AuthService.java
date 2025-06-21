@@ -1,6 +1,8 @@
 package com.example.manga_project.Api_cliente;
 
 import com.example.manga_project.Modelos.CapituloResponse;
+import com.example.manga_project.Modelos.Comentario;
+import com.example.manga_project.Modelos.CrearComentarioResponse;
 import com.example.manga_project.Modelos.Genero;
 import com.example.manga_project.Modelos.AprobarProveedorRequest;
 import com.example.manga_project.Modelos.AprobarPublicacionRequest;
@@ -163,11 +165,14 @@ public interface AuthService {
     Call<RespuestaGenerica> eliminarItemCarrito(@Query("id_volumen") int idVolumen);
 
     @POST("/api_crear_comentario")
-    Call<RespuestaGenerica> crearComentario(@Body CrearComentarioRequest request);
+    Call<CrearComentarioResponse> crearComentario(@Body CrearComentarioRequest request);
 
     @PUT("/api_cancelar_solicitud_proveedor")
     Call<RespuestaGenerica> cancelarSolicitudProveedor();
 
     @GET("/api_lista_busqueda")
     Call<BusquedaHistorietaResponse> buscarHistorietas(@Query("q") String query);
+
+    @GET("/api_obtener_comentarios/{id_historieta}")
+    Call<List<Comentario>> getComentarios(@Path("id_historieta") int idHistorieta);
 }
