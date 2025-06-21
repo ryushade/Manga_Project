@@ -128,4 +128,9 @@
     <string name="comment_user">Usuario</string>
     <string name="comment_time_ago">Hace 2 horas</string>
     <string name="comment_sample_text">Este es un comentario de ejemplo sobre la historieta.</string>
+    <string name="search_category">Categoría</string>
+    <string name="search_title">Título del manga</string>
+    <string name="search_author">Autor</string>
+    <string name="label_sort_by_popularity">Ordenar por: Popularidad</string>
+    <string name="label_resultados">Resultados</string>
 </resources>

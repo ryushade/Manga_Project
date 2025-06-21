@@ -83,6 +83,11 @@
 
 
     <!-- Search Fragment -->
+    <fragment
+        android:id="@+id/searchFragment"
+        android:name="com.example.manga_project.fragments.SearchFragment"
+        android:label="Search"
+        tools:layout="@layout/fragment_search" />
 
 
 

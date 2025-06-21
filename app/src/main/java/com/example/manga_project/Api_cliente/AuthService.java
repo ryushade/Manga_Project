@@ -24,6 +24,8 @@ import com.example.manga_project.Modelos.CarritoRequest;
 import com.example.manga_project.Modelos.RespuestaGenerica;
 import com.example.manga_project.Modelos.ListarCarritoResponse;
 import com.example.manga_project.Modelos.CrearComentarioRequest;
+import com.example.manga_project.Modelos.BusquedaHistorieta;
+import com.example.manga_project.Modelos.BusquedaHistorietaResponse;
 
 import java.util.List;
 
@@ -165,4 +167,7 @@ public interface AuthService {
 
     @PUT("/api_cancelar_solicitud_proveedor")
     Call<RespuestaGenerica> cancelarSolicitudProveedor();
+
+    @GET("/api_lista_busqueda")
+    Call<BusquedaHistorietaResponse> buscarHistorietas(@Query("q") String query);
 }

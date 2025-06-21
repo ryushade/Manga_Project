@@ -139,6 +139,7 @@ public class PerfilFragment extends Fragment {
 
             @Override
             public void onFailure(Call<PerfilResponse> call, Throwable t) {
+                if (!isAdded()) return;
                 Toast.makeText(requireContext(),
                         "Error de conexión al cargar perfil", Toast.LENGTH_SHORT).show();
             }
@@ -183,6 +184,7 @@ public class PerfilFragment extends Fragment {
 
             @Override
             public void onFailure(Call<Void> call, Throwable t) {
+                if (!isAdded()) return;
                 Toast.makeText(requireContext(),
                         "Error de conexión al enviar solicitud", Toast.LENGTH_SHORT).show();
             }
@@ -216,6 +218,7 @@ public class PerfilFragment extends Fragment {
             }
             @Override
             public void onFailure(Call<com.example.manga_project.Modelos.RespuestaGenerica> call, Throwable t) {
+                if (!isAdded()) return;
                 Toast.makeText(requireContext(), "Error de red al cancelar", Toast.LENGTH_SHORT).show();
             }
         });
