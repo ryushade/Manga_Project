@@ -188,4 +188,7 @@ public interface AuthService {
 
     @POST("api_agregar_wishlist")
     Call<RespuestaGenerica> agregarWishlist(@Body Map<String, Integer> body);
+
+    @DELETE("/api_eliminar_wishlist/{id_volumen}")
+    Call<RespuestaGenerica> eliminarWishlist(@Path("id_volumen") int idVolumen);
 }

@@ -104,9 +104,36 @@ public class HistorietaActivity extends AppCompatActivity {
         });
 
         ImageButton btnWishlist = findViewById(R.id.btnWishlist);
+        // Consultar si el volumen ya está en la wishlist
+        api.getItemsUsuario("wishlist").enqueue(new Callback<com.example.manga_project.Modelos.ItemsUsuarioResponse>() {
+            @Override
+            public void onResponse(Call<com.example.manga_project.Modelos.ItemsUsuarioResponse> call, Response<com.example.manga_project.Modelos.ItemsUsuarioResponse> response) {
+                if (response.isSuccessful() && response.body() != null && response.body().data != null) {
+                    boolean found = false;
+                    for (com.example.manga_project.Modelos.ItemUsuario item : response.body().data) {
+                        if (item.id_volumen == idVolumen) {
+                            found = true;
+                            break;
+                        }
+                    }
+                    enWishlist = found;
+                    if (enWishlist) {
+                        btnWishlist.setImageResource(R.drawable.ic_favorite_white_24dp);
+                    } else {
+                        btnWishlist.setImageResource(R.drawable.ic_favorite_border_white_24dp);
+                    }
+                }
+            }
+            @Override
+            public void onFailure(Call<com.example.manga_project.Modelos.ItemsUsuarioResponse> call, Throwable t) {
+                // No hacer nada
+            }
+        });
         btnWishlist.setOnClickListener(v -> {
             if (!enWishlist) {
                 agregarAWishlist();
+            } else {
+                eliminarDeWishlist();
             }
         });
 
@@ -299,6 +326,28 @@ public class HistorietaActivity extends AppCompatActivity {
                     enWishlist = true;
                 } else {
                     Toast.makeText(HistorietaActivity.this, "Error al agregar a la lista de deseos", Toast.LENGTH_SHORT).show();
+                }
+            }
+            @Override
+            public void onFailure(Call<RespuestaGenerica> call, Throwable t) {
+                Toast.makeText(HistorietaActivity.this, "Error de red", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    private void eliminarDeWishlist() {
+        api.eliminarWishlist(idVolumen).enqueue(new Callback<RespuestaGenerica>() {
+            @Override
+            public void onResponse(Call<RespuestaGenerica> call, Response<RespuestaGenerica> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    Toast.makeText(HistorietaActivity.this, response.body().msg, Toast.LENGTH_SHORT).show();
+                    ImageButton btnWishlist = findViewById(R.id.btnWishlist);
+                    btnWishlist.setImageResource(R.drawable.ic_favorite_border_white_24dp);
+                    btnWishlist.animate().scaleX(1.2f).scaleY(1.2f).setDuration(150)
+                        .withEndAction(() -> btnWishlist.animate().scaleX(1f).scaleY(1f).setDuration(100));
+                    enWishlist = false;
+                } else {
+                    Toast.makeText(HistorietaActivity.this, "Error al quitar de la lista de deseos", Toast.LENGTH_SHORT).show();
                 }
             }
             @Override
