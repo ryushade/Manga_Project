@@ -1,7 +1,6 @@
 package com.example.manga_project.Api_cliente;
 
 import com.example.manga_project.Modelos.CapituloResponse;
-import com.example.manga_project.Modelos.Comentario;
 import com.example.manga_project.Modelos.CrearComentarioResponse;
 import com.example.manga_project.Modelos.Genero;
 import com.example.manga_project.Modelos.AprobarProveedorRequest;
@@ -26,10 +25,8 @@ import com.example.manga_project.Modelos.CarritoRequest;
 import com.example.manga_project.Modelos.RespuestaGenerica;
 import com.example.manga_project.Modelos.ListarCarritoResponse;
 import com.example.manga_project.Modelos.CrearComentarioRequest;
-import com.example.manga_project.Modelos.BusquedaHistorieta;
 import com.example.manga_project.Modelos.BusquedaHistorietaResponse;
 import com.example.manga_project.Modelos.ComentariosResponse;
-import com.example.manga_project.Modelos.ItemUsuario;
 import com.example.manga_project.Modelos.ItemsUsuarioResponse;
 
 import java.util.List;

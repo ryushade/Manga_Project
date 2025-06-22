@@ -1,10 +1,14 @@
 package com.example.manga_project.Modelos;
 
+import com.google.gson.annotations.SerializedName;
+
 public class PerfilResponse {
+    @SerializedName("id_user")
     private int id_user;
     private String nombre;
     private String email;
 
+    @SerializedName("id_rol")
     private int id_rol;
     private boolean proveedor_solicitud;  // Campo adicional
 

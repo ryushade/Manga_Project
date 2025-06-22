@@ -13,15 +13,12 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import com.example.manga_project.R;
 import com.example.manga_project.Api_cliente.AuthService;
-import com.example.manga_project.Modelos.ItemUsuario;
-import com.example.manga_project.Modelos.ApiResponse;
 import com.example.manga_project.adapters.ItemUsuarioAdapter;
 import com.example.manga_project.Api_cliente.ApiClient;
 import com.example.manga_project.Modelos.ItemsUsuarioResponse;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import java.util.List;
 
 public class MisListasFragment extends Fragment {
     private ItemUsuarioAdapter adapter;
@@ -41,9 +38,9 @@ public class MisListasFragment extends Fragment {
     }
 
     private void cargarMisListas(ItemUsuarioAdapter adapter) {
-        // Usar cliente con token e interceptor
         AuthService api = ApiClient.getClientConToken().create(AuthService.class);
         int idUser = obtenerIdUsuario();
+        android.util.Log.d("MisListasFragment", "userId=" + idUser);
         api.getItemsUsuario(idUser, "wishlist").enqueue(new Callback<ItemsUsuarioResponse>() {
             @Override
             public void onResponse(Call<ItemsUsuarioResponse> call, Response<ItemsUsuarioResponse> response) {
@@ -51,9 +48,8 @@ public class MisListasFragment extends Fragment {
                     adapter.setItems(response.body().data, true);
                 }
             }
-            @Override
-            public void onFailure(Call<ItemsUsuarioResponse> call, Throwable t) {
-                // Maneja el error (puedes mostrar un Toast, etc.)
+            @Override public void onFailure(Call<ItemsUsuarioResponse> call, Throwable t) {
+                // error
             }
         });
     }

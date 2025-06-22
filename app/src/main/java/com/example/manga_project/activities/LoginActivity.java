@@ -140,7 +140,20 @@ public class LoginActivity extends AppCompatActivity {
                                                 .putBoolean("is_google_user", true)
                                                 .apply();
 
-                                        navigateToMainScreen();
+                                        // Obtener id_user y guardarlo tras login con Google
+                                        AuthService apiConToken = ApiClient.getClientConToken().create(AuthService.class);
+                                        apiConToken.getPerfil().enqueue(new Callback<PerfilResponse>() {
+                                            @Override
+                                            public void onResponse(Call<PerfilResponse> call, Response<PerfilResponse> res) {
+                                                if (res.isSuccessful() && res.body() != null) {
+                                                    prefs.edit().putInt("userId", res.body().getId_user()).apply();
+                                                }
+                                                navigateToMainScreen();
+                                            }
+                                            @Override public void onFailure(Call<PerfilResponse> call, Throwable t) {
+                                                navigateToMainScreen();
+                                            }
+                                        });
                                     } else {
                                         Log.e("AuthError", "Error al obtener el token: " + response.message());
                                     }
