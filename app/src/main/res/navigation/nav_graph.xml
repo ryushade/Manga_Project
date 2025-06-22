@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+<navigation
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
     app:startDestination="@id/homeFragment">
 
-    <!-- Home Fragment -->
+    <!-- flujo usuario normal -->
     <fragment
         android:id="@+id/homeFragment"
         android:name="com.example.manga_project.fragments.HomeFragment"
@@ -17,22 +18,28 @@
         tools:layout="@layout/fragment_library" />
 
     <fragment
-        android:id="@+id/inicioFragment"
-        android:name="com.example.manga_project.fragments.DashboardProvFragment"
-        tools:layout="@layout/fragment_home_proveedor" />
-
-    <fragment
-        android:id="@+id/dashboardFragment"
-        android:name="com.example.manga_project.fragments.DashboardFragment"
-        android:label="Dashboard"
-        tools:layout="@layout/fragment_home_admin" />
+        android:id="@+id/searchFragment"
+        android:name="com.example.manga_project.fragments.SearchFragment"
+        android:label="Search"
+        tools:layout="@layout/fragment_search" />
 
     <fragment
         android:id="@+id/userFragment"
         android:name="com.example.manga_project.fragments.PerfilFragment"
         tools:layout="@layout/fragment_perfil" />
 
+    <!-- flujo proveedor (DashboardProv) -->
+    <fragment
+        android:id="@+id/inicioFragment"
+        android:name="com.example.manga_project.fragments.DashboardProvFragment"
+        tools:layout="@layout/fragment_home_proveedor" />
 
+    <!-- flujo admin -->
+    <fragment
+        android:id="@+id/dashboardFragment"
+        android:name="com.example.manga_project.fragments.DashboardFragment"
+        android:label="Dashboard"
+        tools:layout="@layout/fragment_home_admin" />
 
     <fragment
         android:id="@+id/solicitudesProveedorFragment"
@@ -61,15 +68,14 @@
         android:name="com.example.manga_project.fragments.PerfilFragment"
         tools:layout="@layout/fragment_perfil" />
 
+    <!-- publicar historieta -->
     <fragment
         android:id="@+id/publicarFragment"
         android:name="com.example.manga_project.fragments.TipoPublicacionFragment"
         tools:layout="@layout/fragment_seleccionar_tipo_publi">
-
         <action
             android:id="@+id/action_tipoPublicacionFragment_to_publicarMangaFragment"
             app:destination="@id/publicarMangaFragment" />
-
         <action
             android:id="@+id/action_tipoPublicacionFragment_to_publicarComicFragment"
             app:destination="@id/publicarComicFragment" />
@@ -84,19 +90,5 @@
         android:id="@+id/publicarComicFragment"
         android:name="com.example.manga_project.fragments.PublicarComicFragment"
         tools:layout="@layout/fragment_register_comic" />
-
-
-
-    <!-- Search Fragment -->
-    <fragment
-        android:id="@+id/searchFragment"
-        android:name="com.example.manga_project.fragments.SearchFragment"
-        android:label="Search"
-        tools:layout="@layout/fragment_search" />
-
-
-
-
-
 
 </navigation>

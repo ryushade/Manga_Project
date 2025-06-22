@@ -22,7 +22,6 @@ import com.example.manga_project.SectionVolumen;
 import com.example.manga_project.activities.LoginActivity;
 import com.example.manga_project.adapters.HomeAdapter;
 import com.example.manga_project.databinding.FragmentHomeBinding;
-import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,92 +32,102 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 
 public class HomeFragment extends Fragment {
+
     private FragmentHomeBinding binding;
     private AuthService authService;
-    private GoogleSignInClient mGoogleSignInClient;
+    // Reutilizamos la misma lista para ir agregando secciones
+    private final List<SectionVolumen> sections = new ArrayList<>();
 
-    @Nullable @Override
+    @Nullable
+    @Override
     public View onCreateView(@NonNull LayoutInflater inflater,
                              @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
+        // 1) Inflamos el binding
         binding = FragmentHomeBinding.inflate(inflater, container, false);
         return binding.getRoot();
     }
 
     @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+    public void onViewCreated(@NonNull View view,
+                              @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        // Configura GoogleSignIn, retrofit, servicio
+        // 2) Preparamos Retrofit con token
         Retrofit retrofit = ApiClient.getClientConToken();
         authService = retrofit.create(AuthService.class);
 
-        // RecyclerView
+        // 3) Configuramos el RecyclerView
         binding.rvHome.setHasFixedSize(true);
         binding.rvHome.setLayoutManager(new LinearLayoutManager(requireContext()));
+
+        // 4) Disparamos las tres peticiones
         cargarSeccionesVolumen();
 
-        // Botón Read
+        // 5) Botones de prueba
         binding.btnRead.setOnClickListener(v ->
                 Toast.makeText(requireContext(), "Read pulsado", Toast.LENGTH_SHORT).show()
         );
-
-        // Botón My List
         binding.btnMyList.setOnClickListener(v ->
                 Toast.makeText(requireContext(), "My List pulsado", Toast.LENGTH_SHORT).show()
         );
     }
 
     private void cargarSeccionesVolumen() {
-        List<SectionVolumen> sections = new ArrayList<>();
-
-        // Ejemplo: Novedades
+        // Novedades
         authService.getNovedades().enqueue(new Callback<List<VolumenResponse>>() {
-            @Override public void onResponse(Call<List<VolumenResponse>> call,
-                                             Response<List<VolumenResponse>> resp) {
-                if (resp.isSuccessful() && resp.body()!=null) {
+            @Override
+            public void onResponse(Call<List<VolumenResponse>> call,
+                                   Response<List<VolumenResponse>> resp) {
+                if (!isAdded() || binding == null) return;
+                if (resp.isSuccessful() && resp.body() != null) {
                     sections.add(new SectionVolumen("Novedades", resp.body()));
-                    actualizarAdaptador(sections);
+                    actualizarAdaptador();
                 }
             }
-            @Override public void onFailure(Call<List<VolumenResponse>> call, Throwable t) {}
+            @Override public void onFailure(Call<List<VolumenResponse>> call, Throwable t) { }
         });
 
         // Más vendidas
         authService.getMasVendidas().enqueue(new Callback<List<VolumenResponse>>() {
-            @Override public void onResponse(Call<List<VolumenResponse>> call,
-                                             Response<List<VolumenResponse>> resp) {
-                if (resp.isSuccessful() && resp.body()!=null) {
+            @Override
+            public void onResponse(Call<List<VolumenResponse>> call,
+                                   Response<List<VolumenResponse>> resp) {
+                if (!isAdded() || binding == null) return;
+                if (resp.isSuccessful() && resp.body() != null) {
                     sections.add(new SectionVolumen("Más vendidas", resp.body()));
-                    actualizarAdaptador(sections);
+                    actualizarAdaptador();
                 }
             }
-            @Override public void onFailure(Call<List<VolumenResponse>> call, Throwable t) {}
+            @Override public void onFailure(Call<List<VolumenResponse>> call, Throwable t) { }
         });
 
         // Por género
         authService.getPorGenero(1).enqueue(new Callback<List<VolumenResponse>>() {
-            @Override public void onResponse(Call<List<VolumenResponse>> call,
-                                             Response<List<VolumenResponse>> resp) {
-                if (resp.isSuccessful() && resp.body()!=null) {
+            @Override
+            public void onResponse(Call<List<VolumenResponse>> call,
+                                   Response<List<VolumenResponse>> resp) {
+                if (!isAdded() || binding == null) return;
+                if (resp.isSuccessful() && resp.body() != null) {
                     sections.add(new SectionVolumen("Por género", resp.body()));
-                    actualizarAdaptador(sections);
+                    actualizarAdaptador();
                 }
             }
-            @Override public void onFailure(Call<List<VolumenResponse>> call, Throwable t) {}
+            @Override public void onFailure(Call<List<VolumenResponse>> call, Throwable t) { }
         });
     }
 
-    private void actualizarAdaptador(List<SectionVolumen> sections) {
+    private void actualizarAdaptador() {
+        if (binding == null) return;
         HomeAdapter adapter = new HomeAdapter(requireContext(), sections);
         binding.rvHome.setAdapter(adapter);
     }
 
     private void logout() {
-        // tu lógica de logout...
         SharedPreferences prefs = requireContext()
                 .getSharedPreferences("myPrefs", Context.MODE_PRIVATE);
         prefs.edit().clear().apply();
+
         startActivity(new Intent(requireActivity(), LoginActivity.class));
         requireActivity().finish();
     }
@@ -126,6 +135,7 @@ public class HomeFragment extends Fragment {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
+        // 6) Liberamos el binding para evitar fugas y NPE posteriores
         binding = null;
     }
 }

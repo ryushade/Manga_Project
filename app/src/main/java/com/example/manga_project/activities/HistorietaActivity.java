@@ -33,7 +33,6 @@ import com.google.android.material.tabs.TabLayout;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
 
 import retrofit2.Call;
@@ -48,22 +47,22 @@ public class HistorietaActivity extends AppCompatActivity {
     private RecyclerView rvChapters, rvComments;
     private EpisodioAdapter episodioAdapter;
     private ComentarioAdapter comentarioAdapter;
-    private FloatingActionButton fabRead;
     private FloatingActionButton fabAddToCart;
     private boolean volumenEnCarrito = false;
+    private boolean enWishlist = false;
+
     private ArrayList<Comentario> listaComentarios = new ArrayList<>();
     private LinearLayout commentInputContainer;
     private EditText etComment;
     private ImageButton btnSendComment;
     private TabLayout tabLayout;
-    private boolean enWishlist = false;
+    private ImageButton btnWishlist;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_historieta_informacion);
 
-        // Obtener id_volumen del intent
         idVolumen = getIntent().getIntExtra("ID_VOLUMEN", 0);
         if (idVolumen == 0) {
             Toast.makeText(this, "ID de volumen no válido", Toast.LENGTH_SHORT).show();
@@ -71,76 +70,44 @@ public class HistorietaActivity extends AppCompatActivity {
             return;
         }
 
-        // Inicializar views
         ivCover = findViewById(R.id.ivCover);
         tvTitle = findViewById(R.id.tvTitle);
         tvPrice = findViewById(R.id.tvPrice);
         tvSynopsis = findViewById(R.id.tvSynopsis);
         rvChapters = findViewById(R.id.rvChapters);
         rvComments = findViewById(R.id.rvComments);
-        episodioAdapter = new EpisodioAdapter(new ArrayList<>(), episodeId -> cargarPaginasCapitulo(episodeId));
+        episodioAdapter = new EpisodioAdapter(new ArrayList<>(), this::cargarPaginasCapitulo);
         rvChapters.setLayoutManager(new LinearLayoutManager(this));
         rvChapters.setAdapter(episodioAdapter);
         comentarioAdapter = new ComentarioAdapter(listaComentarios);
         rvComments.setLayoutManager(new LinearLayoutManager(this));
         rvComments.setAdapter(comentarioAdapter);
-        // Inicializar API antes de cargar comentarios
+
         api = ApiClient.getClientConToken().create(AuthService.class);
-        // Cargar comentarios al entrar a la actividad
         cargarComentarios();
+
         commentInputContainer = findViewById(R.id.commentInputContainer);
         etComment = findViewById(R.id.etComment);
         btnSendComment = findViewById(R.id.btnSendComment);
         tabLayout = findViewById(R.id.tabLayout);
 
-        // Inicializar botones flotantes
         fabAddToCart = findViewById(R.id.fabAddToCart);
         fabAddToCart.setOnClickListener(v -> {
             if (volumenEnCarrito) {
-                Toast.makeText(HistorietaActivity.this, "Ya está en tu carrito", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "Ya está en tu carrito", Toast.LENGTH_SHORT).show();
             } else {
                 agregarAlCarrito();
             }
         });
 
-        ImageButton btnWishlist = findViewById(R.id.btnWishlist);
-        // Consultar si el volumen ya está en la wishlist
-        api.getItemsUsuario("wishlist").enqueue(new Callback<com.example.manga_project.Modelos.ItemsUsuarioResponse>() {
-            @Override
-            public void onResponse(Call<com.example.manga_project.Modelos.ItemsUsuarioResponse> call, Response<com.example.manga_project.Modelos.ItemsUsuarioResponse> response) {
-                if (response.isSuccessful() && response.body() != null && response.body().data != null) {
-                    boolean found = false;
-                    for (com.example.manga_project.Modelos.ItemUsuario item : response.body().data) {
-                        if (item.id_volumen == idVolumen) {
-                            found = true;
-                            break;
-                        }
-                    }
-                    enWishlist = found;
-                    if (enWishlist) {
-                        btnWishlist.setImageResource(R.drawable.ic_favorite_white_24dp);
-                    } else {
-                        btnWishlist.setImageResource(R.drawable.ic_favorite_border_white_24dp);
-                    }
-                }
-            }
-            @Override
-            public void onFailure(Call<com.example.manga_project.Modelos.ItemsUsuarioResponse> call, Throwable t) {
-                // No hacer nada
-            }
-        });
+        btnWishlist = findViewById(R.id.btnWishlist);
         btnWishlist.setOnClickListener(v -> {
-            if (!enWishlist) {
-                agregarAWishlist();
-            } else {
-                eliminarDeWishlist();
-            }
+            if (!enWishlist) agregarAWishlist(); else eliminarDeWishlist();
         });
 
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
-            @Override
-            public void onTabSelected(TabLayout.Tab tab) {
-                if (tab.getPosition() == 1) { // Comentarios
+            @Override public void onTabSelected(TabLayout.Tab tab) {
+                if (tab.getPosition() == 1) {
                     rvChapters.setVisibility(View.GONE);
                     rvComments.setVisibility(View.VISIBLE);
                     commentInputContainer.setVisibility(View.VISIBLE);
@@ -157,21 +124,17 @@ public class HistorietaActivity extends AppCompatActivity {
         btnSendComment.setOnClickListener(v -> {
             String texto = etComment.getText().toString().trim();
             if (!texto.isEmpty()) {
-                // Crear el comentario
-                CrearComentarioRequest req = new CrearComentarioRequest(idVolumen, texto);
-                api.crearComentario(req).enqueue(new Callback<CrearComentarioResponse>() {
-                    @Override
-                    public void onResponse(Call<CrearComentarioResponse> call, Response<CrearComentarioResponse> response) {
-                        if (response.isSuccessful() && response.body() != null) {
-                            // Después de crear, refresca la lista de comentarios
+                api.crearComentario(new CrearComentarioRequest(idVolumen, texto))
+                   .enqueue(new Callback<CrearComentarioResponse>() {
+                    @Override public void onResponse(Call<CrearComentarioResponse> call, Response<CrearComentarioResponse> response) {
+                        if (response.isSuccessful() && response.body()!=null) {
                             cargarComentarios();
                             etComment.setText("");
                         } else {
                             Toast.makeText(HistorietaActivity.this, "No se pudo publicar el comentario", Toast.LENGTH_SHORT).show();
                         }
                     }
-                    @Override
-                    public void onFailure(Call<CrearComentarioResponse> call, Throwable t) {
+                    @Override public void onFailure(Call<CrearComentarioResponse> call, Throwable t) {
                         Toast.makeText(HistorietaActivity.this, "Error de red al comentar", Toast.LENGTH_SHORT).show();
                     }
                 });
@@ -180,22 +143,25 @@ public class HistorietaActivity extends AppCompatActivity {
             }
         });
 
-        // Cargar comentarios al iniciar
-        cargarComentarios();
-
         verificarVolumenEnCarrito();
+        cargarWishlist();
         cargarFicha();
         cargarCapitulos();
     }
 
+    private void updateWishlistIcon(boolean filled, String desc) {
+        btnWishlist.setImageResource(filled ? R.drawable.ic_favorite_white_24dp : R.drawable.ic_favorite_border_white_24dp);
+        btnWishlist.setContentDescription(desc);
+    }
+
     private void verificarVolumenEnCarrito() {
         api.listarCarrito().enqueue(new Callback<ListarCarritoResponse>() {
-            @Override
-            public void onResponse(Call<ListarCarritoResponse> call, Response<ListarCarritoResponse> response) {
-                if (response.isSuccessful() && response.body() != null && response.body().items != null) {
-                    for (ListarCarritoResponse.ItemCarrito item : response.body().items) {
-                        if (item.id_volumen == idVolumen) {
-                            volumenEnCarrito = true;
+            @Override public void onResponse(Call<ListarCarritoResponse> call, Response<ListarCarritoResponse> response) {
+                if (response.isSuccessful() && response.body()!=null && response.body().items!=null) {
+                    for (ListarCarritoResponse.ItemCarrito item: response.body().items) {
+                        if (item.id_volumen==idVolumen) {
+                            volumenEnCarrito=true;
+                            updateWishlistIcon(true, "En tu biblioteca");
                             fabAddToCart.setEnabled(false);
                             fabAddToCart.setImageResource(R.drawable.ic_check);
                             break;
@@ -203,9 +169,26 @@ public class HistorietaActivity extends AppCompatActivity {
                     }
                 }
             }
-            @Override
-            public void onFailure(Call<ListarCarritoResponse> call, Throwable t) {
-                // No hacer nada especial
+            @Override public void onFailure(Call<ListarCarritoResponse> call, Throwable t) {}
+        });
+    }
+
+    private void cargarWishlist() {
+        api.getItemsUsuario("wishlist").enqueue(new Callback<com.example.manga_project.Modelos.ItemsUsuarioResponse>() {
+            @Override public void onResponse(Call<com.example.manga_project.Modelos.ItemsUsuarioResponse> call, Response<com.example.manga_project.Modelos.ItemsUsuarioResponse> response) {
+                if (response.isSuccessful() && response.body()!=null && response.body().data!=null) {
+                    for (com.example.manga_project.Modelos.ItemUsuario item: response.body().data) {
+                        if (item.id_volumen==idVolumen) {
+                            enWishlist=true;
+                            updateWishlistIcon(true, "En tu lista de deseos");
+                            return;
+                        }
+                    }
+                }
+                updateWishlistIcon(false, "Agregar a lista de deseos");
+            }
+            @Override public void onFailure(Call<com.example.manga_project.Modelos.ItemsUsuarioResponse> call, Throwable t) {
+                updateWishlistIcon(false, "Agregar a lista de deseos");
             }
         });
     }
@@ -311,6 +294,11 @@ public class HistorietaActivity extends AppCompatActivity {
     }
 
     private void agregarAWishlist() {
+        // block wishlist if already purchased
+        if (volumenEnCarrito) {
+            Toast.makeText(this, "Ya compraste esta historieta", Toast.LENGTH_SHORT).show();
+            return;
+        }
         Map<String, Integer> body = new java.util.HashMap<>();
         body.put("id_volumen", idVolumen);
         api.agregarWishlist(body).enqueue(new Callback<RespuestaGenerica>() {
@@ -336,11 +324,17 @@ public class HistorietaActivity extends AppCompatActivity {
     }
 
     private void eliminarDeWishlist() {
+        // block wishlist removal if purchased
+        if (volumenEnCarrito) {
+            Toast.makeText(this, "Ya compraste esta historieta", Toast.LENGTH_SHORT).show();
+            return;
+        }
         api.eliminarWishlist(idVolumen).enqueue(new Callback<RespuestaGenerica>() {
             @Override
             public void onResponse(Call<RespuestaGenerica> call, Response<RespuestaGenerica> response) {
                 if (response.isSuccessful() && response.body() != null) {
-                    Toast.makeText(HistorietaActivity.this, response.body().msg, Toast.LENGTH_SHORT).show();
+                    String msg = response.body().msg != null ? response.body().msg : "Eliminado de la lista de deseos";
+                    Toast.makeText(HistorietaActivity.this, msg, Toast.LENGTH_SHORT).show();
                     ImageButton btnWishlist = findViewById(R.id.btnWishlist);
                     btnWishlist.setImageResource(R.drawable.ic_favorite_border_white_24dp);
                     btnWishlist.animate().scaleX(1.2f).scaleY(1.2f).setDuration(150)
