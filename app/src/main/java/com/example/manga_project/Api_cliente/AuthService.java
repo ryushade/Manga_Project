@@ -178,12 +178,14 @@ public interface AuthService {
     @GET("api_obtener_comentarios/{id_historieta}")
     Call<ComentariosResponse> getComentarios(@Path("id_historieta") int idHistorieta);
 
-    @GET("/api/users/{id_user}/items")
+    @GET("/api/users/items")
     Call<ItemsUsuarioResponse> getItemsUsuario(
-        @Path("id_user") int idUser,
         @Query("type") String type // 'purchases' o 'wishlist'
     );
 
     @POST("/api_guardar_venta")
     Call<ResponseBody> guardarVenta(@Body Map<String, Object> body, @Header("Authorization") String token);
+
+    @POST("api_agregar_wishlist")
+    Call<RespuestaGenerica> agregarWishlist(@Body Map<String, Integer> body);
 }

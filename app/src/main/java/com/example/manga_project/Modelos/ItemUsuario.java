@@ -7,4 +7,5 @@ public class ItemUsuario {
     public String autores;
     public String fecha;
     public boolean esWishlist = false;
+    public int id_volumen;
 }

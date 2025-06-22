@@ -146,7 +146,9 @@ public class LoginActivity extends AppCompatActivity {
                                             @Override
                                             public void onResponse(Call<PerfilResponse> call, Response<PerfilResponse> res) {
                                                 if (res.isSuccessful() && res.body() != null) {
-                                                    prefs.edit().putInt("userId", res.body().getId_user()).apply();
+                                                    int idUser = res.body().getId_user();
+                                                    prefs.edit().putInt("userId", idUser).apply();
+                                                    Log.d("LoginActivity", "Saved userId=" + idUser);
                                                 }
                                                 navigateToMainScreen();
                                             }
@@ -194,7 +196,9 @@ public class LoginActivity extends AppCompatActivity {
                         @Override
                         public void onResponse(Call<PerfilResponse> call, Response<PerfilResponse> res) {
                             if (res.isSuccessful() && res.body() != null) {
-                                prefs.edit().putInt("userId", res.body().getId_user()).apply();
+                                int idUser = res.body().getId_user();
+                                prefs.edit().putInt("userId", idUser).apply();
+                                Log.d("LoginActivity", "Saved userId=" + idUser);
                             }
                             navigateToMainScreen();
                         }

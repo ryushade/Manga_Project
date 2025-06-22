@@ -135,4 +135,6 @@
     <string name="search_author">Autor</string>
     <string name="label_sort_by_popularity">Ordenar por: Popularidad</string>
     <string name="label_resultados">Resultados</string>
+    <string name="add_to_wishlist">Agregar a la lista de deseos</string>
+    <string name="back">Atrás</string>
 </resources>

@@ -1,7 +1,5 @@
 package com.example.manga_project.fragments;
 
-import android.content.Context;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -29,15 +27,20 @@ public class CompradosFragment extends Fragment {
         recyclerView.setLayoutManager(new GridLayoutManager(getContext(), 3));
         ItemUsuarioAdapter adapter = new ItemUsuarioAdapter();
         recyclerView.setAdapter(adapter);
+        adapter.setOnItemClickListener(item -> {
+            if (getContext() != null) {
+                android.content.Intent intent = new android.content.Intent(getContext(), com.example.manga_project.activities.HistorietaActivity.class);
+                intent.putExtra("ID_VOLUMEN", item.id_volumen);
+                startActivity(intent);
+            }
+        });
         cargarComprados(adapter);
         return view;
     }
 
     private void cargarComprados(ItemUsuarioAdapter adapter) {
         AuthService api = ApiClient.getClientConToken().create(AuthService.class);
-        int idUser = obtenerIdUsuario();
-        android.util.Log.d("CompradosFragment", "userId=" + idUser);
-        api.getItemsUsuario(idUser, "purchases").enqueue(new Callback<ItemsUsuarioResponse>() {
+        api.getItemsUsuario("purchases").enqueue(new Callback<ItemsUsuarioResponse>() {
             @Override
             public void onResponse(Call<ItemsUsuarioResponse> call, Response<ItemsUsuarioResponse> response) {
                 if (response.isSuccessful() && response.body() != null && response.body().success) {
@@ -48,10 +51,5 @@ public class CompradosFragment extends Fragment {
                 // error
             }
         });
-    }
-
-    private int obtenerIdUsuario() {
-        SharedPreferences sp = requireContext().getSharedPreferences("myPrefs", Context.MODE_PRIVATE);
-        return sp.getInt("userId", -1);
     }
 }

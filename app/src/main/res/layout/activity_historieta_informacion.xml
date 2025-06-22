@@ -8,7 +8,16 @@
     android:background="#121212">
 
     <!-- Toolbar con flecha de retroceso -->
-
+    <ImageButton
+        android:id="@+id/btnBack"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
+        android:src="@drawable/ico_back_white"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:contentDescription="@string/back"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_margin="16dp"/>
 
     <!-- Portada con degradado y título -->
     <FrameLayout
@@ -16,7 +25,8 @@
         android:layout_width="0dp"
         android:layout_height="240dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent">
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/btnBack">
 
         <ImageView
             android:id="@+id/ivCover"
@@ -29,8 +39,7 @@
 
         <View
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            />
+            android:layout_height="match_parent" />
 
         <TextView
             android:id="@+id/tvTitle"
@@ -44,6 +53,17 @@
             android:textColor="#FFFFFF"
             android:textSize="20sp"
             android:textStyle="bold"/>
+
+        <!-- Badge para lista de deseos -->
+        <ImageButton
+            android:id="@+id/btnWishlist"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:layout_gravity="top|end"
+            android:layout_margin="16dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:src="@drawable/ic_favorite_border_white_24dp"
+            android:contentDescription="@string/add_to_wishlist" />
 
     </FrameLayout>
 
@@ -133,7 +153,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/comic_price_sample"
-                    android:textColor="#FFFF"
+                    android:textColor="#FFFFFF"
                     android:textSize="14sp"
                     android:textStyle="bold"
                     android:background="@drawable/price_background"
@@ -184,7 +204,7 @@
             android:text="Comentarios"/>
     </com.google.android.material.tabs.TabLayout>
 
-    <!-- RecyclerView para capítulos -->
+    <!-- RecyclerViews -->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvChapters"
         android:layout_width="0dp"
@@ -198,7 +218,6 @@
         android:paddingBottom="8dp"
         android:overScrollMode="ifContentScrolls"/>
 
-    <!-- RecyclerView para comentarios -->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvComments"
         android:layout_width="0dp"
@@ -213,7 +232,7 @@
         android:visibility="gone"
         android:overScrollMode="ifContentScrolls"/>
 
-    <!-- Campo para agregar un comentario -->
+    <!-- Input de comentario -->
     <LinearLayout
         android:id="@+id/commentInputContainer"
         android:layout_width="0dp"
@@ -252,6 +271,7 @@
             android:layout_marginStart="8dp"/>
     </LinearLayout>
 
+    <!-- FAB lectura/carrito -->
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fabAddToCart"
         android:layout_width="wrap_content"
@@ -262,6 +282,5 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_margin="16dp"/>
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>

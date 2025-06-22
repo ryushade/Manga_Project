@@ -15,6 +15,7 @@ import java.util.List;
 
 public class ItemUsuarioAdapter extends RecyclerView.Adapter<ItemUsuarioAdapter.ViewHolder> {
     private List<ItemUsuario> items = new ArrayList<>();
+    private OnItemClickListener listener;
 
     public void setItems(List<ItemUsuario> newItems, boolean isWishlist) {
         items.clear();
@@ -52,11 +53,22 @@ public class ItemUsuarioAdapter extends RecyclerView.Adapter<ItemUsuarioAdapter.
                 .load(item.portada)
                 .placeholder(R.drawable.ic_placeholder_portada)
                 .into(holder.ivCover);
+        holder.itemView.setOnClickListener(v -> {
+            if (listener != null) listener.onItemClick(item);
+        });
     }
 
     @Override
     public int getItemCount() {
         return items.size();
+    }
+
+    public interface OnItemClickListener {
+        void onItemClick(ItemUsuario item);
+    }
+
+    public void setOnItemClickListener(OnItemClickListener listener) {
+        this.listener = listener;
     }
 
     static class ViewHolder extends RecyclerView.ViewHolder {

@@ -1,6 +1,6 @@
 package com.example.manga_project.Modelos;
 
-public class ApiResponse<T> {
+public class PerfilUsuarioResponse {
     public boolean success;
-    public T data;
+    public PerfilResponse data;
 }
