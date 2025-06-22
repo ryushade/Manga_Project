@@ -9,6 +9,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 import androidx.viewpager2.widget.ViewPager2;
+import com.example.manga_project.Api_cliente.ApiClient;
 import com.example.manga_project.R;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
@@ -26,6 +27,8 @@ public class LibraryFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        // Inicializar ApiClient con contexto para autenticar peticiones
+        ApiClient.setContext(requireContext());
         tabLayout = view.findViewById(R.id.tabLayoutLibrary);
         viewPager = view.findViewById(R.id.viewPagerLibrary);
         viewPager.setAdapter(new LibraryPagerAdapter(this));

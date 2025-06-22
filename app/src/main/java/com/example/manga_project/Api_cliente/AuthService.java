@@ -30,7 +30,7 @@ import com.example.manga_project.Modelos.BusquedaHistorieta;
 import com.example.manga_project.Modelos.BusquedaHistorietaResponse;
 import com.example.manga_project.Modelos.ComentariosResponse;
 import com.example.manga_project.Modelos.ItemUsuario;
-import com.example.manga_project.Modelos.ApiResponse;
+import com.example.manga_project.Modelos.ItemsUsuarioResponse;
 
 import java.util.List;
 import java.util.Map;
@@ -182,7 +182,7 @@ public interface AuthService {
     Call<ComentariosResponse> getComentarios(@Path("id_historieta") int idHistorieta);
 
     @GET("/api/users/{id_user}/items")
-    Call<ApiResponse<List<ItemUsuario>>> getItemsUsuario(
+    Call<ItemsUsuarioResponse> getItemsUsuario(
         @Path("id_user") int idUser,
         @Query("type") String type // 'purchases' o 'wishlist'
     );

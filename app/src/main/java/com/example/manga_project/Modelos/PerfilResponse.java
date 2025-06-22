@@ -1,6 +1,7 @@
 package com.example.manga_project.Modelos;
 
 public class PerfilResponse {
+    private int id_user;
     private String nombre;
     private String email;
 
@@ -8,7 +9,8 @@ public class PerfilResponse {
     private boolean proveedor_solicitud;  // Campo adicional
 
     public PerfilResponse() {}
-
+    public int getId_user() { return id_user; }
+    public void setId_user(int id_user) { this.id_user = id_user; }
     public int getId_rol() {
         return id_rol;
     }

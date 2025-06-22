@@ -22,6 +22,7 @@ import com.example.manga_project.Api_cliente.ApiClient;
 import com.example.manga_project.Api_cliente.AuthService;
 import com.example.manga_project.Modelos.LoginRequest;
 import com.example.manga_project.Modelos.LoginResponse;
+import com.example.manga_project.Modelos.PerfilResponse;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
@@ -166,16 +167,28 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<LoginResponse> call, Response<LoginResponse> response) {
                 if (response.isSuccessful() && response.body() != null) {
-                    saveToken(response.body().getToken());
+                    String token = response.body().getToken();
+                    saveToken(token);
                     saveUserEmail(email);
-
                     SharedPreferences prefs = getSharedPreferences("myPrefs", Context.MODE_PRIVATE);
                     prefs.edit()
                             .putBoolean("is_google_user", false)
                             .putInt("id_rol", response.body().getIdRol())
                             .apply();
-
-                    navigateToMainScreen();
+                    // Obtener id_user y guardarlo
+                    AuthService apiConToken = ApiClient.getClientConToken().create(AuthService.class);
+                    apiConToken.getPerfil().enqueue(new Callback<PerfilResponse>() {
+                        @Override
+                        public void onResponse(Call<PerfilResponse> call, Response<PerfilResponse> res) {
+                            if (res.isSuccessful() && res.body() != null) {
+                                prefs.edit().putInt("userId", res.body().getId_user()).apply();
+                            }
+                            navigateToMainScreen();
+                        }
+                        @Override public void onFailure(Call<PerfilResponse> call, Throwable t) {
+                            navigateToMainScreen();
+                        }
+                    });
                 } else {
                     try {
                         if (response.errorBody() != null) {
