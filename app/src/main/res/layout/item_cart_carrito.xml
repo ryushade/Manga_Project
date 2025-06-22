@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="8dp"
+    app:cardCornerRadius="8dp"
+    app:cardElevation="4dp"
+    app:cardBackgroundColor="#181818">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="8dp"
+        android:background="#181818">
+
+        <!-- Portada -->
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/ivPortada"
+            android:layout_width="100dp"
+            android:layout_height="140dp"
+            android:scaleType="centerCrop"
+            android:background="#222222"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <!-- Título del volumen -->
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/tvTitulo"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            style="@style/TextAppearance.MaterialComponents.Subtitle1"
+            android:text="Título del Volumen"
+            android:textStyle="bold"
+            android:ellipsize="end"
+            android:maxLines="2"
+            android:textColor="#FFFFFF"
+            app:layout_constraintStart_toEndOf="@id/ivPortada"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@id/ivPortada"
+            android:paddingStart="8dp" />
+
+        <!-- Nombre de la historieta -->
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/tvHistorieta"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            style="@style/TextAppearance.MaterialComponents.Body2"
+            android:text="Nombre de la historieta"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:textColor="#CCCCCC"
+            app:layout_constraintStart_toStartOf="@id/tvTitulo"
+            app:layout_constraintEnd_toEndOf="@id/tvTitulo"
+            app:layout_constraintTop_toBottomOf="@id/tvTitulo"
+            android:paddingTop="4dp" />
+
+        <!-- Cantidad -->
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/tvCantidad"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            style="@style/TextAppearance.MaterialComponents.Body2"
+            android:text="Cantidad: 1"
+            android:textColor="#B0B0B0"
+            app:layout_constraintStart_toStartOf="@id/tvTitulo"
+            app:layout_constraintTop_toBottomOf="@id/tvHistorieta"
+            android:paddingTop="4dp" />
+
+        <!-- Precio unitario -->
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/tvPrecio"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            style="@style/TextAppearance.MaterialComponents.Body1"
+            android:text="S/. 0.00"
+            android:textStyle="bold"
+            android:textColor="#E0E0E0"
+            app:layout_constraintStart_toStartOf="@id/tvTitulo"
+            app:layout_constraintBottom_toBottomOf="@id/ivPortada"
+            android:paddingBottom="4dp" />
+
+        <!-- Botón eliminar -->
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/deleteButton"
+            style="@style/Widget.MaterialComponents.Button.Icon"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:contentDescription="Eliminar"
+            app:icon="@drawable/ico_eliminar"
+            app:iconTint="#FFFFFF"
+            android:backgroundTint="#222222"
+            app:layout_constraintTop_toTopOf="@id/imageView"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</com.google.android.material.card.MaterialCardView>
