@@ -34,6 +34,7 @@ import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -55,6 +56,7 @@ public class HistorietaActivity extends AppCompatActivity {
     private EditText etComment;
     private ImageButton btnSendComment;
     private TabLayout tabLayout;
+    private boolean enWishlist = false;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -98,6 +100,13 @@ public class HistorietaActivity extends AppCompatActivity {
                 Toast.makeText(HistorietaActivity.this, "Ya está en tu carrito", Toast.LENGTH_SHORT).show();
             } else {
                 agregarAlCarrito();
+            }
+        });
+
+        ImageButton btnWishlist = findViewById(R.id.btnWishlist);
+        btnWishlist.setOnClickListener(v -> {
+            if (!enWishlist) {
+                agregarAWishlist();
             }
         });
 
@@ -258,7 +267,7 @@ public class HistorietaActivity extends AppCompatActivity {
 
     private void cargarComentarios() {
         Call<ComentariosResponse> call = api.getComentarios(idVolumen);
-        call.enqueue(new retrofit2.Callback<ComentariosResponse>() {
+        call.enqueue(new Callback<ComentariosResponse>() {
             @Override
             public void onResponse(Call<ComentariosResponse> call, Response<ComentariosResponse> response) {
                 if (response.isSuccessful() && response.body() != null) {
@@ -270,6 +279,31 @@ public class HistorietaActivity extends AppCompatActivity {
             @Override
             public void onFailure(Call<ComentariosResponse> call, Throwable t) {
                 comentarioAdapter.setComentarios(new ArrayList<>());
+            }
+        });
+    }
+
+    private void agregarAWishlist() {
+        Map<String, Integer> body = new java.util.HashMap<>();
+        body.put("id_volumen", idVolumen);
+        api.agregarWishlist(body).enqueue(new Callback<RespuestaGenerica>() {
+            @Override
+            public void onResponse(Call<RespuestaGenerica> call, Response<RespuestaGenerica> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    String msg = response.body().msg != null ? response.body().msg : "Agregado a la lista de deseos";
+                    Toast.makeText(HistorietaActivity.this, msg, Toast.LENGTH_SHORT).show();
+                    ImageButton btnWishlist = findViewById(R.id.btnWishlist);
+                    btnWishlist.setImageResource(R.drawable.ic_favorite_white_24dp);
+                    btnWishlist.animate().scaleX(1.2f).scaleY(1.2f).setDuration(150)
+                        .withEndAction(() -> btnWishlist.animate().scaleX(1f).scaleY(1f).setDuration(100));
+                    enWishlist = true;
+                } else {
+                    Toast.makeText(HistorietaActivity.this, "Error al agregar a la lista de deseos", Toast.LENGTH_SHORT).show();
+                }
+            }
+            @Override
+            public void onFailure(Call<RespuestaGenerica> call, Throwable t) {
+                Toast.makeText(HistorietaActivity.this, "Error de red", Toast.LENGTH_SHORT).show();
             }
         });
     }
