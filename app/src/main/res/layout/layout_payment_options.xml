@@ -45,7 +45,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingVertical="12dp"
-            android:text="Pagar con tarjeta"
+            android:text="Pagar por tarjeta"
             android:textAllCaps="false"
             app:cornerRadius="8dp" />
 
