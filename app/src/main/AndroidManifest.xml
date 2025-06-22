@@ -36,6 +36,16 @@
             android:exported="false"
             android:label="@string/title_activity_select_register" />
         <activity
+            android:name="com.example.manga_project.activities.PagoTarjetaActivity"
+            android:exported="false"
+            android:label="@string/title_activity_pago_tarjeta" />
+
+        <activity
+            android:name="com.example.manga_project.activities.DetalleOrdenActivity"
+            android:exported="false"
+            android:label="@string/title_activity_detalle_orden" />
+
+        <activity
             android:name="com.example.manga_project.activities.RegisterDataActivity"
             android:exported="false" />
         <!-- Actividades principales -->

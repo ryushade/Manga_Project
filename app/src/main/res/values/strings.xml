@@ -41,6 +41,8 @@
     <string name="title_dashboard">Dashboard</string>
     <string name="title_notifications">Notifications</string>
     <string name="title_activity_select_register">SelectRegisterActivity</string>
+    <string name="title_activity_pago_tarjeta">PagoTarjetaActivity</string>
+    <string name="title_activity_detalle_orden">DetalleOrdenActivity</string>
     <string name="title_activity_button_navigation">ButtonNavigationActivity</string>
     <!-- Strings used for fragments for navigation -->
     <string name="first_fragment_label">First Fragment</string>
