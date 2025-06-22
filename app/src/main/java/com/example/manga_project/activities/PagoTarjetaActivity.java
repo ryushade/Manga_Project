@@ -85,6 +85,8 @@ public class PagoTarjetaActivity extends AppCompatActivity {
                 if (response.isSuccessful()) {
                     // Ir a la pantalla de detalle de orden
                     Intent intent = new Intent(PagoTarjetaActivity.this, DetalleOrdenActivity.class);
+                    // Pasar la lista de items al detalle de orden
+                    intent.putExtra("historietas", new ArrayList<>(carritoItems));
                     startActivity(intent);
                     finish();
                 } else {
@@ -98,4 +100,3 @@ public class PagoTarjetaActivity extends AppCompatActivity {
         });
     }
 }
-

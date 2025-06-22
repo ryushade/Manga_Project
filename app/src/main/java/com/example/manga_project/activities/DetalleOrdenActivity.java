@@ -37,9 +37,9 @@ public class DetalleOrdenActivity extends AppCompatActivity {
         List<com.example.manga_project.Modelos.ItemUsuario> items = new ArrayList<>();
         for (ItemCarrito item : historietas) {
             com.example.manga_project.Modelos.ItemUsuario iu = new com.example.manga_project.Modelos.ItemUsuario();
-            iu.titulo = item.titulo;
-            iu.portada = item.portada;
-            iu.autores = item.autores;
+            iu.titulo = item.titulo_volumen;
+            iu.portada = item.portada_url;
+            iu.autores = item.historieta;  // Se asigna el campo historieta como autores
             items.add(iu);
         }
         adapter.setItems(items, false);

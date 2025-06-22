@@ -1,5 +1,6 @@
 package com.example.manga_project.Modelos;
 
+import java.io.Serializable;
 import java.util.List;
 
 public class ListarCarritoResponse {
@@ -7,7 +8,7 @@ public class ListarCarritoResponse {
     public List<ItemCarrito> items;
     public double total;
 
-    public static class ItemCarrito {
+    public static class ItemCarrito implements Serializable {
         public int id_volumen;
         public String titulo_volumen;
         public String historieta;
@@ -16,4 +17,3 @@ public class ListarCarritoResponse {
         public double precio_unit;
     }
 }
-

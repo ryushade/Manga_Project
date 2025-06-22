@@ -24,6 +24,7 @@ import com.example.manga_project.Modelos.ListarCarritoResponse.ItemCarrito;
 import com.example.manga_project.Modelos.RespuestaGenerica;
 import com.example.manga_project.R;
 import com.example.manga_project.adapters.CartAdapterCarrito;
+import com.example.manga_project.fragments.PagoTarjetaFragment;
 import com.google.android.material.button.MaterialButton;
 import com.google.gson.Gson;
 
