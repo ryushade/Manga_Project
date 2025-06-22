@@ -12,6 +12,11 @@
         tools:layout="@layout/fragment_home" />
 
     <fragment
+        android:id="@+id/libraryFragment"
+        android:name="com.example.manga_project.fragments.LibraryFragment"
+        tools:layout="@layout/fragment_library" />
+
+    <fragment
         android:id="@+id/inicioFragment"
         android:name="com.example.manga_project.fragments.DashboardProvFragment"
         tools:layout="@layout/fragment_home_proveedor" />

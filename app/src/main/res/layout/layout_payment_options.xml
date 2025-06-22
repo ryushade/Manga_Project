@@ -1,27 +1,53 @@
-<LinearLayout
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:wallet="http://schemas.android.com/apk/res-auto"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical"
-    android:padding="16dp">
+    android:layout_margin="16dp"
+    app:cardCornerRadius="12dp"
+    app:cardElevation="4dp"
+    android:background="@android:color/white">
 
-    <!-- Botón de Google Pay -->
-    <Button
-        android:id="@+id/google_pay_button"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Pagar con Google Pay"
-        android:backgroundTint="#fb4f1f"
-        android:layout_marginTop="16dp" />
+        android:orientation="vertical"
+        android:padding="16dp">
 
+        <!-- Google Pay Button -->
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/google_pay_button"
+            style="@style/Widget.MaterialComponents.Button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:paddingVertical="12dp"
+            android:text="Pagar con Google Pay"
+            android:textAllCaps="false"
 
-    <!-- Otro método de pago (botón de ejemplo) -->
-    <Button
-        android:id="@+id/other_payment_button"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Otro método de pago"
-        android:backgroundTint="#2196F3"
-        android:layout_marginTop="16dp" />
-</LinearLayout>
+            app:iconGravity="textStart"
+            app:iconPadding="8dp"
+            app:cornerRadius="8dp"
+            app:backgroundTint="@color/background_dark" />
+
+        <!-- Separator -->
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginVertical="12dp"
+            android:background="@color/divider" />
+
+        <!-- Other Payment Methods Button -->
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/other_payment_button"
+            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingVertical="12dp"
+            android:text="Pagar con tarjeta"
+            android:textAllCaps="false"
+            app:cornerRadius="8dp" />
+
+    </LinearLayout>
+</androidx.cardview.widget.CardView>

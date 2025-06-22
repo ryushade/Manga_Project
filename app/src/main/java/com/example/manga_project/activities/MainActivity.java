@@ -59,7 +59,7 @@ public class MainActivity extends AppCompatActivity implements Logout {
 
         navController.addOnDestinationChangedListener((controller, destination, arguments) -> {
             // Oculta el BottomNavigationView en UserFragment
-            if (destination.getId() == R.id.userFragment) {
+            if (destination.getId() == R.id.userFragment || destination.getId() == R.id.libraryFragment) {
                 shopButton.setVisibility(View.GONE);
                 toolbar.setVisibility(View.GONE);
             } else {
