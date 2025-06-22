@@ -167,10 +167,11 @@ public class CartActivity extends AppCompatActivity {
         MaterialButton tarjetaBtn = dialogView.findViewById(R.id.other_payment_button);
         tarjetaBtn.setOnClickListener(v -> {
             paymentDialog.dismiss();
-            // Navegar a un fragmento para llenar los datos de la tarjeta
+            // Navegar a un fragmento para llenar los datos de la tarjeta con el carrito
             getSupportFragmentManager()
                 .beginTransaction()
-                .replace(android.R.id.content, new PagoTarjetaFragment())
+                .replace(android.R.id.content,
+                    PagoTarjetaFragment.newInstance(new ArrayList<>(carritoItems)))
                 .addToBackStack(null)
                 .commit();
         });
