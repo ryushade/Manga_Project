@@ -5,13 +5,20 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.example.manga_project.R;
+import com.example.manga_project.Api_cliente.ApiClient;
+import com.example.manga_project.Api_cliente.AuthService;
 import com.example.manga_project.Modelos.ItemUsuario;
+import com.example.manga_project.Modelos.RespuestaGenerica;
 import java.util.ArrayList;
 import java.util.List;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class ItemUsuarioAdapter extends RecyclerView.Adapter<ItemUsuarioAdapter.ViewHolder> {
     private List<ItemUsuario> items = new ArrayList<>();
@@ -56,6 +63,34 @@ public class ItemUsuarioAdapter extends RecyclerView.Adapter<ItemUsuarioAdapter.
         holder.itemView.setOnClickListener(v -> {
             if (listener != null) listener.onItemClick(item);
         });
+        // Lógica para eliminar de wishlist
+        if (holder.ivEliminarLista != null && item.esWishlist) {
+            holder.ivEliminarLista.setVisibility(View.VISIBLE);
+            holder.ivEliminarLista.setOnClickListener(v -> {
+                AuthService api = ApiClient.getClientConToken().create(AuthService.class);
+                api.eliminarWishlist(item.id).enqueue(new Callback<RespuestaGenerica>() {
+                    @Override
+                    public void onResponse(Call<RespuestaGenerica> call, Response<RespuestaGenerica> response) {
+                        if (response.isSuccessful() && response.body() != null && response.body().code == 200) {
+                            int pos = holder.getBindingAdapterPosition();
+                            if (pos != RecyclerView.NO_POSITION) {
+                                items.remove(pos);
+                                notifyItemRemoved(pos);
+                                Toast.makeText(holder.itemView.getContext(), "Eliminado de tu lista", Toast.LENGTH_SHORT).show();
+                            }
+                        } else {
+                            Toast.makeText(holder.itemView.getContext(), "No se pudo eliminar", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                    @Override
+                    public void onFailure(Call<RespuestaGenerica> call, Throwable t) {
+                        Toast.makeText(holder.itemView.getContext(), "Error de red", Toast.LENGTH_SHORT).show();
+                    }
+                });
+            });
+        } else if (holder.ivEliminarLista != null) {
+            holder.ivEliminarLista.setVisibility(View.GONE);
+        }
     }
 
     @Override
@@ -74,11 +109,13 @@ public class ItemUsuarioAdapter extends RecyclerView.Adapter<ItemUsuarioAdapter.
     static class ViewHolder extends RecyclerView.ViewHolder {
         ImageView ivCover;
         TextView tvTitle, tvAuthor;
+        ImageView ivEliminarLista;
         ViewHolder(@NonNull View itemView) {
             super(itemView);
             ivCover = itemView.findViewById(R.id.ivCover);
             tvTitle = itemView.findViewById(R.id.tvTitle);
             tvAuthor = itemView.findViewById(R.id.tvAuthor);
+            ivEliminarLista = itemView.findViewById(R.id.ivEliminarLista);
         }
     }
 }

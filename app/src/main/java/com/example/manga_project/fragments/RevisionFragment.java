@@ -15,7 +15,6 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.constraintlayout.widget.Group;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -30,7 +29,6 @@ import com.example.manga_project.Modelos.SolicitudResponse;
 import com.example.manga_project.R;
 import com.example.manga_project.activities.HistorietaReaderActivity;
 import com.example.manga_project.adapters.CapituloAdapter;
-import com.google.android.material.tabs.TabLayout;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -42,8 +40,6 @@ import retrofit2.Response;
 
 public class RevisionFragment extends Fragment {
 
-    private TabLayout    tabLayout;
-    private Group        detailsGroup;
     private FrameLayout  chapterListContainer;
     private TextView     tvChapterHeader;
     private RecyclerView rvChapters;
@@ -75,8 +71,8 @@ public class RevisionFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         // ---- findViewById ----
-        tabLayout            = view.findViewById(R.id.tabLayout);
-        detailsGroup         = view.findViewById(R.id.detailsGroup);
+        // tabLayout            = view.findViewById(R.id.tabLayout);
+        // detailsGroup         = view.findViewById(R.id.detailsGroup);
         chapterListContainer = view.findViewById(R.id.chapterListContainer);
         tvChapterHeader      = view.findViewById(R.id.tvChapterHeader);
         rvChapters           = view.findViewById(R.id.rvChapters);
@@ -123,7 +119,7 @@ public class RevisionFragment extends Fragment {
         }
 
         loadSolicitudDetails();   // detalles
-        setupTabs();              // pestañas + capítulos
+        loadChapters();           // capítulos (cargar siempre al entrar)
 
         btnApprove.setOnClickListener(v -> {
             new androidx.appcompat.app.AlertDialog.Builder(requireContext())
@@ -133,26 +129,6 @@ public class RevisionFragment extends Fragment {
                 .setNegativeButton("Cancelar", null)
                 .show();
         });
-    }
-
-    // -----------------------------  Tabs  -----------------------------
-    private void setupTabs() {
-        tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
-            @Override public void onTabSelected(TabLayout.Tab tab) {
-                if (tab.getPosition() == 0) {              // Capítulos
-                    chapterListContainer.setVisibility(View.VISIBLE);
-                    detailsGroup.setVisibility(View.GONE);
-                    loadChapters();
-                } else {                                   // Detalles
-                    chapterListContainer.setVisibility(View.GONE);
-                    detailsGroup.setVisibility(View.VISIBLE);
-                }
-            }
-            @Override public void onTabUnselected(TabLayout.Tab t) {}
-            @Override public void onTabReselected(TabLayout.Tab t) {}
-        });
-        TabLayout.Tab first = tabLayout.getTabAt(0);
-        if (first != null) first.select();
     }
 
     // --------------------------  Retrofit  -----------------------------

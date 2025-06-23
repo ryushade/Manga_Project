@@ -48,5 +48,20 @@
             android:textStyle="bold"
             android:textSize="14sp"
             android:paddingTop="6dp"/>
+
+        <ImageView
+            android:id="@+id/ivEliminarSolicitud"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:src="@drawable/ic_close_white"
+            android:contentDescription="Eliminar"
+            android:tint="@android:color/white"
+            android:background="@drawable/bg_chip"
+            android:padding="6dp"
+            android:layout_gravity="end|center_vertical"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="4dp"
+            android:clickable="true"
+            android:focusable="true"/>
     </LinearLayout>
 </androidx.cardview.widget.CardView>
