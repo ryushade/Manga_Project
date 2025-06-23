@@ -22,6 +22,7 @@ import com.example.manga_project.SectionVolumen;
 import com.example.manga_project.activities.LoginActivity;
 import com.example.manga_project.adapters.HomeAdapter;
 import com.example.manga_project.databinding.FragmentHomeBinding;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,6 +38,7 @@ public class HomeFragment extends Fragment {
     private AuthService authService;
     // Reutilizamos la misma lista para ir agregando secciones
     private final List<SectionVolumen> sections = new ArrayList<>();
+    private VolumenResponse ultimaHistorieta = null;
 
     @Nullable
     @Override
@@ -65,25 +67,64 @@ public class HomeFragment extends Fragment {
         cargarSeccionesVolumen();
 
         // 5) Botones de prueba
-        binding.btnRead.setOnClickListener(v ->
-                Toast.makeText(requireContext(), "Read pulsado", Toast.LENGTH_SHORT).show()
-        );
-        binding.btnMyList.setOnClickListener(v ->
-                Toast.makeText(requireContext(), "My List pulsado", Toast.LENGTH_SHORT).show()
-        );
+        binding.btnRead.setText("Ver detalle");
+        binding.btnMyList.setText("Guardar");
+        binding.btnRead.setOnClickListener(v -> {
+            if (ultimaHistorieta != null) {
+                Intent intent = new Intent(requireContext(), com.example.manga_project.activities.HistorietaActivity.class);
+                intent.putExtra("ID_VOLUMEN", ultimaHistorieta.id_volumen);
+                startActivity(intent);
+            } else {
+                Toast.makeText(requireContext(), "No hay historieta para mostrar", Toast.LENGTH_SHORT).show();
+            }
+        });
+        binding.btnMyList.setOnClickListener(v -> {
+            if (ultimaHistorieta != null) {
+                // Llamar a la API para agregar a la lista de deseos
+                java.util.Map<String, Integer> body = new java.util.HashMap<>();
+                body.put("id_volumen", ultimaHistorieta.id_volumen);
+                authService.agregarWishlist(body).enqueue(new retrofit2.Callback<com.example.manga_project.Modelos.RespuestaGenerica>() {
+                    @Override
+                    public void onResponse(retrofit2.Call<com.example.manga_project.Modelos.RespuestaGenerica> call, retrofit2.Response<com.example.manga_project.Modelos.RespuestaGenerica> response) {
+                        if (response.isSuccessful() && response.body() != null && response.body().code == 0) {
+                            Toast.makeText(requireContext(), "¡Añadido a la lista de deseos!", Toast.LENGTH_SHORT).show();
+                        } else {
+                            Toast.makeText(requireContext(), "No se pudo guardar", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                    @Override
+                    public void onFailure(retrofit2.Call<com.example.manga_project.Modelos.RespuestaGenerica> call, Throwable t) {
+                        Toast.makeText(requireContext(), "Error de red", Toast.LENGTH_SHORT).show();
+                    }
+                });
+            } else {
+                Toast.makeText(requireContext(), "No hay historieta para guardar", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     private void cargarSeccionesVolumen() {
+        // Limpiar secciones antes de agregar nuevas
+        sections.clear();
+        ultimaHistorieta = null;
         // Novedades
         authService.getNovedades().enqueue(new Callback<List<VolumenResponse>>() {
             @Override
             public void onResponse(Call<List<VolumenResponse>> call,
                                    Response<List<VolumenResponse>> resp) {
                 if (!isAdded() || binding == null) return;
-                if (resp.isSuccessful() && resp.body() != null) {
+                if (resp.isSuccessful() && resp.body() != null && !resp.body().isEmpty()) {
+                    // Guardar la última historieta para el header
+                    ultimaHistorieta = resp.body().get(resp.body().size() - 1);
+                    if (ultimaHistorieta.portada != null && !ultimaHistorieta.portada.isEmpty()) {
+                        Picasso.get().load(ultimaHistorieta.portada)
+                                .placeholder(R.drawable.header_background)
+                                .into(binding.imgHeaderCover);
+                    }
+                    // Agregar sección de novedades con TODAS las historietas (incluida la última)
                     sections.add(new SectionVolumen("Novedades", resp.body()));
-                    actualizarAdaptador();
                 }
+                actualizarAdaptador();
             }
             @Override public void onFailure(Call<List<VolumenResponse>> call, Throwable t) { }
         });

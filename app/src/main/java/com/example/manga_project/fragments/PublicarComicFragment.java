@@ -1,5 +1,6 @@
 package com.example.manga_project.fragments;
 
+import android.app.AlertDialog;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.database.Cursor;
@@ -191,22 +192,29 @@ public class PublicarComicFragment extends Fragment {
         data.setUrl_portada(urlPortada);
         data.setUrl_zip(urlZip);
 
-        api.registrarSolicitud(data).enqueue(new Callback<SolicitudPublicacionResponse>() {
-            @Override
-            public void onResponse(@NonNull Call<SolicitudPublicacionResponse> call, @NonNull Response<SolicitudPublicacionResponse> response) {
-                if (response.isSuccessful()) {
-                    Toast.makeText(getContext(), "Solicitud enviada correctamente", Toast.LENGTH_SHORT).show();
-                    requireActivity().getSupportFragmentManager().popBackStack();
-                } else {
-                    Toast.makeText(getContext(), "Error al registrar (" + response.code() + ")", Toast.LENGTH_SHORT).show();
-                }
-            }
+        new AlertDialog.Builder(getContext())
+            .setTitle("Confirmar publicación")
+            .setMessage("¿Estás seguro de que deseas enviar tu solicitud de publicación de este cómic?")
+            .setPositiveButton("Sí", (dialog, which) -> {
+                api.registrarSolicitud(data).enqueue(new Callback<SolicitudPublicacionResponse>() {
+                    @Override
+                    public void onResponse(@NonNull Call<SolicitudPublicacionResponse> call, @NonNull Response<SolicitudPublicacionResponse> response) {
+                        if (response.isSuccessful()) {
+                            Toast.makeText(getContext(), "Solicitud enviada correctamente", Toast.LENGTH_SHORT).show();
+                            requireActivity().getSupportFragmentManager().popBackStack();
+                        } else {
+                            Toast.makeText(getContext(), "Error al registrar (" + response.code() + ")", Toast.LENGTH_SHORT).show();
+                        }
+                    }
 
-            @Override
-            public void onFailure(@NonNull Call<SolicitudPublicacionResponse> call, @NonNull Throwable t) {
-                Toast.makeText(getContext(), "Fallo de red: " + t.getMessage(), Toast.LENGTH_SHORT).show();
-            }
-        });
+                    @Override
+                    public void onFailure(@NonNull Call<SolicitudPublicacionResponse> call, @NonNull Throwable t) {
+                        Toast.makeText(getContext(), "Fallo de red: " + t.getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                });
+            })
+            .setNegativeButton("No", null)
+            .show();
     }
 
     @Nullable

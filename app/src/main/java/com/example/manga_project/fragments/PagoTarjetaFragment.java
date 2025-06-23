@@ -1,5 +1,6 @@
 package com.example.manga_project.fragments;
 
+import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -85,7 +86,12 @@ public class PagoTarjetaFragment extends Fragment {
             Toast.makeText(getContext(), "Completa todos los campos", Toast.LENGTH_SHORT).show();
             return;
         }
-        guardarVenta();
+        new AlertDialog.Builder(getContext())
+            .setTitle("Confirmar pago")
+            .setMessage("¿Estás seguro de que deseas realizar el pago con estos datos?")
+            .setPositiveButton("Sí", (dialog, which) -> guardarVenta())
+            .setNegativeButton("No", null)
+            .show();
     }
 
     private void guardarVenta() {

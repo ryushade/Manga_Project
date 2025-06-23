@@ -28,6 +28,7 @@ import com.example.manga_project.Modelos.CrearComentarioRequest;
 import com.example.manga_project.Modelos.BusquedaHistorietaResponse;
 import com.example.manga_project.Modelos.ComentariosResponse;
 import com.example.manga_project.Modelos.ItemsUsuarioResponse;
+import com.example.manga_project.Modelos.StripePaymentSheetResponse;
 
 import java.util.List;
 import java.util.Map;
@@ -197,4 +198,8 @@ public interface AuthService {
 
     @DELETE("/api_borrar_solicitud_publicacion/{id_solicitud}")
     Call<RespuestaGenerica> borrarSolicitudPublicacion(@Path("id_solicitud") int idSolicitud);
+
+    // Stripe PaymentSheet endpoint
+    @POST("/payment-sheet")
+    Call<StripePaymentSheetResponse> getStripePaymentSheet(@Body Map<String, Object> body);
 }
