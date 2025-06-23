@@ -93,7 +93,10 @@ public class EpisodioAdapter
             holder.itemView.setOnClickListener(null);
             return;
         }
-        holder.tvTitle.setText(episodios.get(position));
+        // Mostrar nombre amigable: Capítulo X
+        String rawId = episodios.get(position);
+        int capNum = position + 1;
+        holder.tvTitle.setText("Capítulo " + capNum);
         holder.tvPages.setVisibility(View.GONE);
         // Si está locked y no es el primer capítulo, lo ocultamos (por seguridad extra)
         if (locked && position > 0) {
