@@ -137,4 +137,5 @@
     <string name="label_resultados">Resultados</string>
     <string name="add_to_wishlist">Agregar a la lista de deseos</string>
     <string name="back">Atrás</string>
+    <string name="mis_solicitudes_empty">No tienes solicitudes enviadas</string>
 </resources>

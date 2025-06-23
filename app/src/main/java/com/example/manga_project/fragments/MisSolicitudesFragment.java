@@ -21,6 +21,7 @@ import com.example.manga_project.Modelos.SoliHistorietaProveedorRequest;
 import com.example.manga_project.Modelos.SoliHistorietaProveedorResponse;
 import com.example.manga_project.R;
 import com.example.manga_project.adapters.MisSolicitudesAdapter;
+import com.google.gson.Gson;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,7 +29,6 @@ import java.util.List;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import retrofit2.Retrofit;
 
 public class MisSolicitudesFragment extends Fragment {
 
@@ -38,8 +38,7 @@ public class MisSolicitudesFragment extends Fragment {
     private List<SoliHistorietaProveedorRequest> data = new ArrayList<>();
     private SwipeRefreshLayout swipeRefresh;
     private TextView tvSolicitudesEnviadas;
-
-    public MisSolicitudesFragment() { }
+    private RecyclerView rvSolicitudes;
 
     @Nullable
     @Override
@@ -54,65 +53,81 @@ public class MisSolicitudesFragment extends Fragment {
                 false);
 
         swipeRefresh = v.findViewById(R.id.swipeRefresh);
-        RecyclerView rv = v.findViewById(R.id.recyclerMisSolicitudes);
-        rv.setLayoutManager(new LinearLayoutManager(getContext()));
-
+        rvSolicitudes = v.findViewById(R.id.recyclerMisSolicitudes);
+        rvSolicitudes.setLayoutManager(new LinearLayoutManager(getContext()));
         adapter = new MisSolicitudesAdapter(getContext(), data);
-        rv.setAdapter(adapter);
+        rvSolicitudes.setAdapter(adapter);
 
         tvSolicitudesEnviadas = v.findViewById(R.id.tvSolicitudesEnviadas);
         tvSolicitudesEnviadas.setVisibility(View.GONE);
 
         swipeRefresh.setOnRefreshListener(this::cargarSolicitudes);
-
-        // Carga inicial
         cargarSolicitudes();
 
         return v;
     }
 
     private void cargarSolicitudes() {
+        // configurar ApiClient para backend local
+        ApiClient.setContext(getContext());
+        ApiClient.usarBackendLocal(true);
         swipeRefresh.setRefreshing(true);
-        Retrofit retrofit = ApiClient.getClientConToken();
-        AuthService api = retrofit.create(AuthService.class);
+
+        AuthService api = ApiClient.getClientConToken()
+                .create(AuthService.class);
 
         api.obtenerMisSolicitudes().enqueue(new Callback<SoliHistorietaProveedorResponse>() {
             @Override
-            public void onResponse(@NonNull Call<SoliHistorietaProveedorResponse> call,
-                                   @NonNull Response<SoliHistorietaProveedorResponse> resp) {
+            public void onResponse(
+                    @NonNull Call<SoliHistorietaProveedorResponse> call,
+                    @NonNull Response<SoliHistorietaProveedorResponse> resp) {
+
                 swipeRefresh.setRefreshing(false);
 
-                if (!resp.isSuccessful()) {
-                    Toast.makeText(getContext(), "Error servidor", Toast.LENGTH_SHORT).show();
+                if (!resp.isSuccessful() || resp.body() == null || !resp.body().isSuccess()) {
+                    Toast.makeText(getContext(),
+                            "Error servidor o sin datos",
+                            Toast.LENGTH_SHORT).show();
+                    mostrarEmpty();
                     return;
                 }
 
-                SoliHistorietaProveedorResponse body = resp.body();
-                if (body == null) {
-                    Toast.makeText(getContext(), "Sin datos", Toast.LENGTH_SHORT).show();
-                    return;
-                }
+                // DEBUG: ver JSON completo
+                Log.d(TAG, "Resp body: " + new Gson().toJson(resp.body()));
+                // DEBUG: ver lista de datos
+                List<SoliHistorietaProveedorRequest> lista = resp.body().getData();
+                Log.d(TAG, "Lista datos size=" + (lista != null ? lista.size() : 0)
+                        + ", contenido=" + new Gson().toJson(lista));
 
-                List<SoliHistorietaProveedorRequest> lista = body.getData();
+                // procesar lista
                 data.clear();
                 if (lista != null && !lista.isEmpty()) {
                     data.addAll(lista);
                     tvSolicitudesEnviadas.setVisibility(View.GONE);
+                    rvSolicitudes.setVisibility(View.VISIBLE);
                 } else {
-                    tvSolicitudesEnviadas.setText("No tienes solicitudes enviadas");
-                    tvSolicitudesEnviadas.setVisibility(View.VISIBLE);
+                    mostrarEmpty();
                 }
                 adapter.notifyDataSetChanged();
             }
 
-
             @Override
-            public void onFailure(@NonNull Call<SoliHistorietaProveedorResponse> call,
-                                  @NonNull Throwable t) {
+            public void onFailure(
+                    @NonNull Call<SoliHistorietaProveedorResponse> call,
+                    @NonNull Throwable t) {
                 swipeRefresh.setRefreshing(false);
-                Log.e(TAG, "Fallo red: " + t.getMessage());
-                Toast.makeText(getContext(), "Error de red", Toast.LENGTH_SHORT).show();
+                Log.e(TAG, "Error de red", t);
+                mostrarEmpty();
             }
         });
+    }
+
+    private void mostrarEmpty() {
+        data.clear();
+        adapter.notifyDataSetChanged();
+        rvSolicitudes.setVisibility(View.GONE);
+        tvSolicitudesEnviadas.setText(
+                getString(R.string.mis_solicitudes_empty));
+        tvSolicitudesEnviadas.setVisibility(View.VISIBLE);
     }
 }

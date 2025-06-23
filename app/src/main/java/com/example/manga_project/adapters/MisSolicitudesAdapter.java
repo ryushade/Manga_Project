@@ -1,9 +1,11 @@
 package com.example.manga_project.adapters;
 
+import android.app.AlertDialog;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
@@ -53,6 +55,27 @@ public class MisSolicitudesAdapter
                 color = ContextCompat.getColor(ctx, R.color.amber);
         }
         h.estado.setTextColor(color);
+
+        // Mostrar/ocultar el botón X según el estado
+        if (h.eliminar != null) {
+            if (s.getEstado().equalsIgnoreCase("pendiente")) {
+                h.eliminar.setVisibility(View.VISIBLE);
+                h.eliminar.setOnClickListener(v -> {
+                    new AlertDialog.Builder(ctx)
+                        .setTitle("Cancelar solicitud")
+                        .setMessage("¿Deseas cancelar esta solicitud de publicación?")
+                        .setPositiveButton("Sí", (dialog, which) -> {
+                            // Aquí puedes implementar la lógica para cancelar la solicitud
+                            // Por ejemplo, llamar a un método listener o callback
+                        })
+                        .setNegativeButton("No", null)
+                        .show();
+                });
+            } else {
+                h.eliminar.setVisibility(View.GONE);
+                h.eliminar.setOnClickListener(null);
+            }
+        }
     }
 
     @Override
@@ -62,12 +85,14 @@ public class MisSolicitudesAdapter
 
     static class Holder extends RecyclerView.ViewHolder {
         TextView titulo, tipo, fecha, estado;
+        ImageView eliminar;
         Holder(View v) {
             super(v);
             titulo = v.findViewById(R.id.tvTituloSolicitud);
             tipo   = v.findViewById(R.id.tvTipoSolicitud);
             fecha  = v.findViewById(R.id.tvFechaSolicitud);
             estado = v.findViewById(R.id.tvEstadoSolicitud);
+            eliminar = v.findViewById(R.id.ivEliminarSolicitud);
         }
     }
 }
