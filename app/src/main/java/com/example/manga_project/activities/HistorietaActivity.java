@@ -58,6 +58,9 @@ public class HistorietaActivity extends AppCompatActivity {
     private TabLayout tabLayout;
     private ImageButton btnWishlist;
 
+    private String tipoVolumen = null;
+    private boolean lockedCapitulos = false;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -217,8 +220,15 @@ public class HistorietaActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<CapituloResponse> call, Response<CapituloResponse> response) {
                 if (response.isSuccessful() && response.body() != null && response.body().code == 0) {
+                    tipoVolumen = response.body().tipo;
+                    lockedCapitulos = response.body().locked;
                     episodioAdapter.actualizarDatos(response.body().chapters);
-                    episodioAdapter.setLocked(response.body().locked);
+                    // Si es comic, nunca mostrar mensaje de compra (locked)
+                    if ("comic".equalsIgnoreCase(tipoVolumen)) {
+                        episodioAdapter.setLocked(false);
+                    } else {
+                        episodioAdapter.setLocked(lockedCapitulos);
+                    }
                 }
             }
             @Override
@@ -234,6 +244,13 @@ public class HistorietaActivity extends AppCompatActivity {
             public void onResponse(Call<PaginaResponse> call, Response<PaginaResponse> response) {
                 if (response.isSuccessful() && response.body() != null && response.body().code == 0) {
                     ArrayList<String> urls = new ArrayList<>(response.body().pages);
+                    // Si es comic y está locked, solo mostrar 5 páginas
+                    if ("comic".equalsIgnoreCase(tipoVolumen) && lockedCapitulos) {
+                        if (urls.size() > 5) {
+                            urls = new ArrayList<>(urls.subList(0, 5));
+                            Toast.makeText(HistorietaActivity.this, "Solo puedes leer 5 páginas gratis. Compra para desbloquear el cómic completo.", Toast.LENGTH_LONG).show();
+                        }
+                    }
                     Intent i = new Intent(HistorietaActivity.this, HistorietaReaderActivity.class);
                     i.putStringArrayListExtra("PAGES", urls);
                     startActivity(i);
