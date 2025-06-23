@@ -112,7 +112,7 @@
     <string name="manga_register_hint_chapters">Capítulos</string>
     <string name="manga_register_hint_price">Precio S/.</string>
     <string name="manga_register_hint_isbn">ISBN</string>
-    <string name="manga_register_hint_age">Restricción edad</string>
+    <string name="manga_register_hint_age">Número de volumen</string>
     <string name="manga_register_hint_editorial">Editorial</string>
     <string name="manga_register_choose_genre">Elige género</string>
     <string name="manga_register_hint_description">Descripción sobre el manga *</string>

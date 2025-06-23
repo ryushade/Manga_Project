@@ -97,13 +97,18 @@ public class HistorietaActivity extends AppCompatActivity {
 
         fabAddToCart = findViewById(R.id.fabAddToCart);
         fabAddToCart.setOnClickListener(v -> {
+            if (volumenComprado) {
+                Toast.makeText(this, "Ya compraste este volumen", Toast.LENGTH_SHORT).show();
+                fabAddToCart.setEnabled(false);
+                fabAddToCart.setVisibility(View.GONE);
+                return;
+            }
             if (volumenEnCarrito) {
                 Toast.makeText(this, "Ya está en tu carrito", Toast.LENGTH_SHORT).show();
-            } else if (volumenComprado) {
-                Toast.makeText(this, "Ya compraste este volumen", Toast.LENGTH_SHORT).show();
-            } else {
-                agregarAlCarrito();
+                fabAddToCart.setEnabled(false);
+                return;
             }
+            agregarAlCarrito();
         });
 
         btnWishlist = findViewById(R.id.btnWishlist);
@@ -306,6 +311,12 @@ public class HistorietaActivity extends AppCompatActivity {
                 if (response.isSuccessful() && response.body() != null) {
                     int code = response.body().code;
                     String msg = response.body().msg;
+                    if (msg != null && msg.toLowerCase().contains("ya compraste")) {
+                        Toast.makeText(HistorietaActivity.this, msg, Toast.LENGTH_LONG).show();
+                        fabAddToCart.setEnabled(false);
+                        fabAddToCart.setVisibility(View.GONE);
+                        return;
+                    }
                     if (code == 0) {
                         Toast.makeText(HistorietaActivity.this, "¡Volumen añadido a tu carrito!", Toast.LENGTH_SHORT).show();
                     } else if (code == 2) {
@@ -314,6 +325,19 @@ public class HistorietaActivity extends AppCompatActivity {
                         Toast.makeText(HistorietaActivity.this, "La cantidad debe ser al menos 1.", Toast.LENGTH_LONG).show();
                     } else {
                         Toast.makeText(HistorietaActivity.this, msg != null ? msg : "No se pudo agregar al carrito.", Toast.LENGTH_LONG).show();
+                    }
+                } else if (response.errorBody() != null) {
+                    try {
+                        String errorJson = response.errorBody().string();
+                        if (errorJson.toLowerCase().contains("ya compraste")) {
+                            Toast.makeText(HistorietaActivity.this, "Ya compraste este volumen", Toast.LENGTH_LONG).show();
+                            fabAddToCart.setEnabled(false);
+                            fabAddToCart.setVisibility(View.GONE);
+                        } else {
+                            Toast.makeText(HistorietaActivity.this, "No se pudo agregar al carrito.", Toast.LENGTH_LONG).show();
+                        }
+                    } catch (Exception e) {
+                        Toast.makeText(HistorietaActivity.this, "No se pudo agregar al carrito.", Toast.LENGTH_LONG).show();
                     }
                 } else {
                     Toast.makeText(HistorietaActivity.this, "No se pudo agregar al carrito. Intenta más tarde.", Toast.LENGTH_LONG).show();

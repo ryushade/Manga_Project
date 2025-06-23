@@ -70,7 +70,7 @@ public class MisSolicitudesFragment extends Fragment {
     private void cargarSolicitudes() {
         // configurar ApiClient para backend local
         ApiClient.setContext(getContext());
-        ApiClient.usarBackendLocal(true);
+        // ApiClient.usarBackendLocal(true); // Ya no se usa, siempre es remoto
         swipeRefresh.setRefreshing(true);
 
         AuthService api = ApiClient.getClientConToken()

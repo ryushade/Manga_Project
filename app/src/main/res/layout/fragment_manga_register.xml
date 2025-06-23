@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <!-- Contenido desplazable -->
     <androidx.core.widget.NestedScrollView
         android:id="@+id/scroll"
         android:layout_width="0dp"
@@ -21,46 +22,41 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <RelativeLayout
-                android:id="@+id/headerLayout"
+            <!-- Header simplificado -->
+            <ImageView
+                android:id="@+id/btnBack"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:src="@drawable/ico_back"
+                android:tint="@color/ic_launcher_background"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                android:layout_marginTop="8dp"/>
+
+            <TextView
+                android:id="@+id/tvTituloPublicarManga"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:layout_marginBottom="24dp"
-                android:paddingStart="8dp"
-                android:paddingEnd="8dp"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent">
+                android:text="@string/manga_register_title"
+                android:textSize="24sp"
+                android:textStyle="bold"
+                android:textColor="#5545E0"
+                android:gravity="center"
+                app:layout_constraintStart_toEndOf="@id/btnBack"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintBaseline_toBaselineOf="@id/btnBack"
+                android:layout_marginStart="16dp"/>
 
-                <ImageView
-                    android:id="@+id/btnBack"
-                    android:layout_width="24dp"
-                    android:layout_height="24dp"
-                    android:src="@drawable/ico_back"
-                    android:tint="@color/ic_launcher_background"
-                    android:layout_alignParentStart="true"
-                    android:layout_centerVertical="true"/>
-
-                <TextView
-                    android:id="@+id/tvTituloPublicarManga"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/manga_register_title"
-                    android:textSize="24sp"
-                    android:textStyle="bold"
-                    android:textColor="#5545E0"
-                    android:layout_centerInParent="true"/>
-            </RelativeLayout>
-
+            <!-- Cubierta y botón de elegir imagen -->
             <FrameLayout
                 android:id="@+id/coverFrame"
                 android:layout_width="180dp"
                 android:layout_height="180dp"
+                android:layout_marginTop="24dp"
                 android:layout_marginBottom="16dp"
                 android:background="@drawable/bg_upload"
                 android:foreground="?android:attr/selectableItemBackground"
-                app:layout_constraintTop_toBottomOf="@id/headerLayout"
+                app:layout_constraintTop_toBottomOf="@id/btnBack"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent">
 
@@ -82,44 +78,34 @@
                     android:textColor="#5545E0"/>
             </FrameLayout>
 
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/pdfRow"
+            <!-- Subida de ZIP -->
+            <Button
+                android:id="@+id/btnUploadPdf"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/manga_register_upload_zip"
+                android:backgroundTint="#F6E05E"
+                android:textColor="#5545E0"
+                android:drawableStart="@drawable/ico_upload"
+                android:paddingStart="16dp"
+                android:paddingEnd="16dp"
+                app:layout_constraintTop_toBottomOf="@id/coverFrame"
+                app:layout_constraintStart_toStartOf="parent"/>
+
+            <TextView
+                android:id="@+id/tvPdfFileName"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:layout_marginBottom="16dp"
-                app:layout_constraintTop_toBottomOf="@id/coverFrame"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent">
+                android:text="@string/manga_register_no_file"
+                android:textColor="#757575"
+                android:textSize="14sp"
+                android:layout_marginStart="12dp"
+                app:layout_constraintStart_toEndOf="@id/btnUploadPdf"
+                app:layout_constraintTop_toTopOf="@id/btnUploadPdf"
+                app:layout_constraintBottom_toBottomOf="@id/btnUploadPdf"
+                app:layout_constraintEnd_toEndOf="parent"/>
 
-                <Button
-                    android:id="@+id/btnUploadPdf"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/manga_register_upload_zip"
-                    android:backgroundTint="#F6E05E"
-                    android:textColor="#5545E0"
-                    android:drawableStart="@drawable/ico_upload"
-                    android:paddingStart="16dp"
-                    android:paddingEnd="16dp"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintBottom_toBottomOf="parent"/>
-
-                <TextView
-                    android:id="@+id/tvPdfFileName"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:text="@string/manga_register_no_file"
-                    android:textColor="#757575"
-                    android:textSize="14sp"
-                    android:layout_marginStart="12dp"
-                    app:layout_constraintStart_toEndOf="@id/btnUploadPdf"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"/>
-            </androidx.constraintlayout.widget.ConstraintLayout>
-
+            <!-- Campos de texto -->
             <EditText
                 android:id="@+id/etTitle"
                 android:layout_width="0dp"
@@ -129,8 +115,7 @@
                 android:padding="12dp"
                 android:textSize="16sp"
                 android:layout_marginTop="16dp"
-                android:layout_marginBottom="16dp"
-                app:layout_constraintTop_toBottomOf="@id/pdfRow"
+                app:layout_constraintTop_toBottomOf="@id/btnUploadPdf"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"/>
 
@@ -142,143 +127,105 @@
                 android:background="@drawable/bg_field"
                 android:padding="12dp"
                 android:textSize="16sp"
-                android:layout_marginTop="16dp"
-                android:layout_marginBottom="16dp"
+                android:layout_marginTop="8dp"
                 app:layout_constraintTop_toBottomOf="@id/etTitle"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"/>
 
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/yearChapterRow"
-                android:layout_width="0dp"
+            <!-- Guideline al 50% -->
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/guideline50"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:layout_marginBottom="16dp"
-                app:layout_constraintTop_toBottomOf="@id/etAuthors"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent">
+                android:orientation="vertical"
+                app:layout_constraintGuide_percent="0.5"/>
 
-                <EditText
-                    android:id="@+id/etYear"
-                    android:layout_width="0dp"
-                    android:layout_height="50dp"
-                    android:hint="@string/manga_register_hint_year"
-                    android:inputType="number"
-                    android:background="@drawable/bg_field"
-                    android:padding="12dp"
-                    android:textSize="16sp"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintEnd_toStartOf="@id/etChapters"
-                    app:layout_constraintWidth_percent="0.48"/>
-
-                <EditText
-                    android:id="@+id/etChapters"
-                    android:layout_width="0dp"
-                    android:layout_height="50dp"
-                    android:hint="@string/manga_register_hint_chapters"
-                    android:inputType="number"
-                    android:background="@drawable/bg_field"
-                    android:padding="12dp"
-                    android:textSize="16sp"
-                    app:layout_constraintStart_toEndOf="@id/etYear"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintWidth_percent="0.48"/>
-            </androidx.constraintlayout.widget.ConstraintLayout>
-
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/priceIsbnRow"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:layout_marginBottom="16dp"
-                app:layout_constraintTop_toBottomOf="@id/yearChapterRow"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent">
-
-                <EditText
-                    android:id="@+id/etPrecio"
-                    android:layout_width="0dp"
-                    android:layout_height="50dp"
-                    android:hint="@string/manga_register_hint_price"
-                    android:inputType="numberDecimal"
-                    android:background="@drawable/bg_field"
-                    android:padding="12dp"
-                    android:textSize="16sp"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintEnd_toStartOf="@id/etISBN"
-                    app:layout_constraintWidth_percent="0.48"/>
-
-                <EditText
-                    android:id="@+id/etISBN"
-                    android:layout_width="0dp"
-                    android:layout_height="50dp"
-                    android:hint="@string/manga_register_hint_isbn"
-                    android:background="@drawable/bg_field"
-                    android:padding="12dp"
-                    android:textSize="16sp"
-                    app:layout_constraintStart_toEndOf="@id/etPrecio"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintWidth_percent="0.48"/>
-            </androidx.constraintlayout.widget.ConstraintLayout>
-
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/ageEditorialRow"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:layout_marginBottom="16dp"
-                app:layout_constraintTop_toBottomOf="@id/priceIsbnRow"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent">
-
-                <EditText
-                    android:id="@+id/etEdad"
-                    android:layout_width="0dp"
-                    android:layout_height="50dp"
-                    android:hint="@string/manga_register_hint_age"
-                    android:background="@drawable/bg_field"
-                    android:padding="12dp"
-                    android:textSize="16sp"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintEnd_toStartOf="@id/etEditorial"
-                    app:layout_constraintWidth_percent="0.48"/>
-
-                <EditText
-                    android:id="@+id/etEditorial"
-                    android:layout_width="0dp"
-                    android:layout_height="50dp"
-                    android:hint="@string/manga_register_hint_editorial"
-                    android:background="@drawable/bg_field"
-                    android:padding="12dp"
-                    android:textSize="16sp"
-                    app:layout_constraintStart_toEndOf="@id/etEdad"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintWidth_percent="0.48"/>
-            </androidx.constraintlayout.widget.ConstraintLayout>
-
-            <TextView
-                android:id="@+id/tvChooseCategory"
+            <!-- Año publicación -->
+            <EditText
+                android:id="@+id/etYear"
                 android:layout_width="0dp"
                 android:layout_height="50dp"
-                android:text="@string/manga_register_choose_genre"
+                android:hint="@string/manga_register_hint_year"
+                android:inputType="number"
                 android:background="@drawable/bg_field"
                 android:padding="12dp"
                 android:textSize="16sp"
-                android:drawableEnd="@drawable/ic_arrow_right"
-                android:gravity="center_vertical"
                 android:layout_marginTop="16dp"
-                android:layout_marginBottom="16dp"
-                android:textColor="#757575"
-                app:layout_constraintTop_toBottomOf="@id/ageEditorialRow"
+                app:layout_constraintTop_toBottomOf="@id/etAuthors"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/guideline50"/>
+
+            <!-- Capítulos -->
+            <EditText
+                android:id="@+id/etChapters"
+                android:layout_width="0dp"
+                android:layout_height="50dp"
+                android:hint="@string/manga_register_hint_chapters"
+                android:inputType="number"
+                android:background="@drawable/bg_field"
+                android:padding="12dp"
+                android:textSize="16sp"
+                android:layout_marginTop="16dp"
+                app:layout_constraintTop_toBottomOf="@id/etAuthors"
+                app:layout_constraintStart_toEndOf="@id/guideline50"
+                app:layout_constraintEnd_toEndOf="parent"/>
+
+            <!-- Precio -->
+            <EditText
+                android:id="@+id/etPrecio"
+                android:layout_width="0dp"
+                android:layout_height="50dp"
+                android:hint="@string/manga_register_hint_price"
+                android:inputType="numberDecimal"
+                android:background="@drawable/bg_field"
+                android:padding="12dp"
+                android:textSize="16sp"
+                android:layout_marginTop="16dp"
+                app:layout_constraintTop_toBottomOf="@id/etChapters"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/guideline50"/>
+
+            <!-- Número de volumen -->
+            <EditText
+                android:id="@+id/etVol"
+                android:layout_width="0dp"
+                android:layout_height="50dp"
+                android:hint="@string/manga_register_hint_age"
+                android:background="@drawable/bg_field"
+                android:padding="12dp"
+                android:textSize="16sp"
+                android:layout_marginTop="16dp"
+                app:layout_constraintTop_toBottomOf="@id/etChapters"
+                app:layout_constraintStart_toEndOf="@id/guideline50"
+                app:layout_constraintEnd_toEndOf="parent"/>
+
+            <!-- Editorial -->
+            <EditText
+                android:id="@+id/etEditorial"
+                android:layout_width="0dp"
+                android:layout_height="50dp"
+                android:hint="@string/manga_register_hint_editorial"
+                android:background="@drawable/bg_field"
+                android:padding="12dp"
+                android:textSize="16sp"
+                android:layout_marginTop="16dp"
+                app:layout_constraintTop_toBottomOf="@id/etVol"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/guideline50"/>
+
+            <!-- Género -->
+            <Spinner
+                android:id="@+id/spGenero"
+                android:layout_width="0dp"
+                android:layout_height="50dp"
+                android:background="@drawable/bg_field"
+                android:padding="12dp"
+                android:layout_marginTop="16dp"
+                app:layout_constraintTop_toBottomOf="@id/etEditorial"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"/>
 
+            <!-- Descripción -->
             <EditText
                 android:id="@+id/etDetails"
                 android:layout_width="0dp"
@@ -290,12 +237,14 @@
                 android:textSize="15sp"
                 android:layout_marginTop="16dp"
                 android:layout_marginBottom="20dp"
-                app:layout_constraintTop_toBottomOf="@id/tvChooseCategory"
+                app:layout_constraintTop_toBottomOf="@id/spGenero"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"/>
+
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.core.widget.NestedScrollView>
 
+    <!-- Fila de botones -->
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/buttonRow"
         android:layout_width="0dp"
@@ -328,5 +277,6 @@
             app:layout_constraintStart_toEndOf="@id/btnSaveDefault"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintWidth_percent="0.48"/>
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

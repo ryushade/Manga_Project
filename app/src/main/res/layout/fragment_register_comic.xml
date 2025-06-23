@@ -124,7 +124,7 @@
             android:id="@+id/tvAddMoreAuthor"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="+ agregar más"
+            android:text=""
             android:textColor="#5545E0"
             android:textStyle="bold"
             android:paddingBottom="10dp"
