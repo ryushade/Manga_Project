@@ -30,7 +30,12 @@ public class EpisodioAdapter
     private final List<String> episodios = new ArrayList<>();
     private final OnEpisodeClick listener;
 
-    // ───────────────────────────────────────────────────────────────────
+    private boolean locked = false;
+
+    private static final int TYPE_CHAPTER = 0;
+    private static final int TYPE_LOCKED_MSG = 1;
+
+    // ─────────────────���─────────────────────────────────────────────────
     public EpisodioAdapter(List<String> initialData, OnEpisodeClick listener) {
         if (initialData != null) episodios.addAll(initialData);
         this.listener = listener;
@@ -40,6 +45,11 @@ public class EpisodioAdapter
     public void actualizarDatos(List<String> nuevos) {
         episodios.clear();
         if (nuevos != null) episodios.addAll(nuevos);
+        notifyDataSetChanged();
+    }
+
+    public void setLocked(boolean locked) {
+        this.locked = locked;
         notifyDataSetChanged();
     }
 
@@ -53,25 +63,58 @@ public class EpisodioAdapter
         }
     }
 
-    // ───────── Adapter overrides ─────────────────────────────────────
+    // ───────── Adapter overrides ──────────────────────���──────────────
+    @Override
+    public int getItemViewType(int position) {
+        if (locked && position == episodios.size()) {
+            return TYPE_LOCKED_MSG;
+        }
+        return TYPE_CHAPTER;
+    }
+
     @NonNull @Override
     public VH onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View v = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.item_capitulo, parent, false);
-        return new VH(v);
+        if (viewType == TYPE_LOCKED_MSG) {
+            View v = LayoutInflater.from(parent.getContext())
+                    .inflate(R.layout.item_locked_message, parent, false);
+            return new VH(v);
+        } else {
+            View v = LayoutInflater.from(parent.getContext())
+                    .inflate(R.layout.item_capitulo, parent, false);
+            return new VH(v);
+        }
     }
 
     @Override
-    public void onBindViewHolder(@NonNull VH h, int pos) {
-        String epId = episodios.get(pos); // p.e. "c003"
-
-        // Mostrar como "Capítulo 003" (rellenando con ceros si es necesario)
-        String numero = epId.length() > 1 ? epId.substring(1) : epId;
-        h.tvTitle.setText("Capítulo " + numero);
-
-        h.tvPages.setText("");
-        h.itemView.setOnClickListener(v -> listener.onEpisodeClick(epId));
+    public void onBindViewHolder(@NonNull VH holder, int position) {
+        if (getItemViewType(position) == TYPE_LOCKED_MSG) {
+            holder.tvTitle.setText("Compra para desbloquear todos los capítulos");
+            holder.tvPages.setVisibility(View.GONE);
+            holder.itemView.setOnClickListener(null);
+            return;
+        }
+        holder.tvTitle.setText(episodios.get(position));
+        holder.tvPages.setVisibility(View.GONE);
+        // Si está locked y no es el primer capítulo, lo ocultamos (por seguridad extra)
+        if (locked && position > 0) {
+            holder.itemView.setVisibility(View.GONE);
+            holder.itemView.setLayoutParams(new RecyclerView.LayoutParams(0, 0));
+        } else {
+            holder.itemView.setVisibility(View.VISIBLE);
+            holder.itemView.setLayoutParams(new RecyclerView.LayoutParams(
+                ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT));
+        }
+        holder.itemView.setOnClickListener(v -> {
+            if (locked && position > 0) {
+                // No debería pasar, pero por seguridad
+                return;
+            }
+            if (listener != null) listener.onEpisodeClick(episodios.get(position));
+        });
     }
 
-    @Override public int getItemCount() { return episodios.size(); }
+    @Override public int getItemCount() {
+        return locked ? episodios.size() + 1 : episodios.size();
+    }
 }

@@ -218,6 +218,7 @@ public class HistorietaActivity extends AppCompatActivity {
             public void onResponse(Call<CapituloResponse> call, Response<CapituloResponse> response) {
                 if (response.isSuccessful() && response.body() != null && response.body().code == 0) {
                     episodioAdapter.actualizarDatos(response.body().chapters);
+                    episodioAdapter.setLocked(response.body().locked);
                 }
             }
             @Override
