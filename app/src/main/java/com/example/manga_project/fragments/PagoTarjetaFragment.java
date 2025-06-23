@@ -63,9 +63,7 @@ public class PagoTarjetaFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_pago_tarjeta, container, false);
-        // inicializar vistas y API
         etNombre = view.findViewById(R.id.etNombre);
         etNumero = view.findViewById(R.id.etNumero);
         etVencimiento = view.findViewById(R.id.etVencimiento);
@@ -73,11 +71,11 @@ public class PagoTarjetaFragment extends Fragment {
         btnConfirmar = view.findViewById(R.id.btnConfirmarPago);
         sharedPreferences = requireActivity().getSharedPreferences("myPrefs", Context.MODE_PRIVATE);
         api = ApiClient.getClientConToken().create(AuthService.class);
-        btnConfirmar.setOnClickListener(v -> validarYGuardar());
+        btnConfirmar.setOnClickListener(v -> validarDatosStripe());
         return view;
     }
 
-    private void validarYGuardar() {
+    private void validarDatosStripe() {
         String nombre = etNombre.getText() != null ? etNombre.getText().toString().trim() : "";
         String numero = etNumero.getText() != null ? etNumero.getText().toString().trim() : "";
         String vencimiento = etVencimiento.getText() != null ? etVencimiento.getText().toString().trim() : "";
@@ -86,47 +84,7 @@ public class PagoTarjetaFragment extends Fragment {
             Toast.makeText(getContext(), "Completa todos los campos", Toast.LENGTH_SHORT).show();
             return;
         }
-        new AlertDialog.Builder(getContext())
-            .setTitle("Confirmar pago")
-            .setMessage("¿Estás seguro de que deseas realizar el pago con estos datos?")
-            .setPositiveButton("Sí", (dialog, which) -> guardarVenta())
-            .setNegativeButton("No", null)
-            .show();
-    }
-
-    private void guardarVenta() {
-        if (carritoItems == null || carritoItems.isEmpty()) {
-            Toast.makeText(getContext(), "El carrito está vacío", Toast.LENGTH_SHORT).show();
-            return;
-        }
-        List<Map<String, Object>> carrito = new ArrayList<>();
-        for (ItemCarrito item : carritoItems) {
-            Map<String, Object> map = new HashMap<>();
-            map.put("id_volumen", item.id_volumen);
-            map.put("precio_ven", item.precio_unit);
-            map.put("cantidad", item.cantidad);
-            carrito.add(map);
-        }
-        Map<String, Object> body = new HashMap<>();
-        body.put("carrito", carrito);
-        String token = sharedPreferences.getString("token", "");
-        api.guardarVenta(body, "Bearer " + token).enqueue(new Callback<ResponseBody>() {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                if (response.isSuccessful()) {
-                    Intent intent = new Intent(requireActivity(), DetalleOrdenActivity.class);
-                    intent.putExtra("historietas", new ArrayList<>(carritoItems));
-                    startActivity(intent);
-                    requireActivity().finish();
-                } else {
-                    Toast.makeText(getContext(), "Error al procesar la venta", Toast.LENGTH_SHORT).show();
-                }
-            }
-
-            @Override
-            public void onFailure(Call<ResponseBody> call, Throwable t) {
-                Toast.makeText(getContext(), "Error de red", Toast.LENGTH_SHORT).show();
-            }
-        });
+        // Aquí deberías iniciar el flujo de pago con Stripe usando los datos ingresados
+        Toast.makeText(getContext(), "Implementa aquí el flujo de pago con Stripe", Toast.LENGTH_SHORT).show();
     }
 }

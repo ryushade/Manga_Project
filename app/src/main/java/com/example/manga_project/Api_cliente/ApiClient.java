@@ -18,7 +18,7 @@ public class ApiClient {
 
     // Cambia al puerto correcto
     public static final String BASE_URL_LOCAL  = "http://192.168.1.6:5000/";
-    private static final String BASE_URL_REMOTA = "https://grupo1damb.pythonanywhere.com/";
+    public static final String BASE_URL_REMOTA = "https://grupo1damb.pythonanywhere.com/";
     private static String baseUrlActual         = BASE_URL_REMOTA;
 
     // Llama en Application o LaunchActivity

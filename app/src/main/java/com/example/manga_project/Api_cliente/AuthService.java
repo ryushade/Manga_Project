@@ -29,6 +29,8 @@ import com.example.manga_project.Modelos.BusquedaHistorietaResponse;
 import com.example.manga_project.Modelos.ComentariosResponse;
 import com.example.manga_project.Modelos.ItemsUsuarioResponse;
 import com.example.manga_project.Modelos.StripePaymentSheetResponse;
+import com.example.manga_project.Modelos.GuardarVentaResponse;
+import com.example.manga_project.Modelos.MasVendidoResponse;
 
 import java.util.List;
 import java.util.Map;
@@ -185,7 +187,7 @@ public interface AuthService {
     );
 
     @POST("/api_guardar_venta")
-    Call<ResponseBody> guardarVenta(@Body Map<String, Object> body, @Header("Authorization") String token);
+    Call<GuardarVentaResponse> guardarVenta(@Body Map<String, Object> body, @Header("Authorization") String token);
 
     @POST("api_agregar_wishlist")
     Call<RespuestaGenerica> agregarWishlist(@Body Map<String, Integer> body);
@@ -202,4 +204,7 @@ public interface AuthService {
     // Stripe PaymentSheet endpoint
     @POST("/payment-sheet")
     Call<StripePaymentSheetResponse> getStripePaymentSheet(@Body Map<String, Object> body);
+
+    @GET("/api/volumenes/mas-vendidos")
+    Call<List<MasVendidoResponse>> getMasVendidos();
 }

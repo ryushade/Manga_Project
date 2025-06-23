@@ -2,6 +2,7 @@ package com.example.manga_project.activities;
 
 import android.app.AlertDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
@@ -17,6 +18,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.manga_project.Api_cliente.ApiClient;
 import com.example.manga_project.Api_cliente.AuthService;
+import com.example.manga_project.Modelos.GuardarVentaResponse;
 import com.example.manga_project.Modelos.ListarCarritoResponse;
 import com.example.manga_project.Modelos.ListarCarritoResponse.ItemCarrito;
 import com.example.manga_project.Modelos.RespuestaGenerica;
@@ -260,7 +262,7 @@ public class CartActivity extends AppCompatActivity {
                 String token = sharedPreferences.getString("token", "");
                 RequestBody body = RequestBody.create(json.toString(), MediaType.parse("application/json"));
                 Request request = new Request.Builder()
-                        .url(ApiClient.BASE_URL_LOCAL + "/payment-sheet")
+                        .url(ApiClient.BASE_URL_REMOTA + "/payment-sheet")
                         .addHeader("Authorization", "Bearer " + token)
                         .post(body)
                         .build();
@@ -306,13 +308,53 @@ public class CartActivity extends AppCompatActivity {
 
     private void onPaymentSheetResult(final PaymentSheetResult paymentSheetResult) {
         if (paymentSheetResult instanceof PaymentSheetResult.Completed) {
-            mostrarMensaje("¡Pago realizado con éxito!");
-            // Aquí puedes vaciar el carrito, actualizar UI, etc.
+            // Guardar la venta en el backend
+            guardarVentaEnBackend();
         } else if (paymentSheetResult instanceof PaymentSheetResult.Canceled) {
             mostrarMensaje("Pago cancelado.");
         } else if (paymentSheetResult instanceof PaymentSheetResult.Failed) {
             mostrarError("El pago falló. Intenta de nuevo.");
         }
+    }
+
+    private void guardarVentaEnBackend() {
+        // Construir el carrito para enviar al backend
+        List<Map<String, Object>> carritoParaBackend = new ArrayList<>();
+        for (ItemCarrito item : carritoItems) {
+            Map<String, Object> map = new java.util.HashMap<>();
+            map.put("id_volumen", item.id_volumen);
+            map.put("cantidad", item.cantidad);
+            map.put("precio_unit", item.precio_unit);
+            carritoParaBackend.add(map);
+        }
+        Map<String, Object> body = new java.util.HashMap<>();
+        body.put("carrito", carritoParaBackend);
+        body.put("payment_intent_id", paymentIntentClientSecret != null ? paymentIntentClientSecret.split("_secret")[0] : "");
+
+        String token = sharedPreferences.getString("token", "");
+        api.guardarVenta(body, "Bearer " + token).enqueue(new retrofit2.Callback<GuardarVentaResponse>() {
+            @Override
+            public void onResponse(retrofit2.Call<GuardarVentaResponse> call, retrofit2.Response<GuardarVentaResponse> response) {
+                if (response.isSuccessful() && response.body() != null && response.body().code == 0) {
+                    mostrarMensaje("¡Pago realizado y venta registrada!");
+                    irADetallePagoExitoso(response.body().id_venta);
+                } else {
+                    mostrarError("Pago realizado, pero error al registrar la venta.");
+                }
+            }
+            @Override
+            public void onFailure(retrofit2.Call<GuardarVentaResponse> call, Throwable t) {
+                mostrarError("Pago realizado, pero error de red al registrar la venta.");
+            }
+        });
+    }
+
+    private void irADetallePagoExitoso(int idVenta) {
+        Intent intent = new Intent(this, DetalleOrdenActivity.class);
+        intent.putExtra("id_venta", idVenta);
+        intent.putExtra("historietas", new ArrayList<>(carritoItems));
+        startActivity(intent);
+        finish();
     }
 
     private void mostrarMensaje(String msg) {

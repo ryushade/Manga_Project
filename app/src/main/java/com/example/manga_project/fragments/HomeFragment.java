@@ -143,18 +143,28 @@ public class HomeFragment extends Fragment {
             @Override public void onFailure(Call<List<VolumenResponse>> call, Throwable t) { }
         });
 
-        // Por género
-        authService.getPorGenero(1).enqueue(new Callback<List<VolumenResponse>>() {
+        // Más vendidos (nuevo endpoint y modelo)
+        authService.getMasVendidos().enqueue(new Callback<List<com.example.manga_project.Modelos.MasVendidoResponse>>() {
             @Override
-            public void onResponse(Call<List<VolumenResponse>> call,
-                                   Response<List<VolumenResponse>> resp) {
+            public void onResponse(Call<List<com.example.manga_project.Modelos.MasVendidoResponse>> call,
+                                   Response<List<com.example.manga_project.Modelos.MasVendidoResponse>> resp) {
                 if (!isAdded() || binding == null) return;
                 if (resp.isSuccessful() && resp.body() != null) {
-                    sections.add(new SectionVolumen("Por género", resp.body()));
+                    // Adaptar la lista de MasVendidoResponse a VolumenResponse para el adaptador
+                    List<com.example.manga_project.Modelos.VolumenResponse> lista = new ArrayList<>();
+                    for (com.example.manga_project.Modelos.MasVendidoResponse mv : resp.body()) {
+                        com.example.manga_project.Modelos.VolumenResponse v = new com.example.manga_project.Modelos.VolumenResponse();
+                        v.id_volumen = mv.id_volumen;
+                        v.titulo = mv.titulo;
+                        v.portada = mv.portada_url;
+                        // Puedes agregar un campo extra si tu adaptador lo soporta
+                        lista.add(v);
+                    }
+                    sections.add(new SectionVolumen("Más vendidos", lista));
                     actualizarAdaptador();
                 }
             }
-            @Override public void onFailure(Call<List<VolumenResponse>> call, Throwable t) { }
+            @Override public void onFailure(Call<List<com.example.manga_project.Modelos.MasVendidoResponse>> call, Throwable t) { }
         });
     }
 

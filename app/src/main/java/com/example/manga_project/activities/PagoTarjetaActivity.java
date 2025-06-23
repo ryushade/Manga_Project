@@ -48,6 +48,7 @@ public class PagoTarjetaActivity extends AppCompatActivity {
             carritoItems = (ArrayList<ItemCarrito>) getIntent().getSerializableExtra("carrito");
         }
 
+        // El flujo de pago tradicional ha sido eliminado. El botón solo valida datos y debe delegar el pago a Stripe.
         btnConfirmar.setOnClickListener(v -> {
             String nombre = etNombre.getText() != null ? etNombre.getText().toString().trim() : "";
             String numero = etNumero.getText() != null ? etNumero.getText().toString().trim() : "";
@@ -58,45 +59,9 @@ public class PagoTarjetaActivity extends AppCompatActivity {
                 Toast.makeText(this, "Completa todos los campos", Toast.LENGTH_SHORT).show();
                 return;
             }
-            // Aquí puedes agregar validaciones adicionales
-            guardarVenta();
-        });
-    }
-
-    private void guardarVenta() {
-        if (carritoItems == null || carritoItems.isEmpty()) {
-            Toast.makeText(this, "El carrito está vacío", Toast.LENGTH_SHORT).show();
-            return;
-        }
-        List<Object> carrito = new ArrayList<>();
-        for (ItemCarrito item : carritoItems) {
-            carrito.add(new HashMap<String, Object>() {{
-                put("id_volumen", item.id_volumen);
-                put("precio_ven", item.precio_unit);
-                put("cantidad", item.cantidad);
-            }});
-        }
-        HashMap<String, Object> body = new HashMap<>();
-        body.put("carrito", carrito);
-        String token = sharedPreferences.getString("token", "");
-        api.guardarVenta(body, "Bearer " + token).enqueue(new Callback<ResponseBody>() {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                if (response.isSuccessful()) {
-                    // Ir a la pantalla de detalle de orden
-                    Intent intent = new Intent(PagoTarjetaActivity.this, DetalleOrdenActivity.class);
-                    // Pasar la lista de items al detalle de orden
-                    intent.putExtra("historietas", new ArrayList<>(carritoItems));
-                    startActivity(intent);
-                    finish();
-                } else {
-                    Toast.makeText(PagoTarjetaActivity.this, "Error al procesar la venta", Toast.LENGTH_SHORT).show();
-                }
-            }
-            @Override
-            public void onFailure(Call<ResponseBody> call, Throwable t) {
-                Toast.makeText(PagoTarjetaActivity.this, "Error de red", Toast.LENGTH_SHORT).show();
-            }
+            // Aquí solo deberías iniciar el flujo de pago con Stripe
+            // Por ejemplo: iniciarPagoStripe(nombre, numero, vencimiento, cvv, carritoItems);
+            Toast.makeText(this, "Implementa aquí el flujo de pago con Stripe", Toast.LENGTH_SHORT).show();
         });
     }
 }
