@@ -194,4 +194,7 @@ public interface AuthService {
 
     @POST("/api_rechazar_solicitud_publicacion")
     Call<SolicitudResponse> rechazarSolicitudPublicacion(@Body Map<String, Integer> body);
+
+    @DELETE("/api_borrar_solicitud_publicacion/{id_solicitud}")
+    Call<RespuestaGenerica> borrarSolicitudPublicacion(@Path("id_solicitud") int idSolicitud);
 }

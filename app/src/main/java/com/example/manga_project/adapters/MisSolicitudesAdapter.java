@@ -7,12 +7,20 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
-import com.example.manga_project.R;
+import com.example.manga_project.Api_cliente.AuthService;
+import com.example.manga_project.Api_cliente.ApiClient;
+import com.example.manga_project.Modelos.RespuestaGenerica;
 import com.example.manga_project.Modelos.SoliHistorietaProveedorRequest;
+import com.example.manga_project.R;
+
 import java.util.List;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class MisSolicitudesAdapter
         extends RecyclerView.Adapter<MisSolicitudesAdapter.Holder> {
@@ -65,8 +73,29 @@ public class MisSolicitudesAdapter
                         .setTitle("Cancelar solicitud")
                         .setMessage("¿Deseas cancelar esta solicitud de publicación?")
                         .setPositiveButton("Sí", (dialog, which) -> {
-                            // Aquí puedes implementar la lógica para cancelar la solicitud
-                            // Por ejemplo, llamar a un método listener o callback
+                            AuthService api = ApiClient.getClientConToken().create(AuthService.class);
+                            api.borrarSolicitudPublicacion(s.getIdSolicitud()).enqueue(new Callback<RespuestaGenerica>() {
+                                @Override
+                                public void onResponse(Call<RespuestaGenerica> call, Response<RespuestaGenerica> response) {
+                                    if (response.isSuccessful() && response.body() != null && (response.body().code == 200 || response.body().code == 1)) {
+                                        int position = h.getAdapterPosition();
+                                        if (position != RecyclerView.NO_POSITION) {
+                                            lista.remove(position);
+                                            notifyItemRemoved(position);
+                                            notifyItemRangeChanged(position, lista.size());
+                                        }
+                                        Toast.makeText(ctx, "Solicitud cancelada", Toast.LENGTH_SHORT).show();
+                                    } else {
+                                        int code = response.body() != null ? response.body().code : -1;
+                                        String msg = response.body() != null ? response.body().msg : "";
+                                        Toast.makeText(ctx, "No se pudo cancelar la solicitud. Código: " + code + ", msg: " + msg, Toast.LENGTH_LONG).show();
+                                    }
+                                }
+                                @Override
+                                public void onFailure(Call<RespuestaGenerica> call, Throwable t) {
+                                    Toast.makeText(ctx, "Error de red", Toast.LENGTH_SHORT).show();
+                                }
+                            });
                         })
                         .setNegativeButton("No", null)
                         .show();
