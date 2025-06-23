@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -32,6 +33,7 @@ public class SolicitudesPublicacionFragment extends Fragment {
     private SolicitudAdapter adapter;
     private List<Solicitud> listaSolicitudes;
     private AuthService api;
+    private TextView tvSinSolicitudesPublicacion;
 
     @Nullable @Override
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -53,6 +55,9 @@ public class SolicitudesPublicacionFragment extends Fragment {
         // Inicializar Retrofit
         api = ApiClient.getClientConToken().create(AuthService.class);
 
+        tvSinSolicitudesPublicacion = view.findViewById(R.id.tvSinSolicitudesPublicacion);
+        tvSinSolicitudesPublicacion.setVisibility(View.GONE);
+
         // Llamada al backend para obtener solicitudes
         obtenerSolicitudes();
 
@@ -67,7 +72,13 @@ public class SolicitudesPublicacionFragment extends Fragment {
                     listaSolicitudes.clear();
                     listaSolicitudes.addAll(response.body());
                     adapter.notifyDataSetChanged();
+                    if (listaSolicitudes.isEmpty()) {
+                        tvSinSolicitudesPublicacion.setVisibility(View.VISIBLE);
+                    } else {
+                        tvSinSolicitudesPublicacion.setVisibility(View.GONE);
+                    }
                 } else {
+                    tvSinSolicitudesPublicacion.setVisibility(View.VISIBLE);
                     Toast.makeText(getContext(), "Error al cargar solicitudes", Toast.LENGTH_SHORT).show();
                 }
             }

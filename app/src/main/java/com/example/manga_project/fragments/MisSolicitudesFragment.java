@@ -5,6 +5,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -36,6 +37,7 @@ public class MisSolicitudesFragment extends Fragment {
     private MisSolicitudesAdapter adapter;
     private List<SoliHistorietaProveedorRequest> data = new ArrayList<>();
     private SwipeRefreshLayout swipeRefresh;
+    private TextView tvSolicitudesEnviadas;
 
     public MisSolicitudesFragment() { }
 
@@ -57,6 +59,9 @@ public class MisSolicitudesFragment extends Fragment {
 
         adapter = new MisSolicitudesAdapter(getContext(), data);
         rv.setAdapter(adapter);
+
+        tvSolicitudesEnviadas = v.findViewById(R.id.tvSolicitudesEnviadas);
+        tvSolicitudesEnviadas.setVisibility(View.GONE);
 
         swipeRefresh.setOnRefreshListener(this::cargarSolicitudes);
 
@@ -97,7 +102,15 @@ public class MisSolicitudesFragment extends Fragment {
                     data.clear();
                     data.addAll(body.getData());
                     adapter.notifyDataSetChanged();
+                    if (!data.isEmpty()) {
+                        tvSolicitudesEnviadas.setVisibility(View.GONE);
+                    } else {
+                        tvSolicitudesEnviadas.setText("No tienes solicitudes enviadas");
+                        tvSolicitudesEnviadas.setVisibility(View.VISIBLE);
+                    }
                 } else {
+                    tvSolicitudesEnviadas.setText("No tienes solicitudes enviadas");
+                    tvSolicitudesEnviadas.setVisibility(View.VISIBLE);
                     Toast.makeText(getContext(), "No hay solicitudes", Toast.LENGTH_SHORT).show();
                 }
             }

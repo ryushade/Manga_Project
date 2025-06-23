@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 import android.app.AlertDialog;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -35,6 +36,7 @@ public class SolicitudesProveedorFragment extends Fragment {
     private RecyclerView recyclerView;
     private SolicitudesProveedorAdapter adapter;
     private AuthService authService;
+    private TextView tvSinSolicitudes;
 
     public SolicitudesProveedorFragment() {
         // Constructor vacío requerido
@@ -49,6 +51,8 @@ public class SolicitudesProveedorFragment extends Fragment {
 
         recyclerView = view.findViewById(R.id.recyclerSolicitudes);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        tvSinSolicitudes = view.findViewById(R.id.tvSinSolicitudes);
+        tvSinSolicitudes.setVisibility(View.GONE);
 
         Retrofit retrofit = ApiClient.getClientConToken();
         authService = retrofit.create(AuthService.class);
@@ -82,7 +86,9 @@ public class SolicitudesProveedorFragment extends Fragment {
                                         }
                                 );
                                 recyclerView.setAdapter(adapter);
+                                tvSinSolicitudes.setVisibility(View.GONE);
                             } else {
+                                tvSinSolicitudes.setVisibility(View.VISIBLE);
                                 Toast.makeText(getContext(),
                                         "No hay solicitudes pendientes",
                                         Toast.LENGTH_SHORT).show();
