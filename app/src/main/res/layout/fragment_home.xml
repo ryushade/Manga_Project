@@ -35,22 +35,26 @@
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btn_read"
-                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                style="@style/Widget.MaterialComponents.Button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Read"
                 app:icon="@drawable/ico_library"
-                app:iconPadding="8dp" />
+                app:iconPadding="8dp"
+                android:textColor="@android:color/white"
+                android:backgroundTint="@color/colorPrimary" />
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btn_my_list"
-                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                style="@style/Widget.MaterialComponents.Button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="12dp"
                 android:text="My List"
                 app:icon="@drawable/ic_add"
-                app:iconPadding="8dp" />
+                app:iconPadding="8dp"
+                android:textColor="@android:color/white"
+                android:backgroundTint="@color/colorAccent" />
         </LinearLayout>
     </FrameLayout>
 

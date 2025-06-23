@@ -60,6 +60,7 @@ public class HistorietaActivity extends AppCompatActivity {
 
     private String tipoVolumen = null;
     private boolean lockedCapitulos = false;
+    private boolean volumenComprado = false;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -98,6 +99,8 @@ public class HistorietaActivity extends AppCompatActivity {
         fabAddToCart.setOnClickListener(v -> {
             if (volumenEnCarrito) {
                 Toast.makeText(this, "Ya está en tu carrito", Toast.LENGTH_SHORT).show();
+            } else if (volumenComprado) {
+                Toast.makeText(this, "Ya compraste este volumen", Toast.LENGTH_SHORT).show();
             } else {
                 agregarAlCarrito();
             }
@@ -114,10 +117,14 @@ public class HistorietaActivity extends AppCompatActivity {
                     rvChapters.setVisibility(View.GONE);
                     rvComments.setVisibility(View.VISIBLE);
                     commentInputContainer.setVisibility(View.VISIBLE);
+                    fabAddToCart.setVisibility(View.GONE); // Ocultar botón flotante en comentarios
                 } else {
                     rvChapters.setVisibility(View.VISIBLE);
                     rvComments.setVisibility(View.GONE);
                     commentInputContainer.setVisibility(View.GONE);
+                    if (!volumenComprado) {
+                        fabAddToCart.setVisibility(View.VISIBLE); // Mostrar solo si no está comprado
+                    }
                 }
             }
             @Override public void onTabUnselected(TabLayout.Tab tab) {}
@@ -147,6 +154,7 @@ public class HistorietaActivity extends AppCompatActivity {
         });
 
         verificarVolumenEnCarrito();
+        verificarVolumenComprado();
         cargarWishlist();
         cargarFicha();
         cargarCapitulos();
@@ -173,6 +181,27 @@ public class HistorietaActivity extends AppCompatActivity {
                 }
             }
             @Override public void onFailure(Call<ListarCarritoResponse> call, Throwable t) {}
+        });
+    }
+
+    private void verificarVolumenComprado() {
+        api.getItemsUsuario("biblioteca").enqueue(new Callback<com.example.manga_project.Modelos.ItemsUsuarioResponse>() {
+            @Override
+            public void onResponse(Call<com.example.manga_project.Modelos.ItemsUsuarioResponse> call, Response<com.example.manga_project.Modelos.ItemsUsuarioResponse> response) {
+                if (response.isSuccessful() && response.body()!=null && response.body().data!=null) {
+                    for (com.example.manga_project.Modelos.ItemUsuario item: response.body().data) {
+                        if (item.id_volumen==idVolumen) {
+                            volumenComprado = true;
+                            fabAddToCart.setEnabled(false);
+                            fabAddToCart.setImageResource(R.drawable.ic_check);
+                            fabAddToCart.setVisibility(View.GONE); // Ocultar si ya está comprado
+                            break;
+                        }
+                    }
+                }
+            }
+            @Override
+            public void onFailure(Call<com.example.manga_project.Modelos.ItemsUsuarioResponse> call, Throwable t) {}
         });
     }
 
@@ -205,7 +234,11 @@ public class HistorietaActivity extends AppCompatActivity {
                     tvTitle.setText(ficha.titulo);
                     tvPrice.setText(getString(R.string.precio_soles, ficha.precio));
                     tvSynopsis.setText(ficha.sinopsis);
-                    Picasso.get().load(ficha.portada).placeholder(R.drawable.ic_placeholder_portada).into(ivCover);
+                    if (ficha.portada != null && !ficha.portada.trim().isEmpty()) {
+                        Picasso.get().load(ficha.portada).placeholder(R.drawable.ic_placeholder_portada).into(ivCover);
+                    } else {
+                        ivCover.setImageResource(R.drawable.ic_placeholder_portada);
+                    }
                 }
             }
             @Override
