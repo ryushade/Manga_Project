@@ -32,7 +32,9 @@ import com.example.manga_project.adapters.CapituloAdapter;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -86,6 +88,7 @@ public class RevisionFragment extends Fragment {
         etReason   = view.findViewById(R.id.etRejectionReason);
         llActions  = view.findViewById(R.id.llActions);
         btnApprove = view.findViewById(R.id.btn_approve);
+        Button btnReject = view.findViewById(R.id.btn_reject);
 
         // Ocultos al inicio
         etReason.setVisibility(View.GONE);
@@ -126,6 +129,14 @@ public class RevisionFragment extends Fragment {
                 .setTitle("¿Aprobar publicación?")
                 .setMessage("¿Estás seguro de que deseas aprobar esta publicación?")
                 .setPositiveButton("Sí, aprobar", (dialog, which) -> aprobarPublicacion())
+                .setNegativeButton("Cancelar", null)
+                .show();
+        });
+        btnReject.setOnClickListener(v -> {
+            new androidx.appcompat.app.AlertDialog.Builder(requireContext())
+                .setTitle("¿Rechazar publicación?")
+                .setMessage("¿Estás seguro de que deseas rechazar esta publicación?")
+                .setPositiveButton("Sí, rechazar", (dialog, which) -> rechazarPublicacion())
                 .setNegativeButton("Cancelar", null)
                 .show();
         });
@@ -233,6 +244,30 @@ public class RevisionFragment extends Fragment {
             }
             @Override
             public void onFailure(Call<SolicitudResponse> call, Throwable t) {
+                Toast.makeText(getContext(), "Error de red: " + t.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    private void rechazarPublicacion() {
+        if (idSolicitud == 0) {
+            Toast.makeText(getContext(), "ID de solicitud no válido", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        Map<String, Integer> body = new HashMap<>();
+        body.put("id_solicitud", idSolicitud);
+        api.rechazarSolicitudPublicacion(body).enqueue(new Callback<SolicitudResponse>() {
+            @Override
+            public void onResponse(@NonNull Call<SolicitudResponse> call, @NonNull Response<SolicitudResponse> response) {
+                if (response.isSuccessful() && response.body() != null && response.body().getMsg() != null && response.body().getMsg().toLowerCase().contains("rechazada")) {
+                    Toast.makeText(getContext(), "Solicitud rechazada", Toast.LENGTH_SHORT).show();
+                    requireActivity().onBackPressed();
+                } else {
+                    Toast.makeText(getContext(), "Error al rechazar", Toast.LENGTH_SHORT).show();
+                }
+            }
+            @Override
+            public void onFailure(@NonNull Call<SolicitudResponse> call, @NonNull Throwable t) {
                 Toast.makeText(getContext(), "Error de red: " + t.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
