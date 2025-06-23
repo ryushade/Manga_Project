@@ -47,6 +47,7 @@ dependencies {
     implementation(libs.annotation)
     implementation(libs.lifecycle.livedata.ktx)
     implementation(libs.lifecycle.viewmodel.ktx)
+    implementation(libs.mpandroidchart)
     testImplementation(libs.junit)
     implementation(libs.picasso)
     androidTestImplementation(libs.ext.junit)

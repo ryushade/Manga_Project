@@ -21,6 +21,7 @@
     <color name="gray">#B0B3B8</color>
     <color name="background_dark">#181A20</color>
     <color name="divider">#33343A</color>
+    <color name="teal_200">#03DAC5</color>
 
 
 </resources>
