@@ -205,6 +205,6 @@ public interface AuthService {
     @POST("/payment-sheet")
     Call<StripePaymentSheetResponse> getStripePaymentSheet(@Body Map<String, Object> body);
 
-    @GET("/api/volumenes/mas-vendidos")
-    Call<List<MasVendidoResponse>> getMasVendidos();
+    @GET("/volumenes_mas_vendidos")
+    Call<com.example.manga_project.Modelos.MasVendidosApiResponse> getMasVendidos();
 }
