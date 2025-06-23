@@ -34,7 +34,6 @@ public class MainAdminActivity extends AppCompatActivity implements Logout {
                 R.id.dashboardFragment,
                 R.id.solicitudesProveedorFragment,
                 R.id.pedidosFragment,
-                R.id.productosFragment,
                 R.id.configuracionFragment
         ).build();
 

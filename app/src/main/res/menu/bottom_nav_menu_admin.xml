@@ -14,10 +14,7 @@
         android:icon="@drawable/ico_pedidos"
         android:title="Publicaciones" />
 
-    <item
-        android:id="@+id/productosFragment"
-        android:icon="@drawable/ico_library"
-        android:title="Productos" />
+    +
 
     <item
         android:id="@+id/configuracionFragment"

@@ -81,13 +81,13 @@
         <TextView
             style="@style/Widget.MaterialComponents.Chip.Action"
             android:layout_marginEnd="8dp"
-            android:text="@string/chip_trending"
+            android:text=""
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
 
         <TextView
             style="@style/Widget.MaterialComponents.Chip.Action"
-            android:text="@string/chip_most_read"
+            android:text=""
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
 
@@ -104,12 +104,7 @@
         app:layout_constraintStart_toStartOf="parent"
         android:layout_marginStart="16dp">
 
-        <TextView
-            android:id="@+id/tvMetaInfo"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textColor="#888888"
-            android:textSize="14sp" />
+
     </LinearLayout>
 
     <!-- Sinopsis -->
