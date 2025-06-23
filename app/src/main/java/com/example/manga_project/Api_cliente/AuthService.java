@@ -142,8 +142,7 @@ public interface AuthService {
     @GET("/historietas/novedades")
     Call<List<VolumenResponse>> getNovedades();
 
-    @GET("/historietas/mas_vendidas")
-    Call<List<VolumenResponse>> getMasVendidas();
+
 
     @GET("/historietas/genero/{id_genero}")
     Call<List<VolumenResponse>> getPorGenero(@Path("id_genero") int idGenero);

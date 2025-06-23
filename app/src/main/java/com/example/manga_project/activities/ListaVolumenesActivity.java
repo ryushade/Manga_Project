@@ -1,9 +1,11 @@
 package com.example.manga_project.activities;
 
 import android.os.Bundle;
+import android.widget.TextView;
 import android.widget.Toast;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import com.example.manga_project.R;
@@ -31,7 +33,7 @@ public class ListaVolumenesActivity extends AppCompatActivity {
         setContentView(R.layout.activity_lista_volumenes);
 
         recyclerView = findViewById(R.id.recyclerViewVolumenes);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        recyclerView.setLayoutManager(new GridLayoutManager(this, 2));
         adapter = new VolumenAdapter(listaVolumenes);
         recyclerView.setAdapter(adapter);
 
@@ -39,6 +41,8 @@ public class ListaVolumenesActivity extends AppCompatActivity {
 
         String section = getIntent().getStringExtra("section_title");
         setTitle(section);
+        TextView tvTituloLista = findViewById(R.id.tvTituloLista);
+        tvTituloLista.setText(section != null ? section : "");
         cargarVolumenesPorSeccion(section);
     }
 
