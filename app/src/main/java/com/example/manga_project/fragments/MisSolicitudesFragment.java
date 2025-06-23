@@ -83,37 +83,28 @@ public class MisSolicitudesFragment extends Fragment {
                 swipeRefresh.setRefreshing(false);
 
                 if (!resp.isSuccessful()) {
-                    Log.e(TAG, "Código HTTP: " + resp.code());
                     Toast.makeText(getContext(), "Error servidor", Toast.LENGTH_SHORT).show();
                     return;
                 }
 
                 SoliHistorietaProveedorResponse body = resp.body();
                 if (body == null) {
-                    Log.e(TAG, "Respuesta vacía");
                     Toast.makeText(getContext(), "Sin datos", Toast.LENGTH_SHORT).show();
                     return;
                 }
 
-                Log.d(TAG, "success=" + body.isSuccess()
-                        + " size=" + (body.getData() != null ? body.getData().size() : "null"));
-
-                if (body.isSuccess() && body.getData() != null) {
-                    data.clear();
-                    data.addAll(body.getData());
-                    adapter.notifyDataSetChanged();
-                    if (!data.isEmpty()) {
-                        tvSolicitudesEnviadas.setVisibility(View.GONE);
-                    } else {
-                        tvSolicitudesEnviadas.setText("No tienes solicitudes enviadas");
-                        tvSolicitudesEnviadas.setVisibility(View.VISIBLE);
-                    }
+                List<SoliHistorietaProveedorRequest> lista = body.getData();
+                data.clear();
+                if (lista != null && !lista.isEmpty()) {
+                    data.addAll(lista);
+                    tvSolicitudesEnviadas.setVisibility(View.GONE);
                 } else {
                     tvSolicitudesEnviadas.setText("No tienes solicitudes enviadas");
                     tvSolicitudesEnviadas.setVisibility(View.VISIBLE);
-                    Toast.makeText(getContext(), "No hay solicitudes", Toast.LENGTH_SHORT).show();
                 }
+                adapter.notifyDataSetChanged();
             }
+
 
             @Override
             public void onFailure(@NonNull Call<SoliHistorietaProveedorResponse> call,
