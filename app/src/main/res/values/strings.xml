@@ -138,4 +138,5 @@
     <string name="add_to_wishlist">Agregar a la lista de deseos</string>
     <string name="back">Atrás</string>
     <string name="mis_solicitudes_empty">No tienes solicitudes enviadas</string>
+    <string name="provider_cover_desc">Portada de la publicación</string>
 </resources>

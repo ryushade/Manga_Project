@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:background="@android:color/transparent"
+    android:padding="12dp">
+
+    <TextView
+        android:id="@+id/tvRecentTitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Título de la solicitud"
+        android:textColor="#FFFFFF"
+        android:textSize="16sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/tvRecentEmail"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="usuario@email.com"
+        android:textColor="#BBBBBB"
+        android:textSize="14sp"
+        android:layout_marginTop="2dp" />
+
+    <TextView
+        android:id="@+id/tvRecentDate"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="2024-06-23"
+        android:textColor="#888888"
+        android:textSize="13sp"
+        android:layout_marginTop="2dp" />
+</LinearLayout>
+
