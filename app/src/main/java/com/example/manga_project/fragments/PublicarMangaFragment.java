@@ -1,5 +1,6 @@
 package com.example.manga_project.fragments;
 
+import android.app.AlertDialog;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.database.Cursor;
@@ -9,9 +10,11 @@ import android.provider.OpenableColumns;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -23,6 +26,7 @@ import androidx.fragment.app.Fragment;
 
 import com.example.manga_project.Api_cliente.ApiClient;
 import com.example.manga_project.Api_cliente.AuthService;
+import com.example.manga_project.Modelos.Genero;
 import com.example.manga_project.Modelos.SolicitudPublicacionRequest;
 import com.example.manga_project.Modelos.SolicitudPublicacionResponse;
 import com.example.manga_project.R;
@@ -46,8 +50,9 @@ public class PublicarMangaFragment extends Fragment {
 
 
     private ImageView imgCover;
-    private TextView tvPdfName, etGenre;
+    private TextView tvPdfName;
     private EditText etTitle, etAuthors, etYear, etPrice, etIssue, etEditorial, etDetails;
+    private Spinner spGenero;
 
     private String urlPortada, urlZip;
 
@@ -67,6 +72,7 @@ public class PublicarMangaFragment extends Fragment {
         crearRetrofit();
         mapearUi(v);
         configurarLaunchers();
+        cargarGeneros();
 
         return v;
     }
@@ -89,7 +95,7 @@ public class PublicarMangaFragment extends Fragment {
         etIssue     = v.findViewById(R.id.etIssueNumber);
         etEditorial = v.findViewById(R.id.etEditorial);
         etDetails   = v.findViewById(R.id.etDetails);
-        etGenre     = v.findViewById(R.id.tvChooseCategory);
+        spGenero   = v.findViewById(R.id.spGenero);
 
         v.findViewById(R.id.btnChooseImage)
                 .setOnClickListener(btn -> pickImageLauncher.launch("image/*"));
@@ -116,6 +122,26 @@ public class PublicarMangaFragment extends Fragment {
                         subirArchivo(uri, "application/zip", false);
                     }
                 });
+    }
+
+    private void cargarGeneros() {
+        api.obtenerGeneros("manga").enqueue(new retrofit2.Callback<java.util.List<Genero>>() {
+            @Override
+            public void onResponse(@NonNull Call<java.util.List<Genero>> call, @NonNull Response<java.util.List<Genero>> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    ArrayAdapter<Genero> adapter = new ArrayAdapter<>(requireContext(), android.R.layout.simple_spinner_item, response.body());
+                    adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                    spGenero.setAdapter(adapter);
+                } else {
+                    Toast.makeText(getContext(), "Error al cargar géneros", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<java.util.List<Genero>> call, @NonNull Throwable t) {
+                Toast.makeText(getContext(), "Error de red: " + t.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     private void subirArchivo(Uri uri, String mime, boolean esPortada) {
@@ -169,38 +195,48 @@ public class PublicarMangaFragment extends Fragment {
             Toast.makeText(getContext(), "Título y autores obligatorios", Toast.LENGTH_SHORT).show();
             return;
         }
-
+        Genero generoSeleccionado = (Genero) spGenero.getSelectedItem();
         SolicitudPublicacionRequest data = new SolicitudPublicacionRequest();
-        data.setId_user(2);
-        data.setTipo("comic");
+        data.setId_user(2); // temporal
+        data.setTipo("manga");
         data.setTitulo(titulo);
         data.setAutores(autores);
         data.setAnio_publicacion(etYear.getText().toString().trim());
         data.setPrecio_volumen(etPrice.getText().toString().trim());
         data.setRestriccion_edad(etIssue.getText().toString().trim());
         data.setEditorial(etEditorial.getText().toString().trim());
-        data.setGenero_principal(etGenre.getText().toString().trim());
+        data.setGenero_principal(generoSeleccionado != null ? generoSeleccionado.getNombre_genero() : "");
         data.setDescripcion(etDetails.getText().toString().trim());
         data.setUrl_portada(urlPortada);
         data.setUrl_zip(urlZip);
+        new AlertDialog.Builder(getContext())
+            .setTitle("Confirmar publicación")
+            .setMessage("¿Estás seguro de que deseas enviar tu solicitud de publicación de este manga?")
+            .setPositiveButton("Sí", (dialog, which) -> {
+                api.registrarSolicitud(data).enqueue(new Callback<SolicitudPublicacionResponse>() {
+                    @Override
+                    public void onResponse(@NonNull Call<SolicitudPublicacionResponse> call, @NonNull Response<SolicitudPublicacionResponse> response) {
+                        if (response.isSuccessful()) {
+                            Toast.makeText(getContext(), "Solicitud enviada correctamente", Toast.LENGTH_SHORT).show();
+                            requireActivity().getSupportFragmentManager().popBackStack();
+                        } else {
+                            Toast.makeText(getContext(), "Error al registrar (" + response.code() + ")", Toast.LENGTH_SHORT).show();
+                        }
+                    }
 
-        api.registrarSolicitud(data).enqueue(new Callback<SolicitudPublicacionResponse>() {
-            @Override
-            public void onResponse(@NonNull Call<SolicitudPublicacionResponse> call,
-                                   @NonNull Response<SolicitudPublicacionResponse> response) {
-                if (response.isSuccessful()) {
-                    Toast.makeText(getContext(), "Solicitud enviada correctamente", Toast.LENGTH_SHORT).show();
-                    requireActivity().getSupportFragmentManager().popBackStack();
-                } else {
-                    Toast.makeText(getContext(), "Error al registrar (" + response.code() + ")", Toast.LENGTH_SHORT).show();
-                }
-            }
+                    @Override
+                    public void onFailure(@NonNull Call<SolicitudPublicacionResponse> call, @NonNull Throwable t) {
+                        Toast.makeText(getContext(), "Fallo de red: " + t.getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                });
+            })
+            .setNegativeButton("No", null)
+            .show();
+    }
 
-            @Override
-            public void onFailure(@NonNull Call<SolicitudPublicacionResponse> call, @NonNull Throwable t) {
-                Toast.makeText(getContext(), "Fallo de red: " + t.getMessage(), Toast.LENGTH_SHORT).show();
-            }
-        });
+    private String spinnerSelectedText(Spinner spinner) {
+        Object selected = spinner.getSelectedItem();
+        return selected != null ? selected.toString().trim() : "";
     }
 
     @Nullable

@@ -68,10 +68,10 @@ public class ItemUsuarioAdapter extends RecyclerView.Adapter<ItemUsuarioAdapter.
             holder.ivEliminarLista.setVisibility(View.VISIBLE);
             holder.ivEliminarLista.setOnClickListener(v -> {
                 AuthService api = ApiClient.getClientConToken().create(AuthService.class);
-                api.eliminarWishlist(item.id).enqueue(new Callback<RespuestaGenerica>() {
+                api.eliminarWishlist(item.id_volumen).enqueue(new Callback<RespuestaGenerica>() {
                     @Override
                     public void onResponse(Call<RespuestaGenerica> call, Response<RespuestaGenerica> response) {
-                        if (response.isSuccessful() && response.body() != null && response.body().code == 200) {
+                        if (response.isSuccessful() && response.body() != null && response.body().code == 0) {
                             int pos = holder.getBindingAdapterPosition();
                             if (pos != RecyclerView.NO_POSITION) {
                                 items.remove(pos);

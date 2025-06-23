@@ -51,7 +51,7 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         // 🔧 Configurar ApiClient para usar local o remoto
         ApiClient.setContext(getApplicationContext());
-        ApiClient.usarBackendLocal(true); // ✅ true para local (http://10.0.2.2), false para PythonAnywhere
+        // ApiClient.usarBackendLocal(true); // ✅ true para local (http://10.0.2.2), false para PythonAnywhere
         super.onCreate(savedInstanceState);
 
         binding = ActivityLoginBinding.inflate(getLayoutInflater());

@@ -31,6 +31,8 @@ import com.example.manga_project.Modelos.ItemsUsuarioResponse;
 import com.example.manga_project.Modelos.StripePaymentSheetResponse;
 import com.example.manga_project.Modelos.GuardarVentaResponse;
 import com.example.manga_project.Modelos.MasVendidoResponse;
+import com.example.manga_project.Modelos.DashboardProveedorResponse;
+import com.example.manga_project.Modelos.DashboardProveedorResponseV2;
 
 import java.util.List;
 import java.util.Map;
@@ -142,8 +144,7 @@ public interface AuthService {
     @GET("/historietas/novedades")
     Call<List<VolumenResponse>> getNovedades();
 
-    @GET("/historietas/mas_vendidas")
-    Call<List<VolumenResponse>> getMasVendidas();
+
 
     @GET("/historietas/genero/{id_genero}")
     Call<List<VolumenResponse>> getPorGenero(@Path("id_genero") int idGenero);
@@ -207,4 +208,10 @@ public interface AuthService {
 
     @GET("/volumenes_mas_vendidos")
     Call<com.example.manga_project.Modelos.MasVendidosApiResponse> getMasVendidos();
+
+    @GET("/proveedor_dashboard")
+    Call<DashboardProveedorResponseV2> getDashboardProveedor();
+
+    @GET("/admin_dashboard")
+    Call<com.example.manga_project.model.AdminDashboardResponse> getAdminDashboard();
 }

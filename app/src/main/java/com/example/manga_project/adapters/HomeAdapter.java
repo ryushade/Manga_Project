@@ -1,9 +1,11 @@
 package com.example.manga_project.adapters;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -42,11 +44,13 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ItemViewHolder
     static class ItemViewHolder extends RecyclerView.ViewHolder {
         private final TextView tvSectionTitle;
         private final RecyclerView rvBooks;
+        private final Button btnMore;
         private VolumenAdapter volumenAdapter;
         public ItemViewHolder(@NonNull View itemView) {
             super(itemView);
             tvSectionTitle = itemView.findViewById(R.id.mCategoryTitle);
             rvBooks = itemView.findViewById(R.id.mChildRvBooks);
+            btnMore = itemView.findViewById(R.id.moreButton);
             rvBooks.setLayoutManager(new LinearLayoutManager(itemView.getContext(), LinearLayoutManager.HORIZONTAL, false));
             rvBooks.setHasFixedSize(true);
             volumenAdapter = new VolumenAdapter(null);
@@ -55,6 +59,11 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ItemViewHolder
         public void bind(SectionVolumen item, Context context) {
             tvSectionTitle.setText(item.getTitle());
             volumenAdapter.setVolumenes(item.getVolumenes());
+            btnMore.setOnClickListener(v -> {
+                Intent intent = new Intent(context, com.example.manga_project.activities.ListaVolumenesActivity.class);
+                intent.putExtra("section_title", item.getTitle());
+                context.startActivity(intent);
+            });
         }
     }
 }

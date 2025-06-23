@@ -26,12 +26,6 @@ public class ApiClient {
         ctx = appCtx.getApplicationContext();
     }
 
-    public static void usarBackendLocal(boolean local) {
-        baseUrlActual     = local ? BASE_URL_LOCAL : BASE_URL_REMOTA;
-        retrofitConToken  = null;   // reinicia para usar la nueva URL
-        retrofitSinToken  = null;
-    }
-
     /** Interceptor que añade el JWT */
     private static Interceptor authInterceptor() {
         return chain -> {

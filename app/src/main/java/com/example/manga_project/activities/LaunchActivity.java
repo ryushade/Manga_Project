@@ -43,8 +43,8 @@ public class LaunchActivity extends AppCompatActivity {
 
         // ───────── OPCIONAL: elegir backend local o remoto ─────────
         // Puedes guardar esta preferencia en SharedPreferences o BuildConfig.
-        boolean usarLocal = true;   // ← cámbialo según necesidad
-        ApiClient.usarBackendLocal(usarLocal);
+        // boolean usarLocal = true;   // ← cámbialo según necesidad
+        // ApiClient.usarBackendLocal(usarLocal);
         // ───────────────────────────────────────────────────────────
 
         // 4. Botón «Empezar»
