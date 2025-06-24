@@ -50,7 +50,11 @@ public class SelectRegisterActivity extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
 
         // Acción para el botón de "Google"
-        binding.btnGoogle.setOnClickListener(view -> signInWithGoogle());
+        binding.btnGoogle.setOnClickListener(view -> {
+            // Solo navega al LoginActivity, NO hace registro automático
+            Intent intent = new Intent(SelectRegisterActivity.this, LoginActivity.class);
+            startActivity(intent);
+        });
 
         binding.btnLogin.setOnClickListener(v -> startActivity(new Intent(SelectRegisterActivity.this, LoginActivity.class)));
 

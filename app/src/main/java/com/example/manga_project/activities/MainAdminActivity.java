@@ -23,6 +23,7 @@ public class MainAdminActivity extends AppCompatActivity implements Logout {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_admin);
+        com.example.manga_project.Api_cliente.ApiClient.setContext(getApplicationContext());
 
         // 1) Obtén NavController y BottomNavigationView
         NavController navController = Navigation.findNavController(

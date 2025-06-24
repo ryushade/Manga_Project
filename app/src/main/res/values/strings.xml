@@ -139,4 +139,5 @@
     <string name="back">Atrás</string>
     <string name="mis_solicitudes_empty">No tienes solicitudes enviadas</string>
     <string name="provider_cover_desc">Portada de la publicación</string>
+    <string name="default_web_client_id">70952523564-0ko3bkb9c3r0tmeocnks68h666ac0s4d.apps.googleusercontent.com</string>
 </resources>

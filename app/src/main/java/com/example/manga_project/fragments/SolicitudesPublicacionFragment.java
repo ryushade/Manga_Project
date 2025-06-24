@@ -85,6 +85,7 @@ public class SolicitudesPublicacionFragment extends Fragment {
 
             @Override
             public void onFailure(Call<List<Solicitud>> call, Throwable t) {
+                tvSinSolicitudesPublicacion.setVisibility(View.VISIBLE);
                 Toast.makeText(getContext(), "Fallo de conexión", Toast.LENGTH_SHORT).show();
             }
         });

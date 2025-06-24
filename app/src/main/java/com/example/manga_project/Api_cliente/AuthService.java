@@ -33,6 +33,7 @@ import com.example.manga_project.Modelos.GuardarVentaResponse;
 import com.example.manga_project.Modelos.MasVendidoResponse;
 import com.example.manga_project.Modelos.DashboardProveedorResponse;
 import com.example.manga_project.Modelos.DashboardProveedorResponseV2;
+import com.example.manga_project.Modelos.GoogleLoginRequest;
 
 import java.util.List;
 import java.util.Map;
@@ -214,4 +215,7 @@ public interface AuthService {
 
     @GET("/admin_dashboard")
     Call<com.example.manga_project.model.AdminDashboardResponse> getAdminDashboard();
+
+    @POST("/auth_google")
+    Call<LoginResponse> loginGoogle(@Body GoogleLoginRequest request);
 }

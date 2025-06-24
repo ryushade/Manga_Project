@@ -110,10 +110,13 @@ public class PerfilFragment extends Fragment {
                     boolean esProveedor = perfil.getId_rol() == 2 || perfil.getId_rol() == 3;
                     solicitudEnviada = perfil.isProveedor_solicitud();
 
+                    CardView btnConvertirseProveedor = getView().findViewById(R.id.btnConvertirseProveedor);
                     if (esProveedor) {
                         txtConvertirseProveedor.setVisibility(View.GONE);
+                        btnConvertirseProveedor.setVisibility(View.GONE);
                     } else {
                         txtConvertirseProveedor.setVisibility(View.VISIBLE);
+                        btnConvertirseProveedor.setVisibility(View.VISIBLE);
                         if (solicitudEnviada) {
                             txtConvertirseProveedor.setText("Cancelar solicitud");
                             txtConvertirseProveedor.setTextColor(

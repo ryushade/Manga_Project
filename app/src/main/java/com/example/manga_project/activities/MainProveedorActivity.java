@@ -22,6 +22,9 @@ public class MainProveedorActivity extends AppCompatActivity implements Logout {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_proveedor);
 
+        // Inicializar ApiClient con el contexto de la aplicación
+        com.example.manga_project.Api_cliente.ApiClient.setContext(getApplicationContext());
+
         BottomNavigationView navView = findViewById(R.id.nav_view_proveedor);
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_main_proveedor);
 

@@ -11,6 +11,7 @@ import android.text.method.LinkMovementMethod;
 import android.text.style.ClickableSpan;
 import android.util.Log;
 import android.view.View;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -23,6 +24,7 @@ import com.example.manga_project.Api_cliente.AuthService;
 import com.example.manga_project.Modelos.LoginRequest;
 import com.example.manga_project.Modelos.LoginResponse;
 import com.example.manga_project.Modelos.PerfilResponse;
+import com.example.manga_project.Modelos.GoogleLoginRequest;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
@@ -87,23 +89,70 @@ public class LoginActivity extends AppCompatActivity {
     private void signInWithGoogle() {
         mGoogleSignInClient.signOut().addOnCompleteListener(this, task -> {
             Intent signInIntent = mGoogleSignInClient.getSignInIntent();
-            startActivityForResult(signInIntent, RC_SIGN_IN);
+            startActivityForResult(signInIntent, 1001);
         });
     }
 
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-
-        if (requestCode == RC_SIGN_IN) {
+        if (requestCode == 1001) {
             Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
-            try {
-                GoogleSignInAccount account = task.getResult(ApiException.class);
-                firebaseAuthWithGoogle(account.getIdToken());
-            } catch (ApiException e) {
-                Log.w("TAG", "Google sign in failed", e);
+            if (task.isSuccessful()) {
+                GoogleSignInAccount account = task.getResult();
+                if (account != null) {
+                    String idToken = account.getIdToken();
+                    // Autenticar con FirebaseAuth usando el idToken de Google
+                    AuthCredential credential = GoogleAuthProvider.getCredential(idToken, null);
+                    FirebaseAuth.getInstance().signInWithCredential(credential)
+                        .addOnCompleteListener(this, firebaseTask -> {
+                            if (firebaseTask.isSuccessful()) {
+                                FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+                                if (user != null) {
+                                    user.getIdToken(true).addOnCompleteListener(tokenTask -> {
+                                        if (tokenTask.isSuccessful()) {
+                                            String firebaseIdToken = tokenTask.getResult().getToken();
+                                            loginWithGoogleBackend(firebaseIdToken);
+                                        } else {
+                                            // Error obteniendo el idToken de Firebase
+                                        }
+                                    });
+                                }
+                            } else {
+                                // Error autenticando con Firebase
+                            }
+                        });
+                }
+            } else {
+                // Manejar error de Google Sign-In
             }
         }
+    }
+
+    private void loginWithGoogleBackend(String firebaseIdToken) {
+        AuthService authService = ApiClient.getClientConToken().create(AuthService.class);
+        GoogleLoginRequest request = new GoogleLoginRequest(firebaseIdToken);
+        authService.loginGoogle(request).enqueue(new Callback<LoginResponse>() {
+            @Override
+            public void onResponse(Call<LoginResponse> call, Response<LoginResponse> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    String token = response.body().getToken();
+                    // Guardar el token en SharedPreferences correcto (myPrefs)
+                    SharedPreferences prefs = getSharedPreferences("myPrefs", MODE_PRIVATE);
+                    prefs.edit().putString("token", token).apply();
+                    // Navegar a la pantalla principal
+                    Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                    startActivity(intent);
+                    finish();
+                } else {
+                    Toast.makeText(LoginActivity.this, "No se pudo iniciar sesión. Usuario no registrado o error en el backend.", Toast.LENGTH_LONG).show();
+                }
+            }
+            @Override
+            public void onFailure(Call<LoginResponse> call, Throwable t) {
+                Toast.makeText(LoginActivity.this, "Error de red al iniciar sesión.", Toast.LENGTH_LONG).show();
+            }
+        });
     }
 
     private void firebaseAuthWithGoogle(String idToken) {

@@ -97,31 +97,21 @@ public class PublicarMangaFragment extends Fragment {
         etDetails   = v.findViewById(R.id.etDetails);
         spGenero   = v.findViewById(R.id.spGenero);
 
-        v.findViewById(R.id.btnChooseImage)
-                .setOnClickListener(btn -> pickImageLauncher.launch("image/*"));
-
-        v.findViewById(R.id.btnUploadPdf)
-                .setOnClickListener(btn -> pickZipLauncher.launch("application/zip"));
-
-        ((Button) v.findViewById(R.id.btnPublish))
-                .setOnClickListener(btn -> publicarComic());
+        v.findViewById(R.id.btnChooseImage).setOnClickListener(btn -> pickImageLauncher.launch("image/*"));
+        v.findViewById(R.id.btnUploadPdf).setOnClickListener(btn -> pickZipLauncher.launch("application/zip"));
+        ((Button) v.findViewById(R.id.btnPublish)).setOnClickListener(btn -> publicarManga());
     }
 
     private void configurarLaunchers() {
-        pickImageLauncher = registerForActivityResult(
-                new ActivityResultContracts.GetContent(),
-                uri -> {
-                    if (uri != null) subirArchivo(uri, "image/*", true);
-                });
-
-        pickZipLauncher = registerForActivityResult(
-                new ActivityResultContracts.GetContent(),
-                uri -> {
-                    if (uri != null) {
-                        tvPdfName.setText(nombreDeArchivo(requireContext(), uri));
-                        subirArchivo(uri, "application/zip", false);
-                    }
-                });
+        pickImageLauncher = registerForActivityResult(new ActivityResultContracts.GetContent(), uri -> {
+            if (uri != null) subirArchivo(uri, "image/*", true);
+        });
+        pickZipLauncher = registerForActivityResult(new ActivityResultContracts.GetContent(), uri -> {
+            if (uri != null) {
+                tvPdfName.setText(nombreDeArchivo(requireContext(), uri));
+                subirArchivo(uri, "application/zip", false);
+            }
+        });
     }
 
     private void cargarGeneros() {
@@ -150,33 +140,46 @@ public class PublicarMangaFragment extends Fragment {
             Toast.makeText(getContext(), "No se pudo leer el archivo", Toast.LENGTH_SHORT).show();
             return;
         }
-
         RequestBody body = RequestBody.create(MediaType.parse(mime), archivo);
         MultipartBody.Part part = MultipartBody.Part.createFormData("file", archivo.getName(), body);
-
         Call<ResponseBody> call = esPortada ? api.subirPortada(part) : api.subirZip(part);
-
         call.enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(@NonNull Call<ResponseBody> call, @NonNull Response<ResponseBody> response) {
+                if (response.code() == 413) {
+                    Toast.makeText(getContext(), "El archivo es demasiado grande para el servidor. Intenta con un archivo más pequeño.", Toast.LENGTH_LONG).show();
+                    return;
+                }
                 if (!response.isSuccessful()) {
                     Toast.makeText(getContext(), "Error al subir archivo (" + response.code() + ")", Toast.LENGTH_SHORT).show();
                     return;
                 }
-                try {
-                    String json = response.body().string();
-                    String url = new org.json.JSONObject(json).getString("url");
-                    if (esPortada) {
-                        urlPortada = url;
-                        Picasso.get().load(url).into(imgCover);
+                try (ResponseBody responseBody = response.body()) {
+                    if (responseBody == null) {
+                        Toast.makeText(getContext(), "Respuesta vacía del servidor", Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+                    String contentType = response.headers().get("Content-Type");
+                    if (contentType != null && contentType.contains("application/json")) {
+                        String json = responseBody.string();
+                        String url = new org.json.JSONObject(json).optString("url", null);
+                        if (url != null) {
+                            if (esPortada) {
+                                urlPortada = url;
+                                Picasso.get().load(url).into(imgCover);
+                            } else {
+                                urlZip = url;
+                            }
+                        } else {
+                            Toast.makeText(getContext(), "Respuesta inesperada del servidor", Toast.LENGTH_SHORT).show();
+                        }
                     } else {
-                        urlZip = url;
+                        Toast.makeText(getContext(), "El servidor no devolvió JSON", Toast.LENGTH_SHORT).show();
                     }
                 } catch (Exception e) {
-                    Toast.makeText(getContext(), "Respuesta inesperada del servidor", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(), "Error procesando la respuesta del servidor", Toast.LENGTH_SHORT).show();
                 }
             }
-
             @Override
             public void onFailure(@NonNull Call<ResponseBody> call, @NonNull Throwable t) {
                 Toast.makeText(getContext(), "Fallo de red: " + t.getMessage(), Toast.LENGTH_SHORT).show();
@@ -198,6 +201,56 @@ public class PublicarMangaFragment extends Fragment {
         Genero generoSeleccionado = (Genero) spGenero.getSelectedItem();
         SolicitudPublicacionRequest data = new SolicitudPublicacionRequest();
         data.setId_user(2); // temporal
+        data.setTipo("manga");
+        data.setTitulo(titulo);
+        data.setAutores(autores);
+        data.setAnio_publicacion(etYear.getText().toString().trim());
+        data.setPrecio_volumen(etPrice.getText().toString().trim());
+        data.setRestriccion_edad(etIssue.getText().toString().trim());
+        data.setEditorial(etEditorial.getText().toString().trim());
+        data.setGenero_principal(generoSeleccionado != null ? generoSeleccionado.getNombre_genero() : "");
+        data.setDescripcion(etDetails.getText().toString().trim());
+        data.setUrl_portada(urlPortada);
+        data.setUrl_zip(urlZip);
+        new AlertDialog.Builder(getContext())
+            .setTitle("Confirmar publicación")
+            .setMessage("¿Estás seguro de que deseas enviar tu solicitud de publicación de este manga?")
+            .setPositiveButton("Sí", (dialog, which) -> {
+                api.registrarSolicitud(data).enqueue(new Callback<SolicitudPublicacionResponse>() {
+                    @Override
+                    public void onResponse(@NonNull Call<SolicitudPublicacionResponse> call, @NonNull Response<SolicitudPublicacionResponse> response) {
+                        if (response.isSuccessful()) {
+                            Toast.makeText(getContext(), "Solicitud enviada correctamente", Toast.LENGTH_SHORT).show();
+                            requireActivity().getSupportFragmentManager().popBackStack();
+                        } else {
+                            Toast.makeText(getContext(), "Error al registrar (" + response.code() + ")", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(@NonNull Call<SolicitudPublicacionResponse> call, @NonNull Throwable t) {
+                        Toast.makeText(getContext(), "Fallo de red: " + t.getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                });
+            })
+            .setNegativeButton("No", null)
+            .show();
+    }
+
+    private void publicarManga() {
+        if (urlPortada == null || urlZip == null) {
+            Toast.makeText(getContext(), "Sube portada y ZIP primero", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        String titulo = etTitle.getText().toString().trim();
+        String autores = etAuthors.getText().toString().trim();
+        if (titulo.isEmpty() || autores.isEmpty()) {
+            Toast.makeText(getContext(), "Título y autores obligatorios", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        Genero generoSeleccionado = (Genero) spGenero.getSelectedItem();
+        SolicitudPublicacionRequest data = new SolicitudPublicacionRequest();
+        data.setId_user(2); // temporal, deberías obtener el id real del usuario
         data.setTipo("manga");
         data.setTitulo(titulo);
         data.setAutores(autores);

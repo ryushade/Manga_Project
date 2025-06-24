@@ -46,7 +46,7 @@ public class ApiClient {
 
         if (retrofitConToken == null) {
             HttpLoggingInterceptor log = new HttpLoggingInterceptor();
-            log.setLevel(HttpLoggingInterceptor.Level.BODY);
+            log.setLevel(HttpLoggingInterceptor.Level.BASIC); // Cambiado de BODY a BASIC para evitar OutOfMemoryError
 
             OkHttpClient client = new OkHttpClient.Builder()
                     .addInterceptor(authInterceptor())
