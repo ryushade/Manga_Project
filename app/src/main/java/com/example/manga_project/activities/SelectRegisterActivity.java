@@ -56,6 +56,12 @@ public class SelectRegisterActivity extends AppCompatActivity {
             startActivity(intent);
         });
 
+        binding.btnSocial.setOnClickListener(view -> {
+            // Solo navega al LoginActivity, NO hace registro automático
+            Intent intent = new Intent(SelectRegisterActivity.this, LoginActivity.class);
+            startActivity(intent);
+        });
+
         binding.btnLogin.setOnClickListener(v -> startActivity(new Intent(SelectRegisterActivity.this, LoginActivity.class)));
 
     }
