@@ -66,6 +66,7 @@ dependencies {
     annotationProcessor (libs.compiler)
     implementation(libs.compose.wallet.button)
     implementation (libs.play.services.pay)
-    implementation(libs.play.services.wallet)
+    implementation (libs.play.services.wallet)
     implementation (libs.stripe.android)
+    implementation (libs.facebook.android.sdk)
 }

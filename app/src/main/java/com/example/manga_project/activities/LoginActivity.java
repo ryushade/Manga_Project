@@ -35,6 +35,14 @@ import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
+import com.google.firebase.auth.OAuthProvider;
+import com.facebook.AccessToken;
+import com.facebook.CallbackManager;
+import com.facebook.FacebookCallback;
+import com.facebook.FacebookException;
+import com.facebook.login.LoginManager;
+import com.facebook.login.LoginResult;
+import com.google.firebase.auth.FacebookAuthProvider;
 
 import org.json.JSONObject;
 
@@ -48,6 +56,7 @@ public class LoginActivity extends AppCompatActivity {
     private ActivityLoginBinding binding;
     private GoogleSignInClient mGoogleSignInClient;
     private FirebaseAuth mAuth;
+    private CallbackManager callbackManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,6 +76,7 @@ public class LoginActivity extends AppCompatActivity {
         mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
 
         mAuth = FirebaseAuth.getInstance();
+        callbackManager = CallbackManager.Factory.create();
 
         // Botón login con Google
         binding.btnGoogle.setOnClickListener(v -> signInWithGoogle());
@@ -83,7 +93,30 @@ public class LoginActivity extends AppCompatActivity {
             startActivity(intent);
         });
 
+        // Botón login con Twitter
+        binding.btnTwitter.setOnClickListener(v -> signInWithTwitter());
+
+        // Botón login con Facebook
+        binding.btnFacebook.setOnClickListener(v -> signInWithFacebook());
+
         setupRegisterLink();
+
+        LoginManager.getInstance().registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
+            @Override
+            public void onSuccess(LoginResult loginResult) {
+                handleFacebookAccessToken(loginResult.getAccessToken());
+            }
+
+            @Override
+            public void onCancel() {
+                Toast.makeText(LoginActivity.this, "Inicio de sesión con Facebook cancelado", Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onError(FacebookException error) {
+                Toast.makeText(LoginActivity.this, "Error con Facebook: " + error.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     private void signInWithGoogle() {
@@ -96,6 +129,7 @@ public class LoginActivity extends AppCompatActivity {
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+        callbackManager.onActivityResult(requestCode, resultCode, data);
         if (requestCode == 1001) {
             Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
             if (task.isSuccessful()) {
@@ -340,5 +374,120 @@ public class LoginActivity extends AppCompatActivity {
 
         startActivity(intent);
         finish();
+    }
+
+    private void signInWithTwitter() {
+        OAuthProvider.Builder provider = OAuthProvider.newBuilder("twitter.com");
+        mAuth.startActivityForSignInWithProvider(this, provider.build())
+            .addOnSuccessListener(authResult -> {
+                FirebaseUser user = authResult.getUser();
+                if (user != null) {
+                    user.getIdToken(true).addOnCompleteListener(tokenTask -> {
+                        if (tokenTask.isSuccessful()) {
+                            String firebaseIdToken = tokenTask.getResult().getToken();
+                            loginWithTwitterBackend(firebaseIdToken);
+                        } else {
+                            Toast.makeText(this, "Error obteniendo idToken de Twitter", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                }
+            })
+            .addOnFailureListener(e -> {
+                Toast.makeText(this, "Error autenticando con Twitter: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+            });
+    }
+
+    private void loginWithTwitterBackend(String firebaseIdToken) {
+        AuthService authService = ApiClient.getClientSinToken().create(AuthService.class);
+        GoogleLoginRequest request = new GoogleLoginRequest(firebaseIdToken);
+        authService.loginTwitter(request).enqueue(new Callback<LoginResponse>() {
+            @Override
+            public void onResponse(Call<LoginResponse> call, Response<LoginResponse> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    String token = response.body().getToken();
+                    SharedPreferences prefs = getSharedPreferences("myPrefs", MODE_PRIVATE);
+                    prefs.edit().putString("token", token).apply();
+                    Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                    startActivity(intent);
+                    finish();
+                } else {
+                    String errorMsg = "No se pudo iniciar sesión con Twitter.";
+                    try {
+                        if (response.errorBody() != null) {
+                            errorMsg += "\n" + response.errorBody().string();
+                        }
+                    } catch (Exception e) {
+                        errorMsg += "\nError leyendo el error del backend.";
+                    }
+                    Toast.makeText(LoginActivity.this, errorMsg, Toast.LENGTH_LONG).show();
+                    Log.e("TwitterLogin", "Código: " + response.code() + ", error: " + errorMsg);
+                }
+            }
+            @Override
+            public void onFailure(Call<LoginResponse> call, Throwable t) {
+                Toast.makeText(LoginActivity.this, "Error de red al iniciar sesión: " + t.getMessage(), Toast.LENGTH_LONG).show();
+                Log.e("TwitterLogin", "onFailure: ", t);
+            }
+        });
+    }
+
+    private void signInWithFacebook() {
+        LoginManager.getInstance().logInWithReadPermissions(this, java.util.Arrays.asList("email", "public_profile"));
+    }
+
+    private void handleFacebookAccessToken(AccessToken token) {
+        AuthCredential credential = FacebookAuthProvider.getCredential(token.getToken());
+        mAuth.signInWithCredential(credential)
+            .addOnCompleteListener(this, task -> {
+                if (task.isSuccessful()) {
+                    FirebaseUser user = mAuth.getCurrentUser();
+                    if (user != null) {
+                        user.getIdToken(true).addOnCompleteListener(tokenTask -> {
+                            if (tokenTask.isSuccessful()) {
+                                String firebaseIdToken = tokenTask.getResult().getToken();
+                                loginWithFacebookBackend(firebaseIdToken);
+                            } else {
+                                Toast.makeText(this, "Error obteniendo idToken de Facebook", Toast.LENGTH_SHORT).show();
+                            }
+                        });
+                    }
+                } else {
+                    Toast.makeText(this, "Error autenticando con Facebook", Toast.LENGTH_SHORT).show();
+                }
+            });
+    }
+
+    private void loginWithFacebookBackend(String firebaseIdToken) {
+        AuthService authService = ApiClient.getClientSinToken().create(AuthService.class);
+        GoogleLoginRequest request = new GoogleLoginRequest(firebaseIdToken);
+        authService.loginFacebook(request).enqueue(new Callback<LoginResponse>() {
+            @Override
+            public void onResponse(Call<LoginResponse> call, Response<LoginResponse> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    String token = response.body().getToken();
+                    SharedPreferences prefs = getSharedPreferences("myPrefs", MODE_PRIVATE);
+                    prefs.edit().putString("token", token).apply();
+                    Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                    startActivity(intent);
+                    finish();
+                } else {
+                    String errorMsg = "No se pudo iniciar sesión con Facebook.";
+                    try {
+                        if (response.errorBody() != null) {
+                            errorMsg += "\n" + response.errorBody().string();
+                        }
+                    } catch (Exception e) {
+                        errorMsg += "\nError leyendo el error del backend.";
+                    }
+                    Toast.makeText(LoginActivity.this, errorMsg, Toast.LENGTH_LONG).show();
+                    Log.e("FacebookLogin", "Código: " + response.code() + ", error: " + errorMsg);
+                }
+            }
+            @Override
+            public void onFailure(Call<LoginResponse> call, Throwable t) {
+                Toast.makeText(LoginActivity.this, "Error de red al iniciar sesión: " + t.getMessage(), Toast.LENGTH_LONG).show();
+                Log.e("FacebookLogin", "onFailure: ", t);
+            }
+        });
     }
 }

@@ -218,4 +218,10 @@ public interface AuthService {
 
     @POST("/auth_google")
     Call<LoginResponse> loginGoogle(@Body GoogleLoginRequest request);
+
+    @POST("/auth_twitter")
+    Call<LoginResponse> loginTwitter(@Body GoogleLoginRequest request);
+
+    @POST("/auth_facebook")
+    Call<LoginResponse> loginFacebook(@Body GoogleLoginRequest request);
 }
