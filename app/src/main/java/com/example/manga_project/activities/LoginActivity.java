@@ -104,16 +104,19 @@ public class LoginActivity extends AppCompatActivity {
         LoginManager.getInstance().registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
             @Override
             public void onSuccess(LoginResult loginResult) {
+                Log.d("FACEBOOK_LOGIN", "onSuccess: token=" + loginResult.getAccessToken());
                 handleFacebookAccessToken(loginResult.getAccessToken());
             }
 
             @Override
             public void onCancel() {
+                Log.d("FACEBOOK_LOGIN", "onCancel");
                 Toast.makeText(LoginActivity.this, "Inicio de sesión con Facebook cancelado", Toast.LENGTH_SHORT).show();
             }
 
             @Override
             public void onError(FacebookException error) {
+                Log.e("FACEBOOK_LOGIN", "onError: " + error.getMessage(), error);
                 Toast.makeText(LoginActivity.this, "Error con Facebook: " + error.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
@@ -436,23 +439,34 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void handleFacebookAccessToken(AccessToken token) {
+        Log.d("FACEBOOK_LOGIN", "handleFacebookAccessToken: token=" + token);
         AuthCredential credential = FacebookAuthProvider.getCredential(token.getToken());
         mAuth.signInWithCredential(credential)
             .addOnCompleteListener(this, task -> {
                 if (task.isSuccessful()) {
+                    Log.d("FACEBOOK_LOGIN", "signInWithCredential:success");
                     FirebaseUser user = mAuth.getCurrentUser();
                     if (user != null) {
                         user.getIdToken(true).addOnCompleteListener(tokenTask -> {
                             if (tokenTask.isSuccessful()) {
                                 String firebaseIdToken = tokenTask.getResult().getToken();
+                                Log.d("FACEBOOK_LOGIN", "FirebaseIdToken obtenido correctamente");
                                 loginWithFacebookBackend(firebaseIdToken);
                             } else {
+                                Log.e("FACEBOOK_LOGIN", "Error obteniendo idToken de Facebook", tokenTask.getException());
                                 Toast.makeText(this, "Error obteniendo idToken de Facebook", Toast.LENGTH_SHORT).show();
                             }
                         });
                     }
                 } else {
-                    Toast.makeText(this, "Error autenticando con Facebook", Toast.LENGTH_SHORT).show();
+                    Exception e = task.getException();
+                    if (e instanceof com.google.firebase.auth.FirebaseAuthUserCollisionException) {
+                        Log.e("FACEBOOK_LOGIN", "Usuario ya existe con otro método de autenticación", e);
+                        Toast.makeText(this, "Ya existe una cuenta con este correo usando otro método de inicio de sesión. Inicia sesión con ese método y vincula Facebook desde tu perfil.", Toast.LENGTH_LONG).show();
+                    } else {
+                        Log.e("FACEBOOK_LOGIN", "signInWithCredential:failure", e);
+                        Toast.makeText(this, "Error autenticando con Facebook", Toast.LENGTH_SHORT).show();
+                    }
                 }
             });
     }
