@@ -6,6 +6,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.Button;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
@@ -23,6 +24,8 @@ import retrofit2.Response;
 public class ItemUsuarioAdapter extends RecyclerView.Adapter<ItemUsuarioAdapter.ViewHolder> {
     private List<ItemUsuario> items = new ArrayList<>();
     private OnItemClickListener listener;
+    private OnRefundClickListener refundListener;
+    private boolean showRefundButton = false;
 
     public void setItems(List<ItemUsuario> newItems, boolean isWishlist) {
         items.clear();
@@ -32,6 +35,7 @@ public class ItemUsuarioAdapter extends RecyclerView.Adapter<ItemUsuarioAdapter.
                 items.add(item);
             }
         }
+        showRefundButton = !isWishlist; // Solo mostrar en compras, no en wishlist
         notifyDataSetChanged();
     }
 
@@ -60,9 +64,11 @@ public class ItemUsuarioAdapter extends RecyclerView.Adapter<ItemUsuarioAdapter.
                 .load(item.portada)
                 .placeholder(R.drawable.ic_placeholder_portada)
                 .into(holder.ivCover);
+
         holder.itemView.setOnClickListener(v -> {
             if (listener != null) listener.onItemClick(item);
         });
+
         // Lógica para eliminar de wishlist
         if (holder.ivEliminarLista != null && item.esWishlist) {
             holder.ivEliminarLista.setVisibility(View.VISIBLE);
@@ -91,6 +97,18 @@ public class ItemUsuarioAdapter extends RecyclerView.Adapter<ItemUsuarioAdapter.
         } else if (holder.ivEliminarLista != null) {
             holder.ivEliminarLista.setVisibility(View.GONE);
         }
+
+        // Lógica para botón de devolución
+        if (holder.btnRefund != null && showRefundButton && item.puedeDevolver) {
+            holder.btnRefund.setVisibility(View.VISIBLE);
+            holder.btnRefund.setOnClickListener(v -> {
+                if (refundListener != null) {
+                    refundListener.onRefundClick(item);
+                }
+            });
+        } else if (holder.btnRefund != null) {
+            holder.btnRefund.setVisibility(View.GONE);
+        }
     }
 
     @Override
@@ -102,20 +120,31 @@ public class ItemUsuarioAdapter extends RecyclerView.Adapter<ItemUsuarioAdapter.
         void onItemClick(ItemUsuario item);
     }
 
+    public interface OnRefundClickListener {
+        void onRefundClick(ItemUsuario item);
+    }
+
     public void setOnItemClickListener(OnItemClickListener listener) {
         this.listener = listener;
+    }
+
+    public void setOnRefundClickListener(OnRefundClickListener listener) {
+        this.refundListener = listener;
     }
 
     static class ViewHolder extends RecyclerView.ViewHolder {
         ImageView ivCover;
         TextView tvTitle, tvAuthor;
         ImageView ivEliminarLista;
+        Button btnRefund;
+
         ViewHolder(@NonNull View itemView) {
             super(itemView);
             ivCover = itemView.findViewById(R.id.ivCover);
             tvTitle = itemView.findViewById(R.id.tvTitle);
             tvAuthor = itemView.findViewById(R.id.tvAuthor);
             ivEliminarLista = itemView.findViewById(R.id.ivEliminarLista);
+            btnRefund = itemView.findViewById(R.id.btnRefund);
         }
     }
 }

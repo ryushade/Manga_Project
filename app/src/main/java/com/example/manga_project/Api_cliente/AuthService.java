@@ -34,6 +34,8 @@ import com.example.manga_project.Modelos.MasVendidoResponse;
 import com.example.manga_project.Modelos.DashboardProveedorResponse;
 import com.example.manga_project.Modelos.DashboardProveedorResponseV2;
 import com.example.manga_project.Modelos.GoogleLoginRequest;
+import com.example.manga_project.Modelos.DevolucionRequest;
+import com.example.manga_project.Modelos.DevolucionResponse;
 
 import java.util.List;
 import java.util.Map;
@@ -224,4 +226,7 @@ public interface AuthService {
 
     @POST("/auth_facebook")
     Call<LoginResponse> loginFacebook(@Body GoogleLoginRequest request);
+
+    @POST("/api_devolucion")
+    Call<DevolucionResponse> solicitarDevolucion(@Body DevolucionRequest request);
 }

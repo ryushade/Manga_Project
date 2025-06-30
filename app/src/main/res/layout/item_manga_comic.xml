@@ -56,6 +56,21 @@
             android:textSize="12sp"
             app:layout_constraintTop_toBottomOf="@id/tvTitle"
             app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"/>
+
+        <!-- 5) Botón de devolución -->
+        <Button
+            android:id="@+id/btnRefund"
+            android:layout_width="0dp"
+            android:layout_height="32dp"
+            android:layout_marginTop="6dp"
+            android:text="Devolver"
+            android:textSize="10sp"
+            android:textColor="@color/white"
+            android:background="@drawable/button_refund_background"
+            android:visibility="gone"
+            app:layout_constraintTop_toBottomOf="@id/tvAuthor"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"/>
 

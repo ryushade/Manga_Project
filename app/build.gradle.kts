@@ -15,9 +15,18 @@ android {
         versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+
+        // Optimizaciones para desarrollo
+        multiDexEnabled = true
     }
 
     buildTypes {
+        debug {
+            // Optimizaciones para desarrollo
+            isMinifyEnabled = false
+            isShrinkResources = false
+            isDebuggable = true
+        }
         release {
             isMinifyEnabled = true
             isShrinkResources = true
@@ -27,10 +36,13 @@ android {
             )
         }
     }
+
+    // Optimizaciones de compilación
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_1_8
         targetCompatibility = JavaVersion.VERSION_1_8
     }
+
     buildFeatures {
         viewBinding = true
     }

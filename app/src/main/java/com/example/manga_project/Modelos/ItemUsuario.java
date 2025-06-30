@@ -8,4 +8,6 @@ public class ItemUsuario {
     public String fecha;
     public boolean esWishlist = false;
     public int id_volumen;
+     public int id_venta; // Necesario para las devoluciones
+    public boolean puedeDevolver = true; // Para controlar si se muestra el botón de devolución
 }
