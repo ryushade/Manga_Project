@@ -66,23 +66,68 @@ public class CompradosFragment extends Fragment {
             public void onResponse(Call<ItemsUsuarioResponse> call, Response<ItemsUsuarioResponse> response) {
                 if (progressBar != null) progressBar.setVisibility(View.GONE);
 
+                // Log detallado del response para debugging
+                android.util.Log.d("COMPRADOS", "Response code: " + response.code());
+                android.util.Log.d("COMPRADOS", "Response URL: " + call.request().url());
+
+                if (response.errorBody() != null) {
+                    try {
+                        String errorBody = response.errorBody().string();
+                        android.util.Log.e("COMPRADOS", "Error body: " + errorBody);
+                    } catch (Exception e) {
+                        android.util.Log.e("COMPRADOS", "Error reading error body", e);
+                    }
+                }
+
                 if (response.isSuccessful() && response.body() != null && response.body().success) {
+                    android.util.Log.d("COMPRADOS", "Items cargados exitosamente: " + response.body().data.size());
                     adapter.setItems(response.body().data, false); // false porque NO es wishlist, son compras
                 } else {
-                    mostrarError("Error al cargar las compras");
+                    String errorMsg = "Error al cargar las compras";
+
+                    // Manejo específico de errores
+                    if (response.code() == 500) {
+                        errorMsg = "Error interno del servidor al cargar las compras.\nInténtalo de nuevo en unos momentos.";
+                        android.util.Log.e("COMPRADOS", "Error 500 - Problema en el servidor");
+                    } else if (response.code() == 401) {
+                        errorMsg = "Sesión expirada. Por favor inicia sesión de nuevo.";
+                        android.util.Log.e("COMPRADOS", "Error 401 - No autorizado");
+                    } else if (response.code() == 403) {
+                        errorMsg = "No tienes permisos para ver las compras.";
+                        android.util.Log.e("COMPRADOS", "Error 403 - Prohibido");
+                    } else {
+                        android.util.Log.e("COMPRADOS", "Error desconocido. Code: " + response.code());
+                        errorMsg += " (Código: " + response.code() + ")";
+                    }
+
+                    mostrarError(errorMsg);
                 }
             }
 
             @Override
             public void onFailure(Call<ItemsUsuarioResponse> call, Throwable t) {
                 if (progressBar != null) progressBar.setVisibility(View.GONE);
-                mostrarError("Error de conexión");
+                android.util.Log.e("COMPRADOS", "Network error al cargar compras", t);
+
+                String errorMsg = "Error de conexión";
+                if (t instanceof java.net.SocketTimeoutException) {
+                    errorMsg = "Tiempo de espera agotado. Verifica tu conexión a internet.";
+                } else if (t instanceof java.net.UnknownHostException) {
+                    errorMsg = "No se puede conectar al servidor. Verifica tu conexión a internet.";
+                }
+
+                mostrarError(errorMsg);
             }
         });
     }
 
     private void mostrarDialogoDevolucion(com.example.manga_project.Modelos.ItemUsuario item) {
         if (getContext() == null) return;
+
+        // VERIFICAR SI YA FUE DEVUELTO
+        if (!verificarSiPuedeDevolver(item)) {
+            return; // La función ya muestra el mensaje de error correspondiente
+        }
 
         // Crear el EditText para el motivo
         EditText editTextMotivo = new EditText(getContext());
@@ -104,6 +149,53 @@ public class CompradosFragment extends Fragment {
             })
             .setNegativeButton("Cancelar", null)
             .setIcon(android.R.drawable.ic_menu_revert) // Usar ícono del sistema
+            .show();
+    }
+
+    /**
+     * Verifica si un producto puede ser devuelto
+     * @param item El item a verificar
+     * @return true si puede ser devuelto, false si no
+     */
+    private boolean verificarSiPuedeDevolver(com.example.manga_project.Modelos.ItemUsuario item) {
+        // Verificación 1: Campo puedeDevolver del backend
+        if (!item.puedeDevolver) {
+            mostrarMensajeNoDevolvible(item, "Este producto no es elegible para devolución.");
+            return false;
+        }
+
+        // Verificación 2: Ya fue devuelto exitosamente
+        if ("succeeded".equals(item.estadoDevolucion)) {
+            mostrarMensajeNoDevolvible(item, "Este producto ya fue devuelto exitosamente.");
+            return false;
+        }
+
+        // Verificación 3: ID de venta válido
+        int idVentaParaVerificar = item.id_venta > 0 ? item.id_venta : item.id;
+        if (idVentaParaVerificar <= 0) {
+            mostrarMensajeNoDevolvible(item, "Error: No se puede procesar la devolución. Datos de venta no válidos.");
+            return false;
+        }
+
+        return true; // Todas las verificaciones pasaron
+    }
+
+    /**
+     * Muestra un mensaje cuando un producto no puede ser devuelto
+     */
+    private void mostrarMensajeNoDevolvible(com.example.manga_project.Modelos.ItemUsuario item, String razon) {
+        if (getContext() == null) return;
+
+        new MaterialAlertDialogBuilder(getContext())
+            .setTitle("❌ No se puede devolver")
+            .setMessage("Producto: " + item.titulo + "\n\n" + razon + "\n\n" +
+                       "Si crees que esto es un error, contacta a nuestro equipo de soporte.")
+            .setPositiveButton("Entendido", null)
+            .setNeutralButton("Contactar soporte", (dialog, which) -> {
+                // Aquí podrías abrir un intent para enviar email o abrir chat de soporte
+                Toast.makeText(getContext(), "Redirigiendo a soporte...", Toast.LENGTH_SHORT).show();
+            })
+            .setIcon(android.R.drawable.ic_dialog_alert)
             .show();
     }
 
@@ -278,5 +370,90 @@ public class CompradosFragment extends Fragment {
             .setPositiveButton("OK", null)
             .setIcon(android.R.drawable.ic_dialog_alert)
             .show();
+    }
+
+    /**
+     * Convierte estados técnicos en mensajes amigables
+     */
+    private String obtenerEstadoAmigable(String estado) {
+        if (estado == null) return "Desconocido";
+
+        switch (estado.toLowerCase()) {
+            case "succeeded":
+                return "✅ Completado exitosamente";
+            case "pending":
+                return "⏳ En proceso";
+            case "requires_action":
+                return "⚠️ Requiere verificación";
+            case "failed":
+                return "❌ Falló";
+            case "canceled":
+                return "🚫 Cancelado";
+            default:
+                return "📝 " + estado;
+        }
+    }
+
+    /**
+     * Verifica en tiempo real con el servidor si un producto puede ser devuelto
+     * Útil para casos donde necesitas verificación adicional del backend
+     */
+    private void verificarDevolucionEnServidor(com.example.manga_project.Modelos.ItemUsuario item,
+                                               OnVerificacionDevolucionListener listener) {
+        AuthService api = ApiClient.getClientConToken().create(AuthService.class);
+
+        // Crear una llamada para verificar el estado de devolución
+        // Nota: Necesitarías agregar este endpoint en tu AuthService
+        // api.verificarEstadoDevolucion(item.id_venta).enqueue(new Callback<VerificacionDevolucionResponse>() {
+        //     @Override
+        //     public void onResponse(Call<VerificacionDevolucionResponse> call, Response<VerificacionDevolucionResponse> response) {
+        //         if (response.isSuccessful() && response.body() != null) {
+        //             listener.onVerificacionCompleta(response.body().puedeDevolver, response.body().razon);
+        //         } else {
+        //             listener.onVerificacionCompleta(true, null); // Default: permitir si no se puede verificar
+        //         }
+        //     }
+        //
+        //     @Override
+        //     public void onFailure(Call<VerificacionDevolucionResponse> call, Throwable t) {
+        //         listener.onVerificacionCompleta(true, null); // Default: permitir si hay error de red
+        //     }
+        // });
+
+        // Por ahora, usa verificación local hasta que implementes el endpoint
+        listener.onVerificacionCompleta(verificarSiPuedeDevolver(item), null);
+    }
+
+    /**
+     * Interface para manejar el resultado de verificación de devolución
+     */
+    private interface OnVerificacionDevolucionListener {
+        void onVerificacionCompleta(boolean puedeDevolver, String razon);
+    }
+
+    /**
+     * Método alternativo que usa verificación en servidor (para casos críticos)
+     */
+    private void mostrarDialogoDevolucionConVerificacion(com.example.manga_project.Modelos.ItemUsuario item) {
+        if (getContext() == null) return;
+
+        // Mostrar loading mientras verifica
+        AlertDialog loadingDialog = new MaterialAlertDialogBuilder(getContext())
+            .setTitle("Verificando...")
+            .setMessage("Verificando si este producto puede ser devuelto")
+            .setCancelable(false)
+            .create();
+        loadingDialog.show();
+
+        verificarDevolucionEnServidor(item, (puedeDevolver, razon) -> {
+            loadingDialog.dismiss();
+
+            if (puedeDevolver) {
+                mostrarDialogoDevolucion(item); // Proceder normalmente
+            } else {
+                String mensajeError = razon != null ? razon : "Este producto no puede ser devuelto";
+                mostrarMensajeNoDevolvible(item, mensajeError);
+            }
+        });
     }
 }

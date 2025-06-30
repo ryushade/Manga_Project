@@ -190,23 +190,36 @@ public class HistorietaActivity extends AppCompatActivity {
     }
 
     private void verificarVolumenComprado() {
-        api.getItemsUsuario("biblioteca").enqueue(new Callback<com.example.manga_project.Modelos.ItemsUsuarioResponse>() {
+        api.getItemsUsuario("purchases").enqueue(new Callback<com.example.manga_project.Modelos.ItemsUsuarioResponse>() {
             @Override
             public void onResponse(Call<com.example.manga_project.Modelos.ItemsUsuarioResponse> call, Response<com.example.manga_project.Modelos.ItemsUsuarioResponse> response) {
                 if (response.isSuccessful() && response.body()!=null && response.body().data!=null) {
                     for (com.example.manga_project.Modelos.ItemUsuario item: response.body().data) {
                         if (item.id_volumen==idVolumen) {
-                            volumenComprado = true;
-                            fabAddToCart.setEnabled(false);
-                            fabAddToCart.setImageResource(R.drawable.ic_check);
-                            fabAddToCart.setVisibility(View.GONE); // Ocultar si ya está comprado
+                            // VERIFICAR SI FUE DEVUELTO - solo bloquear si NO fue devuelto exitosamente
+                            if (!"succeeded".equals(item.estadoDevolucion)) {
+                                android.util.Log.d("HISTOR", "Volumen " + idVolumen + " ya comprado, estado devolución: " + item.estadoDevolucion);
+                                volumenComprado = true;
+                                fabAddToCart.setEnabled(false);
+                                fabAddToCart.setImageResource(R.drawable.ic_check);
+                                fabAddToCart.setVisibility(View.GONE); // Ocultar si ya está comprado
+                            } else {
+                                android.util.Log.d("HISTOR", "Volumen " + idVolumen + " fue devuelto exitosamente, permitir recompra");
+                                volumenComprado = false; // Permitir recompra después de devolución exitosa
+                                fabAddToCart.setVisibility(View.VISIBLE);
+                                fabAddToCart.setEnabled(true);
+                            }
                             break;
                         }
                     }
+                } else {
+                    android.util.Log.e("HISTOR", "Error al verificar compras: " + response.code());
                 }
             }
             @Override
-            public void onFailure(Call<com.example.manga_project.Modelos.ItemsUsuarioResponse> call, Throwable t) {}
+            public void onFailure(Call<com.example.manga_project.Modelos.ItemsUsuarioResponse> call, Throwable t) {
+                android.util.Log.e("HISTOR", "Error de red al verificar compras", t);
+            }
         });
     }
 
@@ -311,12 +324,15 @@ public class HistorietaActivity extends AppCompatActivity {
                 if (response.isSuccessful() && response.body() != null) {
                     int code = response.body().code;
                     String msg = response.body().msg;
+
+                    // Verificar si ya compró (pero sin devolución)
                     if (msg != null && msg.toLowerCase().contains("ya compraste")) {
                         Toast.makeText(HistorietaActivity.this, msg, Toast.LENGTH_LONG).show();
                         fabAddToCart.setEnabled(false);
                         fabAddToCart.setVisibility(View.GONE);
                         return;
                     }
+
                     if (code == 0) {
                         Toast.makeText(HistorietaActivity.this, "¡Volumen añadido a tu carrito!", Toast.LENGTH_SHORT).show();
                     } else if (code == 2) {
@@ -329,22 +345,30 @@ public class HistorietaActivity extends AppCompatActivity {
                 } else if (response.errorBody() != null) {
                     try {
                         String errorJson = response.errorBody().string();
+                        android.util.Log.d("CARRITO", "Error response: " + errorJson);
+
+                        // Verificar específicamente si es un problema de compra previa
                         if (errorJson.toLowerCase().contains("ya compraste")) {
-                            Toast.makeText(HistorietaActivity.this, "Ya compraste este volumen", Toast.LENGTH_LONG).show();
+                            // Solo bloquear si realmente no puede comprar de nuevo
+                            // (el backend debería permitir recompras después de devoluciones)
+                            Toast.makeText(HistorietaActivity.this, "Ya tienes una compra activa de este volumen", Toast.LENGTH_LONG).show();
                             fabAddToCart.setEnabled(false);
                             fabAddToCart.setVisibility(View.GONE);
                         } else {
                             Toast.makeText(HistorietaActivity.this, "No se pudo agregar al carrito.", Toast.LENGTH_LONG).show();
                         }
                     } catch (Exception e) {
+                        android.util.Log.e("CARRITO", "Error parsing error body", e);
                         Toast.makeText(HistorietaActivity.this, "No se pudo agregar al carrito.", Toast.LENGTH_LONG).show();
                     }
                 } else {
                     Toast.makeText(HistorietaActivity.this, "No se pudo agregar al carrito. Intenta más tarde.", Toast.LENGTH_LONG).show();
                 }
             }
+
             @Override
             public void onFailure(Call<RespuestaGenerica> call, Throwable t) {
+                android.util.Log.e("CARRITO", "Network error al agregar al carrito", t);
                 Toast.makeText(HistorietaActivity.this, "Error de conexión. Revisa tu internet.", Toast.LENGTH_LONG).show();
             }
         });
